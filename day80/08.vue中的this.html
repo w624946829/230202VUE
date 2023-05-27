@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+ <head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+ </head>
+<body>
+    <!-- 
+        1、普通函数中的this
+        function fn(){
+            console.log(this)
+        }
+        2、箭头函数中的this
+        let fn()=>{
+            console.log(this)
+        }
+        箭头函数没有this，this是上一级作用域的this，是window
+        严格模式下是undefined
+        3、方法中的this
+        obj = {
+            name:'张三',
+            eat(){
+                console.log(this)
+            }
+        }
+        obj.eat();
+        谁调用this就是谁，这里obj调用的，this是obj
+        4、构造函数
+        function Person(){
+            this.name='张三 '
+        }
+        new Person（）
+        构造函数值那个this指向于即将要创建出来的实例
+        5、事件绑定
+        <button id = 'btn'>按钮</button>
+        <script>
+        btn.onclick = function(){
+            console.log(this);
+        }
+        </script>
+        this指向与事件源
+        6、call、apply、bind
+        let obj1 = {
+            name:'张三',
+            eat(str1,str2){
+                console.log('eat',this,str1,str2)
+            }
+        } 
+        let obj2 = {
+            name:'旺财'
+        }
+        obj1.eat.call(obj2,'吃饭','睡觉')
+        obj1.eat.apply(obj2,['吃饭','睡觉'])
+
+        let res = obj.eat.bind(obj2)//执行完这行代码的时候，得到的res结果是一个新的函数，这个函数的this已经被改变了
+        console.log(res);
+
+        let obj3 = {
+            name:'小黑'
+        }
+        let res2 = res.bind(obj3)
+        console.log(res2);
+        res2();
+        //注意：bind改变this指向，并且只能改变一次
+        7、vue中的this
+        模板中的this，指向vue实例
+     -->
+    <script>
+        let obj1 = {
+            name:'张三',
+            eat(str1,str2){
+                console.log('eat',this,str1,str2)
+            }
+        } 
+        let obj2 = {
+            name:'旺财'
+        }
+        obj1.eat.call(obj2,'吃饭','睡觉')
+        obj1.eat.apply(obj2,['吃饭','睡觉'])
+
+        let res = obj1.eat.bind(obj2,'dadada','pangpang')//执行完这行代码的时候，得到的res结果是一个新的函数，这个函数的this已经被改变了
+        console.log(res);
+
+        let obj3 = {
+            name:'小黑'
+        }
+        let res2 = res.bind(obj3)
+        console.log(res2);
+        res2();
+        //注意：bind改变this指向，并且只能改变一次
+    </script>
+</body>
+</html>
