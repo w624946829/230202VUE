@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+ <head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <script src="./js/vue.js"></script>
+ </head>
+<body>
+  <!-- 
+    问题：现在有一个input框，给一个数据之后让input框显示这个数据
+    通过v-bind:value="msg"可以给input设置内容
+
+    修改input框内容修改数据
+
+    v-model指令，双向数据绑定
+        数据变化，会传给模板
+        同时，模板变化，也会传给数据
+        这就叫做双向绑定
+   -->
+    <div id ='app'>
+        <div>{{ msg }}</div>
+        <input type="text" v-bind:value="msg">
+        <br>
+        <input type="text" v-model="msg">
+    </div>
+
+    <script>
+       
+        let vm = new Vue({
+            el:'#app',
+            data:{
+                msg:'我爱你',
+            }
+        })
+    </script>
+</body>
+</html>

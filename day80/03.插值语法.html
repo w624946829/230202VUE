@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+ <head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <script src="./js/vue.js"></script>
+ </head>
+<body>
+    <!-- 
+        模板中双花括号叫插值语法{{ }}
+        双花括号相当于是js的分隔符，。可以在双花括号中数学js的表达式
+        在双花括号中可以书写什么
+        可以写数据，可以写表达式
+
+        什么是表达式
+        由变量、常量和运算符组成的式子叫做表达式
+        注意：表达式一定是有值的
+        
+     -->
+    <div id ='app'>
+        {{msg}}
+    </div>
+
+    <script>
+        let vm = new Vue({
+            el:'#app',
+            data:{
+                msg:'我爱你'
+            }
+        })
+    </script>
+</body>
+</html>

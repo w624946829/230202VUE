@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+ <head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <script src="./js/vue.js"></script>
+ </head>
+<body>
+    <div id="box">
+        {{msg}}
+    </div>
+    <script>
+        /**
+         * 当有多个相同挂载点的时候，只会挂在第一个
+         * 当有多个相同实例的时候，只会第一个实例去挂载
+         * 
+         * 挂载点：
+         * 由创建实例的时候传入配置对象中的el配置项；来决定，我们的vm实例挂载那个div
+         * 挂载点里面写的内容是
+         * 选择器
+         * 真实dom
+         * 也可以单独拿实例去挂载
+         * vm.$mount('#app')
+         * 
+         * 数据 在配置项data中去书写
+         * 目前使用的是对象的形式
+         * 还可以使用函数返回值的形式书写
+         * 
+         * 
+         * 注意：
+         * data配置项中配置的数据，放到了vm实例身上
+         * 而在模板使用写的{{msg}}去vm实例上拿到msg这个数据
+         * 模板中{{msg}}这是简写，全蝎应该是{{this.msg}}
+         * 注意：在模板中，this永远指向当前vm实例
+         * 警告：作为新手而言，不要在模板中书写this（为什么不让在模板中书写this，因为在有些情况下会保存，存在调试问题，一般不加）
+        */
+
+
+        let vm = new Vue({
+            //4、书写挂载点,和模板做关联用
+            el:'#box',
+            // 5、配置数据并展示
+            data:{
+                msg:'woaini'
+            }
+            // data(){
+            //     return:{
+            //         msg:'woaini'
+            //     }
+            // }
+        })
+    </script>
+</body>
+</html>

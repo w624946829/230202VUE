@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+ <head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <script src="./js/vue.js"></script>
+ </head>
+<body>
+ <!-- 
+    v-on:click = "clickHandler"
+    v-on 是一个内置指令，用来绑定事件用
+    冒号之后，等号之前的click是我们绑定的事件类型
+    双引号之内容放置表达式，这个表达式必须是函数
+
+    注意：回调 clickHandler 在实例上，相当于放的是实例上的东西
+  -->
+    <div id ='app'>
+        <button v-on:click="clickHandler">按钮</button>
+        <!-- <button v-on:click="clickHandler">按钮</button> -->
+    </div>
+
+    <script>
+       
+        let vm = new Vue({
+            el:'#app',
+            data:{
+                clickHandler:()=>{
+                    console.log(111);
+                }
+            }
+        })
+    </script>
+</body>
+</html>

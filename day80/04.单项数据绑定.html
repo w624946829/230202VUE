@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+ <head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <script src="./js/vue.js"></script>
+ </head>
+<body>
+  <!-- 1、插值语法 -->
+    <!-- <div id ='app'>
+        <div>{{msg}}</div>
+    </div> -->
+    <!-- 
+        2、指令语法
+        v-html = "msg"
+        v-html是vue内置的指令，这个指令是用来解析双引号中的内容的，可以解析html标签（有点像innerHTML）
+        双引号理解为js的分隔符，在这个分隔符中可以写js的表达式
+    
+        v-text = "msg"
+        v-text是vue内置的指令，这个指令是用来解析双引号中的内容的，不可以解析html标签（有点像innerText）
+   
+        如果想给元素设置属性
+        v-bind:class = "elClass"
+        用来给元素绑定属性的
+        冒号之后，等号之前的内容
+        
+        注意：v-bind:class = "elClass" 写法是全写，有简写形式
+        简写：      :class = "elClass" 简写
+    -->
+    <div id ='app'>
+        <div>{{ msg }}</div>
+        <br>
+        <div v-html = "msg"></div>
+        <div v-html = "content"></div>
+        <br>
+        <div v-text = "msg"></div>
+        <div v-text = "content"></div>
+        <br>
+        <div v-bind:class = 'elClass'>box盒子</div>
+        <div v-bind:abc="msg">box盒子</div>
+        <div v-bind:qwer=" '哈哈' + 125 ">box盒子</div>
+        <div :class = 'elClass'>box盒子</div>
+    </div>
+
+    <script>
+        /**
+         * 给元素中设置内容有几种方式
+        */
+        let vm = new Vue({
+            el:'#app',
+            data:{
+                msg:'我爱你',
+                content:'<b>我爱你</b>',
+                elClass: 'box'
+            }
+        })
+    </script>
+</body>
+</html>

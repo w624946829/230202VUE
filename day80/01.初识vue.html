@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- 1、引入vue。js组件 -->
+    <script src="./js/vue.js"></script>
+</head>
+<body>
+    <!-- 修改页面中内容开始 -->
+    <!-- <div id="app">
+        <div class="container">我爱你</div>
+    </div>
+    <ul class="list">
+        <li class="item">内容</li>
+        <li class="item">内容</li>
+        <li class="item">内容</li>
+        <li class="item">内容</li>
+        <li class="item">内容</li>
+    </ul> -->
+    <div id="box">
+        {{msg}}
+    </div>
+    <script>
+        // 最早修改页面内容的方式，使用原生js修改
+        // let box = document.getElementById('box')
+        // box.innerHTML = 'I Love You!'
+        // 随着时间发展有了jquery
+        // 在vue、react没出来之前，jquery一统江湖
+        // 原因
+        // 1、语法简洁
+        // 2、处理了绝大多数的兼容性问题
+        // $('#box').html('你是个好人')
+        // 为什么淘汰
+        // 修改li里面的内容，修改成‘哈哈哈
+        // 相当于获取到所有的li的DOM是一个数组，循环这个数组去修改里面的内容
+        // 循环一次,.修改一次,渲染一次,就会引发一次重排重绘
+        // 造成页面的性能很低
+        // 当页面过于庞大的时候,此时会非常卡顿
+        // $('.list').html('哈哈')
+
+        // 后来出现了 react、vue这些框架，把jquery取代了
+        // 性能优良
+        // vue使用的是虚拟DOM、diff算法
+        // 虚拟dom
+        // a = {
+        //     tag:'div',
+        //     attr:{
+        //         id:'box'
+        //     },
+        //     children: [
+        //         {
+        //             tag:'div',
+        //             attr:{
+        //                 class:'container',
+        //             }
+        //         }
+        //     ]
+        // }
+        // diff算法
+        // 新旧虚拟Dom的区别从而进行更新
+        // vue在更新页面的时候，使用diff算法对比完虚拟Dom差异之后，直接更新页面中的真实DOM吗？
+        // vue不是直接在页面更新的真实DOM，在Fragment文档碎片中更新的
+        // Fragment文档碎片（容器），这里容器存在于内存当中，更新DOM的时候在内存中进行更新，不在页面进行更新
+        // 注意 直接在页面中更新DOM性能开销是非常大的
+
+        // 缺点：
+        // react、vue这种框架
+        // 不利于SEO优化（搜索引擎优化）
+
+        // 如何使用vue
+        // 3、创建vm实例，传入一个配置对象
+        let vm = new Vue({
+            //4、书写挂载点,和模板做关联用
+            el:'#box',
+            // 5、配置数据并展示
+            data:{
+                msg:'woaini'
+            }
+        })
+    </script>
+</body>
+</html>
