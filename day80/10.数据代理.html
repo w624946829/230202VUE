@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <!--
+    问题一：我们在创建 vm 实例的时候，传入的配置项目data中的数据是如何到vm实例上的?
+  -->
+  <script>
+    // 数据代理:
+    // 将配置项data中的数据代理到vm实例上,在之后访问数据的时候可以使用 vm 实例直接访问
+    // 修改数据的时候,也是拿着 vm.xxx 在修改,本质上实在修改配置项中的data数据
+    // 为什么要数据代理呢?
+    // 为了方便使用, this.xxx this就是vm实例
+
+    function Vue(options) {
+      let data = options.data
+    //   setInterval(() => {
+    //     console.log('配置项中的data', data)
+    //   }, 2000)
+
+    //   Object.keys(data)  --->  ["msg", "text"]
+
+      Object.keys(data).forEach(key => { // 循环两次, 第一次 msg  第二次 text
+
+        
+
+        Object.defineProperty(this, key, {
+          get() {
+            return data[key]
+          },
+          set(val) {
+            data[key] = val
+          }
+        })
+
+      })
+
+    }
+
+    let vm = new Vue({
+      el: '#app',
+      data: {
+        msg: '我爱你',
+        text: '高圆圆'
+      }
+    })
+
+    console.log(vm.msg)
+
+    vm.msg = '你是个好人'
+
+    console.log(vm)
+
+
+  </script>
+</body>
+</html>

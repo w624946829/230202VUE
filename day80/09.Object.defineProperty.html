@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+ <head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+ </head>
+<body>
+    <script>
+        // let obj ={
+        //     name:'张三'
+        // }
+
+        // obj.name = '李四'
+        
+        //Object.defineProperty()
+        // 给对象添加属性用的
+        // 参数：
+        // 参数1：目标对象，需要添加属性的对象
+        // 参数2：要添加的属性名
+        // 参数3：是一个配置对象
+            // value当前属性的属性值
+            // writable当前属性是否可以被修改
+            // configurable:当前属性是否被删除
+            // enumerable：当前属性是否可以被枚举出来
+        let obj = {}
+        let text = '高总'
+        Object.defineProperty(obj, 'name', {
+            // value:'送管饱',
+            // writable:false,//不可改为false
+            configurable: true,//true可以被删除
+            enumerable: true,//true可以被枚举出来
+            // value和writable与OOOO 冲突
+            //获取值的时候走get,,决定了当前属性的值
+            get (){
+                return text
+            },
+            //设置值的时候走set，，设置的时候走
+            set(val){
+                text = val
+            }    
+          
+        })
+
+        console.log(obj);
+        console.log(obj.name);
+        obj.name='杨幂'
+        console.log(obj.name);
+
+        //Object有哪些方法
+        let obj1 = {
+            name:'张三',
+            age:18,
+            hobby:['抽烟','喝酒','烫头'],
+            eat (){
+                console.log('吃货');
+            }
+        }
+        let obj2 ={}
+        Object.assign(obj2,obj1)
+        console.log(obj2);
+        console.log(obj1);
+        console.log(obj2==obj1);
+    </script>
+</body>
+</html>
