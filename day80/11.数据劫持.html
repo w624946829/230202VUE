@@ -8,14 +8,13 @@
 </head>
 <body>
   <!--
-    问题一：我们在创建 vm 实例的时候，传入的配置项目data中的数据是如何到vm实例上的?
+    问题二：
   -->
   <script>
-    // 数据代理:
-    // 将配置项data中的数据代理到vm实例上,在之后访问数据的时候可以使用 vm 实例直接访问
-    // 修改数据的时候,也是拿着 vm.xxx 在修改,本质上实在修改配置项中的data数据
-    // 为什么要数据代理呢?
-    // 为了方便使用, this.xxx this就是vm实例
+    // 数据劫持:
+    /**
+     * 
+     * */ 
 
     function Vue(options) {
       let data = options.data
@@ -50,11 +49,11 @@
       }
     })
 
-    console.log(vm.msg)
+    // console.log(vm.msg)
 
-    vm.msg = '你是个好人'
+    // vm.msg = '你是个好人'
 
-    console.log(vm)
+    // console.log(vm)
 
 
   </script>
