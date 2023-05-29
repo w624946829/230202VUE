@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title></title>
+    <script src="./js/vue.js"></script>
+  </head>
+  <body>
+
+    <script>
+        function clickHandler5 (arg){
+            console.log('按钮5');
+        }
+    </script>
+<!-- 
+
+    $event的来源
+    事件回调写函数的时候，不加小括号，此时是把函数的地址传到了底层
+    事件回调写函数的时候，加小括号，此时传给底层的函数被报过了一层变成了
+    f（$event）{}
+    当我们点击按钮的时候，执行的回调，是包裹这一层的函数，也就是这里的fns函数
+
+    这个fns的形参是 $event,也就是说调用的时候，$event就是事件对象，我们自己在写的时候，必须用这个形参
+
+    如果此时（加小括号调用的时候），前面加this，这个this指向window，严格模式下是undefined
+    注意：
+    以后在模板的时候写不加this
+ -->
+    <div id="app">
+     <button @click = "clickHandler1">按钮1</button><br>
+
+     <button @click = "this.clickHandler2">按钮2</button><br>
+
+     <button @click = "clickHandler3('我爱你')">按钮3</button><br>
+    <!-- 报错 -->
+     <button @click = "clickHandler4('我爱你')">按钮4</button><br>
+
+     <button @click = "clickHandler5('我爱你')">按钮5</button><br>
+<!-- 
+     此时，按钮6传递底层的回调是
+     function fns($event){
+        return clickHandler5($event,'我爱你')
+     }
+ -->
+     <button @click = "clickHandler5($event,'我爱你')">按钮6</button><br>
+    </div>
+    <script>
+      new Vue({
+        el: "#app",
+        data: {},
+        methods:{
+            clickHandler1(){
+                console.log('按钮1 被触发');
+            },
+            clickHandler2(){
+                console.log('按钮2 被触发');
+            },
+            clickHandler3(){
+                console.log('按钮3 被触发');
+            },
+            clickHandler4(){
+                console.log('按钮4 被触发');
+            },
+        }
+      })
+    </script>
+  </body>
+</html>
