@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="./js/vue.js"></script>
+</head>
+
+<body>
+    <!-- 
+      需求：列表的过滤和排序 
+      1.过滤：过滤input框输入 的内容
+        拿到input框输入的记过keyword，使用v-model拿
+        监听keyword，当输入的内容发生变化的时候，过滤数组
+        过滤查询出来的数组需要一个结果来承载，声明一个newList数据，用来承载结果
+        注意：初始化的时候，给newList初始的是空数组，上来就想让有值，给keyword监听加immediate：true 
+      2.排序
+        三个按钮 按升序排列 按降序排列 按 原序排列
+        点击三个按钮按照不同的顺序排列
+        先记录按什么书序拍，使用sortType这个数据来记录
+     -->
+    <div id="app">
+        <button @click="sortType = 1">按升序排列</button>
+        <button @click="sortType = 2">按降序排列</button>
+        <button @click="sortType = 3">按原序排列</button>
+        <br />
+        <input type="text" v-model="keyword" />
+
+        <div v-for="item in newList" :key="item.id">
+            {{item.id}} -- {{item.content}} -- {{item.age}}
+        </div>
+
+
+
+    </div>
+    </div>
+    <script>
+        new Vue({
+            el: "#app",
+            data: {
+                sortType: 3,// 1升序  2降序 3原序
+                keyword: "", //input框输入的内容
+                list: [
+                    { id: 1001, content: "gaoyuanyuan", age: 25 },
+                    { id: 1002, content: "yangmi", age: 23 },
+                    { id: 1003, content: "liuyan", age: 29 },
+                    { id: 1004, content: "jiangshuying", age: 18 },
+                ],
+                newList:[]// 承载过滤的结果
+            },
+            watch:{
+                keyword:{
+                    handler(nval,oval){
+                        let res = this.list.filter(item=>{
+                            return item.content.includes(nval)
+                        })
+                        this.newList = res
+                    },
+                    immediate:true
+                },
+                sortType(nval,oval){
+                    if(nval == 1){
+                        this.newList.sort((a,b)=>{// 按升序
+                            return a.age-b.age
+                        })
+                    }else if(nval == 2){// 按降序
+                        this.newList.sort((a,b)=>{
+                            return b.age-a.age
+                        })
+                    }else{// 按原序
+                        //注意
+                        // 按照原序的时候，不能把过滤的功能丢掉
+                        // 岁哟不能直接把list的值赋值给newList，需要过滤之后再赋值
+                        this.newList = this.list.filter(item=>item.content.includes(this.keyword))
+                    }
+                }
+            }
+
+        });
+    </script>
+</body>
+
+</html>
