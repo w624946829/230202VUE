@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="./js/vue.js"></script>
+  </head>
+  <body>
+    <!--
+    条件渲染
+    使用v-if、v-else-if、v-else
+    成功
+    失败
+
+    v-show 可以进行条件渲染
+
+    问：v-if 和v-show有什么区别
+    v-if隐藏的DOM不会再页面中渲染
+    v-show隐藏的DOM在页面渲染了，隐藏使用的css中的display：none
+
+    问：
+    什么时候使用v-if？什么时候使用v-show？
+    对于频繁触发显示隐藏的用v-show
+    不频繁的用谁都可以
+  -->
+    <div id="app">
+      <div>表白：</div>
+      <div v-if="isSay">表白成功</div>
+      <div v-else>表白失败</div>
+      <hr>
+      <div>表白：</div>
+      <div v-if="isDeclare == 'success'">表白成功</div>
+      <div v-else-if = "isDeclare == 'fail'">表白失败</div>
+      <div v-else>loading</div>
+        <hr>
+        <div v-show = 'isMarry'>结婚成功 </div>
+        <div v-show = '!isMarry'>结婚失败</div>
+    </div>
+    <script>
+      let vm = new Vue({
+        el: "#app",
+        data:{
+                isSay:true,//代表成功或者失败
+                isDeclare:'succeess',//success代表成功 fail代表失败 padding代表吊
+                isMarry:true,//是否结婚成功
+            }
+        
+      });
+    </script>
+  </body>
+</html>

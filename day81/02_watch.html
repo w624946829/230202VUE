@@ -25,6 +25,15 @@
 
             deep: true, // 深度监听（一般用在对象上，对象深层的属性发生改变并且监听到，加deep）
           },
+          
+          在未开启深度监听 情况下
+          监听对象，只有对象的地址发生变化才能监听到，对象中属性变化是监听不到的
+          监听数组，数组中成员变化是可以监听到的（底层对数组进行过特殊处理）
+          （需要知道数组在底层特殊处理过）
+
+          重点：：
+          methods和computed区别
+
      -->
     <div id="app">
       <div>{{firstName}}</div>
@@ -55,6 +64,7 @@
         },
         watch: {
           firstName(newVal, oldVal) {
+            setTimeout
             this.fullName = newVal + this.lastName;
           },
           // 1.函数写法
@@ -79,6 +89,7 @@
           },
           // 有没有直接监听到 hobby[0]的内容改变
           // 直接监听即可
+        //   这里主要想说明,属性名是可以写成"对象.属性"的形式
           "obj.hobby": {
             handler(nval, oval) {
               console.log(nval);

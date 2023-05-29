@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="./js/vue.js"></script>
+  </head>
+  <body>
+    <!-- 
+      需求：列表的过滤
+      详情：在页面中有input框，input中输入内容，列表的展示需要和输入的内容相同
+      1\拿到页面中输入的内容
+      使用v-model绑定一个数据即可
+      2.拿着输入的内容，和list中每一项进行比较，如果有相同内容保留下来展示
+      如果内容不相同的过滤到
+      
+      需求：三个按钮“按升序排列”、“按降序排列”、“按原序排列”
+      1.拿一个变量记录，按什么顺序排列
+        sortType：3，//1。代表升序，2。代表降序，3.代表原序
+      2.在生成newList 的计算属性中加上 按照sortType 排序的代码
+      3.点击按钮，修改sortType的值，newList就会重新计算
+     -->
+    <div id="app">
+      <!-- 
+      <button @click="clickHandler(1)">按升序排列</button>
+      <button @click="clickHandler(2)">按降序排列</button>
+      <button @click="clickHandler(3)">按原序排列</button> 
+      -->
+      <!-- 当回调中只有一行代码的时候(代码很少的时候),可以把代码直接写模板中 -->
+      <!-- <br> -->
+      <button @click="sortType = 1">按升序排列</button>
+      <button @click="sortType = 2">按降序排列</button>
+      <button @click="sortType = 3">按原序排列</button>
+      <br />
+      <input type="text" v-model="keyword" />
+      <div v-for="item in newList" :key="item.id">
+        {{item.id}} -- {{item.content}} -- {{item.age}}
+      </div>
+    </div>
+    <script>
+      new Vue({
+        el: "#app",
+        data: {
+          sortType: 3,
+          keyword: "", //input框输入的内容
+          list: [
+            { id: 1001, content: "box,1111", age: 25 },
+            { id: 1002, content: "box,2222", age: 23 },
+            { id: 1003, content: "box,3333", age: 29 },
+            { id: 1004, content: "box,4444", age: 18 },
+          ],
+        },
+        computed: {
+          newList() {
+            let res = this.list.filter((item) => {
+              //过滤方法
+              //item.content //内容
+              //this.keyword //输入的内容
+              return item.content.includes(this.keyword); //是否包含一个值
+            });
+
+            //排序开始
+            if (this.sortType == 1) {
+              res.sort((a, b) => {
+                return a.age - b.age;
+              });
+            } else if (this.sortType == 2) {
+              res.sort((a, b) => {
+                return b.age - a.age;
+              });
+            } else {
+              //原序排列
+              //不用排列，不做操作
+            }
+
+            return res;
+          },
+        },
+        // methods:{
+        //   clickHandler(num){
+        //     this.sortType = num
+        //   }
+        // }
+      });
+    </script>
+  </body>
+</html>

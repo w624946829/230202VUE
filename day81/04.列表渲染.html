@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="./js/vue.js"></script>
+  </head>
+  <body>
+    <!-- \
+        列表渲染
+        使用v-for进行列表渲染
+        注意：循环渲染的时候，需要加key，key必须是位移，作为每一项循环的唯一标识，
+        唯一标识在数据变化之后，diff算法对比新旧 虚拟DOM时候会用到，提升性能
+    -->
+    <div id="app">
+      <div  v-for="(item,index) in list":key = 'index'>
+        {{index}} -- {{item.id}} -- {{item.content}}
+      </div>
+    </div>
+    <script>
+      let vm = new Vue({
+        el: "#app",
+        data: {
+            list:[
+                {id:1001,content:'抽烟'},
+                {id:1002,content:'喝酒'},
+                {id:1003,content:'烫头'},
+            ]
+        },
+      });
+    </script>
+  </body>
+</html>
