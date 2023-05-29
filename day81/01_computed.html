@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+ <head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <script src="./js/vue.js"></script>
+ </head>
+<body>
+    <!-- //问题：给姓和名的数据，最终得到姓名有几种方式 -->
+    <div: id="app">
+        <!-- 1、插值语法 -->
+        <div>{{firstName +lastName}}</div>
+        
+        <!-- 2、指令语法 -->
+        <div v-html="firstName +lastName"></div>
+
+        <!-- 3、方法 -->
+        <div>{{ fullName() }}</div>
+        <div>{{ fullName() }}</div>
+        <div>{{ fullName() }}</div>
+        <!-- 4、计算属性 
+            写法，用的是函数写法，return的值会作为属性的值，治理叫计算属性，也是属性
+            这个函数会自动执行，什么情况下自动执行
+            用这个属性的时候，这个属性会自动执行，不用不执行慈宁宫
+                methods中的方法是，是调用几次执行几次，
+                computed中的属性，用的时候执行一次，把结果缓存起来，再次使用该属性的时候，拿着缓存的值去用  
+                    当数据发生变化的时候，计算属性中的代码会再次执行
+
+            计算属性有两种写法：函数写法、对象写法
+                对象写法中配置 get 和set
+                函数写法相当于是对象写法中的get
+
+            什么是计算属性？
+                自身没有的属性，通过自身上的其他属性计算得出的属性叫计算属性
+                计算属性依赖于自身其他的属性，当依赖的数据发生变化的时候，计算属性会重新计算
+        -->
+        <div>{{ fullName }}</div>
+        <div>{{ fullName }}</div>
+        <div>{{ fullName }}</div>
+    </div:>
+    <script>
+       let vm = new Vue({
+        el:'#app',
+        data:{
+            firstName:'尼古拉',
+            lastName:'赵四'
+        },
+        // 配置项 computed
+        computed:{
+            //函数写法
+            // fullName(){
+            //     console.log(1111);
+            //     return this.firstName + this.lastName
+            // }
+
+            //对象写法
+            fullName:{
+                get(){
+                    console.log('获取值');
+                    return this.firstName + this.lastName
+                },
+                set(val){
+                    console.log('设置值',val);
+                }
+                        }
+        },
+        methods:{
+            getFullName(){
+                console.log('函数执行');
+                return this.firstName + this.lastName;
+            }
+        }
+       });
+
+       console.log(vm);
+    </script>
+</body>
+</html>
