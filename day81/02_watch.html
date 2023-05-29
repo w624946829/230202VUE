@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+ <head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <script src="./js/vue.js"></script>
+ </head>
+<body>
+    <!-- 
+        需求： 给姓和名的数据，
+     -->
+     <div>{{lastName}}</div>
+     <input type="text " v-model = ''>
+    <script>
+        new Vue({
+            el:'#app',
+            data:{
+                firstName:'尼古拉斯',
+                lastName:'赵四',
+                fullName:""
+            },
+            watch:{
+                firstName(newVal,oldVal){
+                    console.log(newVal,oldVal);
+                    this.fullName = newVal + this.lastName
+                },
+                // 1.函数写法
+                // lastName(nval,oval){
+                //     this.fullName = this.firstName + nval
+                // }
+                // 2.对象写法
+                lastName: {
+                    handler(nval,oval){
+                        this.fullName = this.firstName +nval    
+                    },
+                    //初始化实例的时候立即执行一次
+                    immediate:true, //立即执行
+                    
+                    deep:true,// 深度监听（一般用在对象上，对象深层的属性发生改变并且监听到）
+                },
+                obj:{
+                    handler(nval,oval){
+                        console.log('发生变化',nval);
+                    },
+                    deep:true, 
+                }
+            }
+        })
+    </script>
+</body>
+</html>
