@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title></title>
+    <script src="./js/vue.js"></script>
+  </head>
+  <body>
+
+    <style>
+      .wrapper {
+        width: 150px;
+        height: 150px;
+      }
+      .box {
+        width: 100px;
+        height: 100px;
+      }
+      .box1 {
+        background-color: greenyellow;
+      }
+      .box2 {
+        background-color: skyblue;
+      }
+      .box3 {
+        background-color: hotpink;
+      }
+    </style>
+
+    <div id="app">
+      <!-- 普通绑定 -->
+      <div class="box" :class=" 'box2' "></div>
+      <div class="box" :class=" myClass3 "></div>
+
+      <div class="box" :class=" isBox2 ? myClass3 : '' "></div>
+
+      <div class="box" :class=" isBox2 && myClass3  "></div>
+
+      <hr>
+
+      <!-- 数组绑定 -->
+      <div :class="['wrapper', myClass3]"></div>
+
+      <div :class="['wrapper', isBox2 ? myClass3 : '']"></div>
+
+      
+      <hr>
+
+      <!--
+        对象绑定
+        对象得属性是类名,对象得属性值是布尔值,如果是true代表当前有这个类名,false代表没有
+      -->
+      <div :class="{
+        box: true,
+        box2: isBox2
+      }"></div>
+      <button @click="isBox2 = !isBox2">颜色消失</button>
+
+      <hr>
+
+      <div style="width: 200px;height: 200px;background-color: #70c;"></div>
+
+
+      <div :style="  `width: 200px;height: 200px;background-color: #70c;`  "></div>
+
+      <div :style="{
+        width: '100px',
+        height: '100px',
+        backgroundColor: 'red',
+        'font-size': '32px'
+      }">
+        哈哈
+      </div>
+
+
+    </div>
+    <script>
+      new Vue({
+        el: "#app",
+        data: {
+          myClass3: 'box3',
+          isBox2: true
+        }
+      })
+    </script>
+  </body>
+</html>

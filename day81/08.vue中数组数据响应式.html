@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="./js/vue.js"></script>
+  </head>
+
+  <body>
+    <!-- 
+      需求：数组数据，修改数据有几种方式？
+      修改下标为0位置的content
+      
+     -->
+    <div id="app">
+      <div v-for="item in newList" :key="item.id">{{item.content}}</div>
+
+      <!-- 直接修改 -->
+      <button @click="changeContent1">修改item[0]中的content</button>
+      <button @click="changeContent2">修改item[0]中的content</button>
+      <button @click="changeContent3">修改item[0]中的content</button>
+    </div>
+    <script>
+      new Vue({
+        el: "#app",
+        data: {
+          list: [
+            { id: 1001, content: "gaoyuanyuan", age: 25 },
+            { id: 1002, content: "yangmi", age: 23 },
+            { id: 1003, content: "liuyan", age: 29 },
+            { id: 1004, content: "jiangshuying", age: 18 },
+          ],
+        },
+        methods: {
+          changeContent1() {
+            this.list[0].content = "胡歌";
+          },
+          changeContent2() {
+            //不选择使用
+            this.list[0] = { id: 1001, content: "liushishi", age: 28 };
+            console.log(this.list);
+          },
+          changeContent3() {
+            this.list.splice(0, 1, { id: 1001, content: "谢霆锋", age: 28 });
+          },
+          // 数组使用 splice 可以更新视图,为什么?
+          // 因为vue底层对以下方法进行了重写
+          // push()
+          // pop()
+          // shift()
+          // unshift()
+          // splice()
+          // sort()
+          // reverse()
+        },
+      });
+    </script>
+  </body>
+</html>
