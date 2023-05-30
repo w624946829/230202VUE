@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      // 数组使用 splice 可以更新视图,为什么?
+      // 因为vue底层对以下方法进行了重写
+      // push()
+      // pop()
+      // shift()
+      // unshift()
+      // splice()
+      // sort()
+      // reverse()
+
+      // push方法
+      //   push方法试讲制定的匀速添加到数组的末尾，并且返回新的数组长度
+      //   const animals = ["pigs", "goats", "sheep"];
+
+      //   const count = animals.push("cows");
+      //   console.log(count);
+      //   // Expected output: 4
+      //   console.log(animals);
+      //   // Expected output: Array ["pigs", "goats", "sheep", "cows"]
+
+      //   animals.push("chickens", "cats", "dogs");
+      //   console.log(animals);
+      //   // Expected output: Array ["pigs", "goats", "sheep", "cows", "chickens", "cats", "dogs"]
+
+      // pop()方法
+      // pop() 方法从数组中删除最后一个元素，并返回该元素的值。此方法会更改数组的长度。
+      //   const plants = ["broccoli", "cauliflower", "cabbage", "kale", "tomato"];
+
+      //   console.log(plants.pop());
+      //   // Expected output: "tomato"
+
+      //   console.log(plants);
+      //   // Expected output: Array ["broccoli", "cauliflower", "cabbage", "kale"]
+
+      //   plants.pop();
+
+      //   console.log(plants);
+      //   // Expected output: Array ["broccoli", "cauliflower", "cabbage"]
+
+      // shift()方法
+      // shift() 方法从数组中删除第一个元素，并返回该元素的值。此方法更改数组的长度。
+      //   const array1 = [1, 2, 3];
+
+      //   const firstElement = array1.shift();
+
+      //   console.log(array1);
+      //   // Expected output: Array [2, 3]
+
+      //   console.log(firstElement);
+      //   // Expected output: 1
+
+      // unshift()方法
+      // unshift() 方法将指定元素添加到数组的开头，并返回数组的新长度。
+      //   const array1 = [1, 2, 3];
+
+      //   console.log(array1.unshift(4, 5));
+      //   // Expected output: 5
+
+      //   console.log(array1);
+      //   // Expected output: Array [4, 5, 1, 2, 3]
+
+      // splice()方法
+      // splice() 方法通过移除或者替换已存在的元素和/或添加新元素就地改变一个数组的内容。
+      //   const months = ["Jan", "March", "April", "June"];
+      //   months.splice(1, 0, "Feb");//0为不删除原值
+      //   // Inserts at index 1
+      //   console.log(months);
+      //   // Expected output: Array ["Jan", "Feb", "March", "April", "June"]
+
+      //   months.splice(4, 1, "May");//1为删除原值
+      //   // Replaces 1 element at index 4
+      //   console.log(months);
+      //   // Expected output: Array ["Jan", "Feb", "March", "April", "May"]
+
+      // sort方法
+      // sort() 方法就地对数组的元素进行排序，并返回对相同数组的引用。默认排序是将元素转换为字符串，然后按照它们的 UTF-16 码元值升序排序。
+      //   const months = ["March", "Jan", "Feb", "Dec"];
+      //   months.sort();
+      //   console.log(months);
+      //   // Expected output: Array ["Dec", "Feb", "Jan", "March"]
+
+      //   const array1 = [1, 30, 4, 21, 100000];
+      //   array1.sort();
+      //   console.log(array1);
+      //   // Expected output: Array [1, 100000, 21, 30, 4]
+
+      // reverse方法
+      // reverse() 方法就地反转数组中的元素，并返回同一数组的引用。数组的第一个元素会变成最后一个，数组的最后一个元素变成第一个。换句话说，数组中的元素顺序将被翻转，变为与之前相反的方向。
+      const array1 = ["one", "two", "three"];
+      console.log("array1:", array1);
+      // Expected output: "array1:" Array ["one", "two", "three"]
+
+      const reversed = array1.reverse();
+      console.log("reversed:", reversed);
+      // Expected output: "reversed:" Array ["three", "two", "one"]
+
+      // Careful: reverse is destructive -- it changes the original array.
+      console.log("array1:", array1);
+      // Expected output: "array1:" Array ["three", "two", "one"]
+    </script>
+  </body>
+</html>

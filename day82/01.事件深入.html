@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Document</title>
+    <script src="./js/vue.js"></script>
+  </head>
+  <body>
+    <!-- 
+        事件回调的参数
+        1、事件回调在没有传参的时候，默认会有一个参数e，这个e是事件对象，vue底层传过来的
+        2、自己传一个参数
+           在绑定事件的时候加小括号，小括号内进行传递的参数
+        3、现在既想要时间对象，有想要自己传递低参数
+        $event是事件对象，在模板中使用，而且在模板中想拿到这个时间对象只能写￥event，换个单词都不行
+        在模板中$event就是事件对象
+
+        问：点击a标签的时候如何阻止跳转
+        @click.prevent修饰符 阻止事件的默认行为
+        @click.stop 修饰符，阻止冒泡行为
+        -------------
+        @click.capture 将当前绑定的事件转为捕获事件
+        @click.self 只能由自己触发该元素的事件，冒泡上来也触发不了
+        @click.once 事件只能触发一次
+        @mousewheel.passive
+            正常情况下，滚轮事件是一个频繁触发的事件
+            如果回调中有耗时操作的话，会执行完第一次回调的耗时操作后，再去滚动页面，每次滚动都是如此
+            这样的话会造成页面的卡顿
+            当使用 .passive修饰符的时候，会先滚动页面再去执行耗时操作，防止页面的卡顿
+     -->
+    <div id="app">
+      <button @click="clickHandler">按钮</button>
+      <button @click="clickHandler('我爱你')">按钮2</button>
+      <button @click="clickHandler(msg)">按钮2</button>
+      <br />
+      <button @click="clickHandler($event,'搞搞噶')">按钮3</button>
+      <a href="http://www.baidu.com" @click.prevent = "tobaidu"></a>
+    </div>
+
+    <script>
+      let vm = new Vue({
+        el: "#app",
+        data: {
+          msg: "你是一个好人",
+        },
+        methods: {
+          clickHandler(e, arg) {
+            console.log(e, arg);
+          },
+        },
+      });
+    </script>
+  </body>
+</html>
