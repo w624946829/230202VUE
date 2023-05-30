@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="./js/vue.js"></script>
+  </head>
+  <body>
+    <!-- 
+        vue中生命周期钩子函数分为4大类
+        创建、挂载、更新、销毁    //合计共有8个，每一类分别有前后两个钩子
+        （vue全部钩子是12个，剩下4个不常用）
+        创建前访问不到数据，
+        创建后是可以访问到数据的
+        挂载前获取不到页面DOM的
+        挂载后可以获取到页面的DOM
+        更新前和更新后指的是DOM的更新（数据发生变化之后才会引起 更新前后的钩子执行）
+
+        什么时候会触发销毁
+        1.vm.$destroy()
+        2.组件使用v-if隐藏的时候，会触发组件的销毁
+        一般在销毁前beforeDestroy进行事件的解绑，removeEventListener
+     -->
+    <div id="app">
+
+    </div>
+    <script>
+      let vm = new Vue({
+        el: "#app",
+        data: {
+            beforeCreate(){
+                console.log('创建前');
+            },
+            created(){
+                console.log('创建后');
+            },
+
+            // DOM的挂载
+            beforeMount(){
+                console.log('挂载前');
+            },
+            mounted(){
+                console.log('挂载后');
+            },
+
+            // 页面更新
+            beforeUpdate(){
+                console.log('更新前');
+            },
+            updated(){
+                console.log('更新后');
+            },
+            
+            //
+            beforeDestroy(){
+                console.log('销毁前')
+            },
+            destroyed(){
+                console.log('销毁后');
+            }
+
+
+        },
+      });
+    </script>
+  </body>
+</html>

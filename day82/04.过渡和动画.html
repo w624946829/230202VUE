@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="./js/vue.js"></script>
+  </head>
+  <body>
+    <!-- 
+        过渡
+        过渡盒子的透明度
+        1、把需要过渡的元素放到 transition 标签中
+        2、书写过渡的类名
+        3、控制这个元素的显示和隐藏
+        4、当页面中有多个过渡效果时，此时不希望过渡的效果走一套css，给transition标签添加name属性
+
+
+        动画：
+        animation
+     -->
+<style>
+    .box{
+        position: absolute;
+        left:500px;
+        width: 100px;
+        height: 100px;
+        background-color: hotpink;
+    }
+    .wrapper{
+        width:150px;
+        height: 150px;
+        background-color: skyblue;
+    }
+    .v-enter{
+        opacity: 0;
+        height: 0;
+    }
+    .v-enter-to{
+        opacity: 1;
+        height: 100px;
+    }
+    .v-enter-active{
+        transition:2s all;
+        animation: move 2s linear;
+    }
+    @keyframes move{
+        form{
+            left:0;
+        }
+        to{
+            left:500px;
+        }
+    }
+
+    .v-leave{
+        opacity: 1;
+        height:100px;
+
+    }
+    .v-leave-to{
+        opacity: 0;
+        height: 0;
+    }
+    .v-leave-action {
+        transition:2s all;
+        animation: move 2s reverse;
+    }
+
+        /* css中那些属性可以过渡?
+        css中连续不断地值可以过渡(例如:宽高,位置,颜色) ,display不能过度 */
+   
+    .abc-enter{
+        opacity: 0;
+        height:0;
+    }
+    .abc-enter-to{
+        opacity:1;
+        height: 150px;
+    }
+    .abc-enter-active{
+        transition:5s all;
+    }
+    .abc-leave{
+        opacity:1;
+        height:150px;
+    }
+    .abc-leave-to{
+        opacity: 0;
+        height: 0;
+    }
+    .abc-leave-active{
+        transition:5s all;
+    }
+</style>
+    <button @click = "isShow = !isShow">切换显示/隐藏</button>    
+
+    <transition>
+        <div class = 'box' v-if = "isShow"></div>
+    </transition>
+    <hr>
+    <div>
+        一大堆标签
+    </div>
+
+    <div id="app"></div>
+    <script>
+      let vm = new Vue({
+        el: "#app",
+        data: {
+            isShow:true
+        },
+      });
+    </script>
+  </body>
+</html>
