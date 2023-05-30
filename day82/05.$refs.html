@@ -13,11 +13,19 @@
         1.给标签绑定ref属性，属性值自己随便起
         2、在js中通过this，$refs.属性值 访问DOM元素
      -->
-    <div id="app"></div>
+    <div id="app">
+        <div ref="qwerRef">我爱你</div>
+        <button @click = "clickHandler">获取div这个元素</button>
+    </div>
     <script>
       let vm = new Vue({
         el: "#app",
         data: {},
+        methods:{
+            clickHandler(){
+                console.log('点击了按钮',this.$refs.qwerRef);
+            }
+        },
       });
     </script>
   </body>

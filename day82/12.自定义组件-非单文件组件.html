@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="./js/vue.js"></script>
+  </head>
+  <body>
+    <!-- 
+        什么是组件？
+        用html、css、js组成的代码块，组成的目的为了复用
+        组件的分类：
+        非单文件组成 - 一个文件不是一个组件
+        单文件组件 - 一个文件不是一个组件
+        组件的步骤
+        1、定义组件
+        2、注册组件
+        3、使用组件
+
+     -->
+    <div id="app">
+      <div @click="count++">我爱你</div>
+      <div>爱了{{count}}次</div>
+
+      <br /><br /><br />
+
+      <div @click="count++">我爱你</div>
+      <div>爱了{{count}}次</div>
+
+      <br /><br /><br />
+
+      <!-- 
+        3.使用组件
+        直接在模板中写 组件标签即可
+     -->
+      <mycomp></mycomp>
+      <mycomp></mycomp>
+      <hr />
+
+      <mybutton></mybutton>
+
+      <hr />
+
+      <mydiv></mydiv>
+
+    </div>
+    <script>
+      /*
+            1、定义组件
+            使用Vue.extend 创建一个组件，传入一个配置对象
+            这个配置对象的写法和new Vue传入的配置对象一模一样，唯独不能写el配置（规定）
+            返回值：是一个函数 VueComponent 函数，为什么是函数
+                组件在使用的时候，本质上是new了一个组件实例，但是我们不自己new，让vue帮我们new
+
+                在模板中使用，组件标签的时候，会new一个组件
+        */
+      let myComponent = Vue.extend({
+        /*
+        注意：
+        data配置项必须是函数返回值的形式，否则会报错，为什么呢
+        因为每个组件使用的函数必须是独立的，所以使用函数返回值的形式
+        如果使用对象形式的话，所有的组件都会用一套数据
+        data:{
+            count :5
+        },
+        */
+        data() {
+          return {
+            count: 5,
+          };
+        },
+
+        //配置组件的html，配置组件的模板
+        //    注意：组件必须有一根标签（规定）
+        template: `
+    <div style="border:1px solid #333;">
+        <div @click = "count++">我爱你</div>
+        <div>爱了{{count}}</div>
+     </div>
+    `,
+      });
+      console.log("自定义的组件", myComponent);
+
+      //2.注册组件（全局注册）
+      //    为了告诉vue，这里有一个叫mycomp 的组件
+      Vue.component("mycomp", myComponent);
+
+      //这里我们的步骤分为三步：定义组件，注册组件，使用组件
+      // 这里第一部和第二步可以合并
+      Vue.component("mybutton", {
+        data() {
+          return {
+            count: 7,
+          };
+        },
+        template: `
+        <div style="border:1px solid #333;">
+        <div @click = "count++">我爱你</div>
+        <div>爱了{{count}}</div>
+     </div>
+        `,
+      });
+
+      new Vue({
+        el: "#app",
+        data: {
+          count: 2,
+        },
+        components: {
+          mydiv: {
+            data() {
+              return {
+                count: 7,
+              };
+            },
+            template: `
+                <div style="border:1px solid #333;">
+        <div @click = "count++">我爱你</div>
+        <div>爱了{{count}}</div>
+     </div>
+     `,
+          },
+        },
+      });
+    </script>
+  </body>
+</html>

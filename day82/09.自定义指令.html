@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="./js/vue.js"></script>
+  </head>
+  <body>
+    <!-- 
+        自定义指令
+            自己去定义执行，去书写指令的逻辑
+        需求：
+            自定义指令 - 将所有字符转成大写（局部注册）
+            自定义指令 - 将所有字符转成小写（全局注册）
+     -->
+    <div id="app">
+      <div v-text="msg"></div>
+      <div v-lower="msg"></div>
+      <div v-upper="msg"></div>
+      <div v-qwer="msg"></div>
+    </div>
+    <script>
+      /**
+         * 注意：
+            这里的自定义指令中，配置的都是函数
+            函数都是简写（简写满足需求）
+         *  全写 - 对象形式
+         * 简写 的函数形式相当于全写对象形式中bind和update的合计
+         * 
+         * 
+        */
+      //
+      Vue.directive("upper", (el, binding) => {
+        el.innerText = binding.value.toUpperVase();
+      });
+      let vm = new Vue({
+        el: "#app",
+        data: {
+          msg: "jkgbvjkgFVYIJFKU",
+        },
+        directives: {
+          //将所有的文本转为小写
+          lower(el, binding) {
+            // el代表当前绑定指令的元素
+            // binding绑定的相关内容
+           
+            //         "name": "lower",   --> 指令名
+            // "rawName": "v-lower",  --> 指令全名
+            // "value": "I Love You", --> 指令绑定的值 ------------
+            // "expression": "msg",  --> 指令绑定的表达式
+            // "modifiers": {},
+            // "def": {}
+            
+            el.innerText = binding.value.toLowerCase();
+          },
+        },
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+     <meta charset="UTF-8">
+     <meta http-equiv="X-UA-Compatible" content="IE=edge">
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <title>Document</title>
+     <script src="./js/vue.js"></script>
+</head>
+<body>
+     <!-- 
+          自定义过滤器
+               是用来格式化文本使用的
+          在哪用？
+               在插值语法和v-bind 指令中使用
+          步骤
+               1、定义过滤器
+               2、使用|来使用过滤器
+
+          需求
+          对所有要显示的数值加上10（局部注册）
+          对所有要显示的数值减上10（全局注册）
+
+      -->
+     <div id="app">
+          <div>count:{{ count }}</div>
+          <div>count:{{count | addTen}}</div>
+          <div>count:{{ count | addTen|addTen }}</div>
+          <hr>
+          <div>count:{{count | subTen}}</div>
+     </div>
+     <script>
+          Vue.filter('subTen',(arg)=>{
+               return arg - 10
+          })
+         let vm = new Vue({
+         el: '#app',
+         data: {
+          count :7
+          },
+          //局部注册
+          filters:{
+               //配置过滤器（配个函数）
+               addTen(arg){
+                    return arg +10
+               }
+          }
+         })
+     </script>
+</body>
+</html>

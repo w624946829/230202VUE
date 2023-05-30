@@ -12,10 +12,13 @@
         vue中生命周期钩子函数分为4大类
         创建、挂载、更新、销毁    //合计共有8个，每一类分别有前后两个钩子
         （vue全部钩子是12个，剩下4个不常用）
+
         创建前访问不到数据，
         创建后是可以访问到数据的
+
         挂载前获取不到页面DOM的
-        挂载后可以获取到页面的DOM
+        挂载后可以获取到页面的DOM（一般发请求和消息订阅都在这个钩子中）
+        
         更新前和更新后指的是DOM的更新（数据发生变化之后才会引起 更新前后的钩子执行）
 
         什么时候会触发销毁
@@ -30,27 +33,34 @@
       let vm = new Vue({
         el: "#app",
         data: {
+          msg:'我爱你',
+          isShow:false
+        },
             beforeCreate(){
-                console.log('创建前');
+                console.log('创建前',this.msg);
             },
             created(){
-                console.log('创建后');
+                console.log('创建后',this.msg);
             },
 
             // DOM的挂载
             beforeMount(){
-                console.log('挂载前');
+                console.log('挂载前',this.$refs.qwerRef);
             },
             mounted(){
-                console.log('挂载后');
-            },
+                console.log('挂载后',this.$refs.qwerRef);
+           //挂载完毕之后，代表DOM已经加载完成了
+           setTimeout(()=>{
+            this.isShow = true;
+           },2000)
+              },
 
             // 页面更新
             beforeUpdate(){
-                console.log('更新前');
+                console.log('更新前',this.$refs.qwerRef);
             },
             updated(){
-                console.log('更新后');
+                console.log('更新后',this.$refs.qwerRef);
             },
             
             //
@@ -62,7 +72,7 @@
             }
 
 
-        },
+        
       });
     </script>
   </body>

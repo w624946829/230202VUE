@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+     <meta charset="UTF-8">
+     <meta http-equiv="X-UA-Compatible" content="IE=edge">
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <title>Document</title>
+     <script src="./js/vue.js"></script>
+     <script src="https://cdn.bootcdn.net/ajax/libs/moment.js/2.29.4/moment.js"></script>
+</head>
+<body>
+     <div id="app">
+        <div>假设后端返回的数据就是这个时间戳：{{ time }}</div>
+        <div>日期和时间{{ time| formatDateTime}}</div>
+        <div>日期{{ time| formatDate}}</div>
+        <div>时间{{ time| formatTime}}</div>
+     </div>
+     <script>
+        // Vue.filter('formatDateTime',(arg)=>{
+        //     let datetime = new Date(arg)
+        //     let Y = datetime.getFullYear();
+        //     let M = datetime.getMonth() +1;//转月份的时候+1
+        //     let D = datetime.getDate();
+        //     let h = datetime.getHours();
+        //     let m = datetime.getMinutes();
+        //     let s = datetime.getSeconds();
+        //     return `${Y}-${M<10 ? '0'+M:M}-${D} ${h}:${m}:${s}`
+        // })
+
+        // 使用插件
+        // 格式化日期和事件
+        Vue.filter('formatDateTime',arg=>{
+            return moment(arg).format('YYYY-MM-DD HH:mm:ss')
+        })
+        Vue.filter('formatDate',arg=>{
+            return moment(arg).format('YYYY-MM-DD')
+        })
+        Vue.filter('formatTime',arg=>{
+            return moment(arg).format('hh:mm:ss')
+        })
+
+
+
+
+         let vm = new Vue({
+         el: '#app',
+         data: {
+            time:Date.now(),
+            // time:new Date().getTime(),
+          }
+         })
+     </script>
+</body>
+</html>

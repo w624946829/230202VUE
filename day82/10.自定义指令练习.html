@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title></title>
+  <script src="./js/vue.js"></script>
+</head>
+<body>
+  <!--
+    需求: 2秒中之内只能点击一次按钮
+  -->
+  <div id="app">
+    <button v-norepaet="3000" @click="clickHandler">提交</button>
+
+
+    <button v-norepaet @click="clickHandler2">提交2</button>
+  </div>
+  <script>
+
+    Vue.directive('norepaet', (el, binding) => {
+
+      let time = binding.value || 2000
+      // 这里不能用 onclick 事件,为甚?
+      // onclick是DOM0事件,会覆盖
+      // addEventListener 是DOM2事件,可以多次绑定
+      el.addEventListener('click', () => {
+        el.disabled = true
+        setTimeout(() => {
+          el.disabled = false
+        }, time)
+      })
+
+    })
+
+    new Vue({
+      el: "#app",
+      data: {
+
+      },
+      methods: {
+        clickHandler() {
+          console.log('点击提交,发送网络请求')
+        },
+        clickHandler2() {
+          console.log('点击提交,发送网络请求')
+        }
+      }
+    })
+  </script>
+</body>
+</html>

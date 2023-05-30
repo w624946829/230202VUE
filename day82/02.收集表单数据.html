@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="./js/vue.js"></script>
+  </head>
+  <body>
+    <div id="app">
+      <form>
+        <label> 用户名：<input type="text" v-model="username" /> </label>
+        <br />
+        <label> 密码：<input type="password" v-model="password" /> </label>
+        <br />
+        <label> 邮箱：<input type="email" v-model="email" /> </label>
+        <br />
+        <label>
+          性别：
+          <!-- name属性是为了把radio绑成一组 -->
+          <input type="radio" name="sex" v-model="sex" value="1" /> 男
+          <input type="radio" name="sex" v-model="sex" value="0" /> 女
+        </label>
+        <br />
+        <label>
+          爱好：
+          <!-- 
+                            name属性是为了把checkbox绑成一组
+                            注意：checkbox是一组的情况下需要用数组手机
+                         -->
+          <input type="checkbox" name="hobby" v-model="hobby" value="1" />抽烟
+          <input type="checkbox" name="hobby" v-model="hobby" value="2" />喝酒
+          <input type="checkbox" name="hobby" v-model="hobby" value="3" />烫头
+        </label>
+        <br />
+        <label>
+          城市：
+          <!-- select收集的是option的value值-->
+          <select v-model="city">
+            <option v-for="item in citys" :key="item.id" :value="item.id">
+              {{item.city}}
+            </option>
+          </select>
+        </label>
+        <br />
+        <label>
+          <!-- 单个checkbox收集的是一个布尔值 -->
+          <input type="checkbox" v-model="isAgree" />
+          是够同意该协议
+        </label>
+        <br />
+        <input type="submit" @click.prevent="submitHandler" />
+      </form>
+    </div>
+    <script>
+      let vm = new Vue({
+        el: "#app",
+        data: {
+          username: "",
+          password: "",
+          email: "",
+          sex: "",
+          hobby: [],
+          city: "",
+          isAgree: false,
+          citys: [
+            { id: 1001, city: "北京" },
+            { id: 1002, city: "上海" },
+            { id: 1003, city: "河南" },
+            { id: 1004, city: "河北" },
+          ],
+        },
+        methods: {
+          submitHandler() {
+            //验证收集的数据对不对
+            const { username, password, email, sex, hobby, city, isAgree } =this;
+
+            if (
+              !(
+                username &&
+                password &&
+                email &&
+                sex &&
+                hobby.length &&
+                city &&
+                isAgree
+              )
+            ) {
+              alert("请输入完整信息");
+              return;
+            }
+          },
+        },
+      });
+    </script>
+  </body>
+</html>

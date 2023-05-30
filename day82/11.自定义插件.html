@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+     <meta charset="UTF-8">
+     <meta http-equiv="X-UA-Compatible" content="IE=edge">
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <title>Document</title>
+     <script src="./js/vue.js"></script>
+     <script src="./11.js"></script>
+</head>
+<body>
+     <div id="app">
+        <!-- 对应全局资源 -->
+        <div v-my-directive></div>
+     </div>
+     <script>
+        /*
+        use方法
+        功能：Vue使用插件，本质上实在调用从插件install方法
+        参数一：插件名称
+        参数二：传入插件install方法的选项（传到install方法的参数二上面了）
+                                        install 方法的参数一是vue自己传入的
+
+        
+        */ 
+    //    传入的是vue构造函数,,使用的第一步
+    Vue.use(MyPlugin,'我爱你')
+    //调用插件的方法
+    Vue.myGlobalMethod();
+
+         let vm = new Vue({
+         el: '#app',
+         data: {
+          
+          }
+         });
+        // 实例方法的调用
+         vm.$myMethod()
+     </script>
+</body>
+</html>
