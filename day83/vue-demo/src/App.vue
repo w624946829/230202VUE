@@ -1,25 +1,37 @@
-
 <template>
-    <div>
-        <h2>App根组件</h2>
-        <hr />
-        <mybutton></mybutton>
+    <div class="todo-container">
+        <div class="todo-wrap">
+            <Header></Header>
+            <Main></Main>
+            <Footer></Footer>
+        </div>
     </div>
 </template>
 
 <script>
-//App.vue 组件作为整个页面的根组件，所有的内容都写在App.vue中
+import Header from "@/component/Header";
+import Main from "@/component/Main";
+import Footer from "@/component/Footer";
 
-import mybutton from "./component/mybutton.vue";
-// 引入这个mybutton是一个配置项，由.vue文件export default默认暴露的一个对象
 export default {
-    name: "",
-    //局部注册
+    name: "App",
     components: {
-        mybutton:mybutton,
+        Header,
+        Main,
+        Footer,
     },
 };
 </script>
 
 <style scoped>
+/*app*/
+.todo-container {
+    width: 600px;
+    margin: 0 auto;
+}
+.todo-container .todo-wrap {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
 </style>
