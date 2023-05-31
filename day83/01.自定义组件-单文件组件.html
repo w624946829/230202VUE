@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="./js/vue.js"></script>
+  </head>
+  <body>
+    <!-- 
+        单文件组件：一个文件(.vue文件)就是一个组件
+        .vue文件需要插件vetur支持，
+
+        单文件组件使用步骤也是3步
+        1、定义组件-创建一个.vue文件就是定义组件
+        2、注册组件-局部注册
+                    在其他文件中引入当前组件，在components配置项中注册侧
+        3、使用组件 - 在模板中使用即可
+        注意：
+        1、组件一般放在components目录中
+        2、App.vue的使用有两种写法
+     -->
+    <div id="app">
+      <App />
+    </div>
+    <script type="module">
+      //这里的语法已经完成,但是无法展示
+      // 原因：
+      // 1、不认识import  语法（因为是ES6的语法）
+      //      给script标签价type="moudle"属性，此时script标签就可以识别ES6语法
+      // 2、不认识.vue文件
+      //      添加叫暑假工具，将.vue文件转成js文件
+      import App from "./App.vue";
+      new Vue({
+        el: "#app",
+        data: {},
+        components: {
+          App,
+        },
+      });
+    </script>
+  </body>
+</html>
