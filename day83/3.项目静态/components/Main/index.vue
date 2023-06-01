@@ -1,27 +1,25 @@
 <template>
     <ul class="todo-main">
         <Item
-        v-for="(item,index) in todos"
-        :key="index"
-        :todo="item"
+            v-for="(item, index) in todos"
+            :key="index"
+            :todo="item"
         ></Item>
-      
     </ul>
 </template>
 
 <script>
-import Item from '../Item'
+import Item from '../Item/index.vue'
 export default {
     name: "Main",
-    components:{
+    components: {
         Item
     },
-    props:["todos"]
+    props: ["todos"]
 };
 </script>
 
-<style>
-/*main*/
+<style scoped>
 .todo-main {
     margin-left: 0px;
     border: 1px solid #ddd;

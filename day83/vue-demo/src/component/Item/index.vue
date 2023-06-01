@@ -1,8 +1,8 @@
 <template>
   <li>
             <label>
-                <input type="checkbox" />
-                <span>xxxxx</span>
+                <input type="checkbox" :checked="todo.isSel"/>
+                <span>{{ todo.content }}</span>
             </label>
             <button class="btn btn-danger" style="display: none">删除</button>
         </li>
@@ -10,7 +10,10 @@
 
 <script>
 export default {
-    name:"Item"
+    name:"Item",
+    props:{
+      todo:Object
+    }
 }
 </script>
 
