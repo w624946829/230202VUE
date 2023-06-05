@@ -1,11 +1,11 @@
-import Vue from 'vue'
-import Vuex from 'vuex'
+import Vue from 'vue';
+import Vuex from 'vuex';
 Vue.use(Vuex)
 
 export default new Vuex.Store({
     state:{
         count:5,
-        message:'我爱你' 
+        message:'我爱你'
     },
     mutations:{
         ADD(state){
@@ -17,6 +17,7 @@ export default new Vuex.Store({
         CHANGMSG(state,str1){
             state.message += str1
         }
+
     },
     actions:{
         increment(ministore){
@@ -26,7 +27,7 @@ export default new Vuex.Store({
             commit('SUB')
         },
         isEvenIncrement({commit,state}){
-            if(state.count %2== 0){
+            if(state.count %2 == 0){
                 commit('ADD')
             }
         },
@@ -38,12 +39,11 @@ export default new Vuex.Store({
         changeMsg({commit},str1){
             commit('CHANGMSG',str1)
         }
-        
     },
     getters:{
         tenflodCount(state){
             return state.count * 10
         }
-    },
-})
 
+    }
+})

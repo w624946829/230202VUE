@@ -1,11 +1,18 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 Vue.use(Vuex)
+import mybutton from './modules/mybutton'
 
 export default new Vuex.Store({
+    //这个一个对象，对象中放模块
+    modules:{
+        mybutton
+    },
+
     state:{
         count:5,
-        message:'我爱你' 
+        
+        msg:'我爱你' 
     },
     mutations:{
         ADD(state){
@@ -14,8 +21,8 @@ export default new Vuex.Store({
         SUB(state){
             state.count --
         },
-        CHANGMSG(state,str1){
-            state.message += str1
+        CHANGMSG(state,str){
+            state.msg += str
         }
     },
     actions:{
@@ -35,8 +42,8 @@ export default new Vuex.Store({
                 commit('ADD')
             },2000)
         },
-        changeMsg({commit},str1){
-            commit('CHANGMSG',str1)
+        changeMsg({commit},str){
+            commit('CHANGMSG',str)
         }
         
     },

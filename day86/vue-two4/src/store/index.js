@@ -5,7 +5,7 @@ Vue.use(Vuex)
 export default new Vuex.Store({
     state:{
         count:5,
-        message:'我爱你' 
+        msg:'我爱你' 
     },
     mutations:{
         ADD(state){
@@ -14,8 +14,8 @@ export default new Vuex.Store({
         SUB(state){
             state.count --
         },
-        CHANGMSG(state,str1){
-            state.message += str1
+        CHANGMSG(state,str){
+            state.msg += str
         }
     },
     actions:{
@@ -35,8 +35,8 @@ export default new Vuex.Store({
                 commit('ADD')
             },2000)
         },
-        changeMsg({commit},str1){
-            commit('CHANGMSG',str1)
+        changeMsg({commit},str){
+            commit('CHANGMSG',str)
         }
         
     },
