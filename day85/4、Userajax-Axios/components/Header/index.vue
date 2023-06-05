@@ -2,7 +2,11 @@
     <section class="jumbotron">
         <h3 class="jumbotron-heading">Search Github Users</h3>
         <div>
-            <input type="text" placeholder="enter the name you search" v-model="keyword"/>
+            <input
+                type="text"
+                placeholder="enter the name you search"
+                v-model="keyword"
+            />
             <button @click="btnHandler">Search</button>
         </div>
     </section>
@@ -13,17 +17,16 @@ export default {
     name: "Header",
     data() {
         return {
-            keyword: ''
-        }
+            keyword: "",
+        };
     },
     methods: {
         btnHandler() {
-            this.$bus.$emit('reciveKeyword', this.keyword)
-        }
-    }
-}
+            this.$bus.$emit("reciveKeyword", this.keyword);
+        },
+    },
+};
 </script>
 
 <style scoped>
-
 </style>
