@@ -1,47 +1,28 @@
 <template>
     <div class="container">
+        
+    
+
         <!-- 
-            第三版：
-            目前，如果我们的数据多增加一个平台的话，那么必须要去修改userinfo这个组件
-            解决方式
-            把userinfo里面的可变内容通过插槽的形式传入进去即可
-
-            作用于插槽
-            v-if = “item.accountJoin.wechat”
-            变成
-            v-if = "accountJoin.wechat"
-            少一层item
-            
-            发现：有组件嵌套组件的现象
-            
-
+            1.5版本：把循环的列表封装成一个组件
+        直接把循环list的div黏贴到组件中，发现v-for卸载跟标签上，会报错
+        必须只有一个跟标签，循环就有多个了，所以报错
+        循环的代码还放在外部，把循环出来的item传给组件
          -->
-
         <Userinfo
-            v-for="item in userlist"
-            :key="item.id"
-            :item="item"
-            #default="{ accountJoin }"
-        >
-            <UWechat v-if="accountJoin.wechat" :item="item"></UWechat>
-            <UQQ v-if="accountJoin.qq" :item="item"></UQQ>
-            <USina v-if="accountJoin.sina" :item="item"></USina>
-        </Userinfo>
+         v-for="item in userlist" :key="item.id" :item="item"
+        ></Userinfo>
+        
     </div>
 </template>
 
 <script>
-import Userinfo from "@/components/Userinfo";
-import UQQ from "@/components/support/UQQ.vue";
-import USina from "@/components/support/USina.vue";
-import UWechat from "@/components/support/UWechat.vue";
+import Userinfo from "@/components/Userinfo"
+
 export default {
     name: "App",
     components: {
-        UQQ,
-        USina,
-        UWechat,
-        Userinfo,
+        Userinfo
     },
     data() {
         return {
@@ -77,6 +58,7 @@ export default {
                     },
                     createDate: 1645144446523,
                 },
+                
             ],
         };
     },

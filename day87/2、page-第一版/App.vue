@@ -1,47 +1,26 @@
 <template>
     <div class="container">
-        <!-- 
-            第三版：
-            目前，如果我们的数据多增加一个平台的话，那么必须要去修改userinfo这个组件
-            解决方式
-            把userinfo里面的可变内容通过插槽的形式传入进去即可
-
-            作用于插槽
-            v-if = “item.accountJoin.wechat”
-            变成
-            v-if = "accountJoin.wechat"
-            少一层item
-            
-            发现：有组件嵌套组件的现象
-            
-
-         -->
-
-        <Userinfo
-            v-for="item in userlist"
-            :key="item.id"
-            :item="item"
-            #default="{ accountJoin }"
-        >
-            <UWechat v-if="accountJoin.wechat" :item="item"></UWechat>
-            <UQQ v-if="accountJoin.qq" :item="item"></UQQ>
-            <USina v-if="accountJoin.sina" :item="item"></USina>
-        </Userinfo>
+        <!-- 版本1：正常封装组件 -->
+        <div class="item" v-for="item in userlist" :key="item.id">
+            <div class="username">用户名：{{ item.username }}</div>
+            <div class="intro">个人介绍：{{ item.intro }}</div>
+            <UWechat :item="item"></UWechat>
+            <UQQ :item="item"></UQQ>
+            <USina :item="item"></USina>
+        </div>
     </div>
 </template>
 
 <script>
-import Userinfo from "@/components/Userinfo";
-import UQQ from "@/components/support/UQQ.vue";
-import USina from "@/components/support/USina.vue";
-import UWechat from "@/components/support/UWechat.vue";
+import UQQ from "./components/support/UQQ.vue";
+import USina from "./components/support/USina.vue";
+import UWechat from "./components/support/UWechat.vue";
 export default {
     name: "App",
     components: {
         UQQ,
         USina,
         UWechat,
-        Userinfo,
     },
     data() {
         return {
