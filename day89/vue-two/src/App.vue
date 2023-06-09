@@ -2,7 +2,7 @@
     <div class="container">
         <h4>App组件</h4>
         <hr>
-
+        <div>bababab</div>
         <!-- <MyHtml></MyHtml>
         <MyAtt></MyAtt>
         <MyEvent></MyEvent> -->
