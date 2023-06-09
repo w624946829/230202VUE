@@ -1,5 +1,5 @@
 <template>
-    <div role="tabpanel" class="tab-panel active" id="home">
+    <div role="tabpanel" class="tab-pane active" id="home">
         <!-- Nav tabs -->
         <ul class="nav nav-tabs" role="tablist">
             <li role="presentation" class="active">
@@ -8,8 +8,7 @@
                     aria-controls="Message"
                     role="tab"
                     data-toggle="tab"
-                    >Message</router-link
-                >
+                >Message</router-link>
             </li>
             <li role="presentation">
                 <router-link
@@ -17,8 +16,7 @@
                     aria-controls="News"
                     role="tab"
                     data-toggle="tab"
-                    >News</router-link
-                >
+                >News</router-link>
             </li>
         </ul>
         <!-- Tab panes -->
@@ -34,5 +32,4 @@ export default {
 };
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>
