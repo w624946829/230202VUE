@@ -1,16 +1,40 @@
 <template>
-  <h1>我是home组件</h1>
+    <div>
+      
+        <!-- 三级导航 -->
+        <TypeNav></TypeNav>
+        <!-- 商品分类导航 -->
+        <ListContainer></ListContainer>
+        <!-- 今日推荐 -->
+		<Recommend/>
+		<!-- 商品排行 -->
+		<Rank/>
+		<!-- 喜欢 -->
+		<Like/>
+		<!-- 楼层 -->
+		<Floor/>
+		<Floor/>
+		<!-- 商标 -->
+		<Brand/>
+    </div>
 </template>
 
 <script>
-  export default {
-    name:'Home'
-  }
+import TypeNav from "./TypeNav";
+import ListContainer from "./ListContainer";
+import Recommend from './Recommend'
+	import Rank from './Rank'
+	import Like from './Like'
+	import Floor from './Floor'
+	import Brand from './Brand'
+
+
+export default {
+    name: "Home",
+    components:{ListContainer,Recommend,Rank,Like,Floor,Brand,TypeNav},
+};
 </script>
 
 <style lang="less" scoped>
-  h1{
-    background-color: hotpink;
-    height: 300px;
-  }
+
 </style>

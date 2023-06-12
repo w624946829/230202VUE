@@ -5,7 +5,7 @@ import nprogress from "nprogress";
 import 'nprogress/nprogress.css'
 
 const ajax = axios.create({
-  baseURL: "/sph", //请求基本路径
+  baseURL: "/api", //请求基本路径
   timeout: 5000, //超时时间
 });
 

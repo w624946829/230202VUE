@@ -3,4 +3,4 @@
 
 */ 
 import ajax from './ajax'
-export const reqCategoryList =  ()=>ajax.get('/api/product/getBaseCategoryList')
+export const reqCategoryList =  ()=>ajax.get('/product/getBaseCategoryList')
