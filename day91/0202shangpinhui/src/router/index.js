@@ -39,14 +39,17 @@ Vue.use(VueRouter);
         {
             path: '/home',
             component:Home,
+            // meta:{}//路由的元信息（路由规则的自定义数据）
         },
         {
             path: '/login',
             component:Login,
+            meta:{isHideFooter:true}
         },
         {
             path: '/register',
             component:Register,
+            meta:{isHideFooter:true}
         },
         {
             path: '/search',

@@ -8,9 +8,9 @@
 -->
 <template>
     <div>
-        <Header></Header>
+        <Header />
       <router-view></router-view>
-      <Footer></Footer>
+      <Footer v-if="!$route.meta.isHideFooter"/>
     </div>
   
 </template>
