@@ -5,6 +5,10 @@ import Login from '@/pages/Login'
 import Register from '@/pages/Register'
 import Search from '@/pages/Search'
 import Test from '@/pages/Test'
+//完善
+// function enhance(target,name){
+
+// };
 
 
 const originPush = VueRouter.prototype.push;
