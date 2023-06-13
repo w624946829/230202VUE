@@ -2,7 +2,7 @@
  * @Author: 王泽昌 624946829@qq.com
  * @Date: 2023-06-12 11:29:54
  * @LastEditors: 王泽昌 624946829@qq.com
- * @LastEditTime: 2023-06-12 11:37:03
+ * @LastEditTime: 2023-06-13 19:07:55
  * @FilePath: \0202shangpinhui\src\pages\Home\ListContainer\index.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -191,12 +191,13 @@ export default {
                 .life-item {
                     border-left: 1px solid #e4e4e4;
                     border-bottom: 1px solid #e4e4e4;
-                    margin-right: -1px;
+                    box-sizing: border-box;
                     height: 64px;
                     text-align: center;
                     position: relative;
                     cursor: pointer;
                     width: 25%;
+                    box-sizing:border-box;
 
                     .list-item {
                         background-image: url(./images/icons.png);

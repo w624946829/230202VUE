@@ -37,6 +37,7 @@
                         type="text"
                         id="autocomplete"
                         class="input-error input-xxlarge"
+                        v-model="keyword"
                     />
                     <button 
                     class="sui-btn btn-xlarge btn-danger" 
@@ -54,13 +55,27 @@
 <script>
 export default {
     name: "Header",
+    data(){
+        return {
+            keyword:''
+        }
+    },
     methods:{
         toSearch(){
             //第一种方法
-            this.$router.push('/search',()=>{})
+            // this.$router.push('/search',()=>{})
             //第二种方法
             // this.$router.push('/search').catch(()=>{})
             // this.$router.push('/search')
+
+            this.$router.push({
+                path:'/search',
+                query:{
+                    ...this.$route.query,
+                    keyword:this.keyword || undefined
+                }
+            }
+            )
         }
     }
 };
