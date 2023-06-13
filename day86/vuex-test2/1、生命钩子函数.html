@@ -1,0 +1,19 @@
+beforeCreate 创建前
+created 创建后 ，这里一般
+beforeMount 挂载前获取不到DOM
+mounted 挂在后，可以获取到DOM----一般网络请求和异步操作这里
+beforeUpdate 更新前，可以获取到数据，但是获取不到dom
+updated：更新后，可以获取到数据，同时可以获取到dom
+beforeDestroy 销毁前
+destroyed 销毁后
+
+computed计算属性
+
+created  挂载前挂载数据  只触发一次
+mounted 网络请求 和 异步 
+updated 更新后
+
+computed 计算属性 computed computeed computed computed computed 
+created 创建后 created created created created created 
+mounted 挂载后  mounted mounted mounted mounted 
+updated 更新后 updated updated updated 
