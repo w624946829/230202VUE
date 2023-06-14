@@ -2,37 +2,29 @@
  * @Author: 王泽昌 624946829@qq.com
  * @Date: 2023-06-12 11:29:54
  * @LastEditors: 王泽昌 624946829@qq.com
- * @LastEditTime: 2023-06-13 19:07:55
+ * @LastEditTime: 2023-06-14 11:21:31
  * @FilePath: \0202shangpinhui\src\pages\Home\ListContainer\index.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
 <template>
     <div class="list-container">
         <div class="sortList clearfix">
-            <div class="center">
+            <div class="center" >
                 <!--banner轮播-->
-                <div class="swiper-container" id="mySwiper">
-                    <div class="swiper-wrapper">
-                        <div class="swiper-slide">
-                            <img src="./images/banner1.jpg" />
-                        </div>
-                        <!-- <div class="swiper-slide">
-                            <img src="./images/banner2.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img src="./images/banner3.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img src="./images/banner4.jpg" />
-                        </div> -->
-                    </div>
-                    <!-- 如果需要分页器 -->
-                    <div class="swiper-pagination"></div>
+                <swiper class="swiper" :options="swiperOption" v-if="slideList.length">
+                    <!-- 每一屏 -->
 
-                    <!-- 如果需要导航按钮 -->
-                    <div class="swiper-button-prev"></div>
-                    <div class="swiper-button-next"></div>
-                </div>
+                    <swiper-slide v-for="slide in slideList" :key="slide.id">
+                    <img :src="slide.imgUrl " >
+                    </swiper-slide>
+
+                    <!-- 小圆点 -->
+                    <div class="swiper-pagination" slot="pagination"></div>
+                    <!-- 上一张 -->
+                    <div class="swiper-button-prev" slot="button-prev"></div>
+                    <!-- 下一张 -->
+                    <div class="swiper-button-next" slot="button-next"></div>
+                </swiper>
             </div>
             <div class="right">
                 <div class="news">
@@ -119,12 +111,57 @@
                 </div>
             </div>
         </div>
+
+        <!-- 这里是使用v-for的健壮特性 -->
+        <!-- <h1 v-for="s in slideList" :key = 's.id' >{{ s.imgUrl }}</h1> -->
+
+        <!-- 这里使用v-if进行判断 -->
+        <!-- <h1 v-if="slideList[0]">{{ slideList[0].imgUrl }}</h1> -->
     </div>
 </template>
 
 <script>
+import { Swiper, SwiperSlide } from "vue-awesome-swiper";
+import "swiper/css/swiper.css";
+import { mapState } from "vuex";
 export default {
     name: "ListContainer",
+    components: {
+        Swiper,
+        SwiperSlide,
+    },
+    data() {
+        return {
+            swiperOption: {
+                slidesPerView: 1, //同时展示 几张
+                spaceBetween: 30, //屏与屏的距离
+                loop: true, //是否开启循环轮播
+                speed: 1000, //切换速度
+                autoplay: {
+                    //自动轮播
+                    delay: 1500, //延迟时间
+                    // stopOnLastSlide: false, //在最后一屏处是否停止;;与loop冲突
+                    disableOnInteraction: false, //产生交互后是否轮播
+                },
+                pagination: {
+                    //(分页器）小圆点相关
+                    el: ".swiper-pagination", //小圆点所在容器
+                    clickable: true, //小圆点是否可以点击
+                },
+                //上一张、下一章
+                navigation: {
+                    nextEl: ".swiper-button-next",
+                    prevEl: ".swiper-button-prev",
+                },
+            },
+        };
+    },
+    computed: {
+        ...mapState("home", ["slideList"]),
+    },
+    mounted() {
+        this.$store.dispatch("home/getSlideList");
+    },
 };
 </script>
 
@@ -197,7 +234,7 @@ export default {
                     position: relative;
                     cursor: pointer;
                     width: 25%;
-                    box-sizing:border-box;
+                    box-sizing: border-box;
 
                     .list-item {
                         background-image: url(./images/icons.png);
