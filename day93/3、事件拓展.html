@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+ <head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+ </head>
+<body>
+    <script>
+        /**
+         * $event 的来源
+         * 事件回调写函数的时候，不加小括号，此时是把函数的的地址 传到了底层
+         * 事件回调写函数的时候，加小括号，此时传给底层的函数被包裹了一层，变成了
+         * fns = f($event){return clickHandler3('哎哎哎啊')}
+         * 当我们点击按钮的时候，执行的回调，是包裹在这一层的函数，也就是这里的fns函数
+         * 
+         * 这个fns的形参是$event ,也就是说调用的时候，，$event 就是时间对象，我们自己在写的时候，必须用这个形参
+         * 如果此时（加小括号调用的时候），前面加this，这个this指向window，严格模式下是undefined
+         * 注意：
+         * 以后再模板中写的时候不要加this
+         * 
+         * 
+         * 事件修饰符
+         * @click.prevent 修饰符 组织事件的默认行为
+         * @click.stop 修饰符 阻止冒泡行为
+         * @click.once 事件只能触发一次，触发一次后自动解绑
+         * @mousewheel.passive
+         *            正常情况下，滚轮事件是一个频繁出发的事件，如果回调中有耗时的操作，会执行完回调中的耗时操作，再去滚动页面，每次滚动都是如此这样的话会造成页面的卡顿
+         * 当使用.passive修饰符的时候，辉县滚动页面再去执行耗时操作，防止页面的卡顿 
+         * 
+         * */ 
+    </script>
+</body>
+</html>
