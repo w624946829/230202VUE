@@ -25,6 +25,12 @@
 							关键词：{{searchParams.keyword}}
 							<i @click="removeKeyword" >×</i>
 						</li>
+
+						<!-- 面包屑品牌 -->
+						<li class="with-x" v-show="searchParams.trademark">
+							关键词：{{searchParams.trademark.split(':')[1]}}
+							<i @click="removeTrademark" >×</i>
+						</li>
                     </ul>
                 </div>
 
@@ -189,7 +195,7 @@ export default {
                 }
 		},
 
-        // 移出关键词
+        // 移除关键词
 		removeCategoryName(){
             //路径中要去除  categoryName、category?Id
             // 若有关键词，要保留关键词
@@ -218,8 +224,13 @@ export default {
 		saveTrademark(tm){
 			console.log('我是父组件，收到了子组件传递过来的品牌数据',tm.tmId,tm.tmName);
 			// 将子组件传递过来的品牌，拼接成一个符合后端接口要求的字符串
-			this.searchParams.trademark = `${tmId}:${tmName}`
+			this.searchParams.trademark = `${tm.tmId}:${tm.tmName}`
 			// 发请求去搜索
+			this.executeSearch();
+		},
+		// 移除品牌的回调
+		removeTrademark(){
+			this.searchParams.trademark = ''
 			this.executeSearch();
 		}
 
