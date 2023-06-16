@@ -22,40 +22,14 @@
                     <div class="floor-1">
                         <div class="blockgary">
                             <ul class="jd-list">
-                                <li
-                                    v-for="(keyword, index) in floor.keyword"
-                                    :key="index"
-                                >
-                                    {{ keyword }}
-                                </li>
-                            </ul>
-                            <img :src="floor.imgUrl" />
+								<li v-for="(keyword,index) in floor.keywords" :key="index">{{keyword}}</li>
+							</ul>
+							<img :src="floor.imgUrl" />
                         </div>
                         <div class="floorBanner">
-                            <swiper class="swiper" :options="swiperOption">
-                                <!-- 每一屏 -->
-                                <swiper-slide v-for="carouse in floor.carouselList" :key="carouse.id"
-                                    >
-									<img :src="carouse.imgUrl"/>
-									</swiper-slide
-                                >
-                               
-                                <!-- 小圆点 -->
-                                <div
-                                    class="swiper-pagination"
-                                    slot="pagination"
-                                ></div>
-                                <!-- 上一张 -->
-                                <div
-                                    class="swiper-button-prev"
-                                    slot="button-prev"
-                                ></div>
-                                <!-- 下一张 -->
-                                <div
-                                    class="swiper-button-next"
-                                    slot="button-next"
-                                ></div>
-                            </swiper>
+
+                            <SwiperList :list="floor.carouselList"></SwiperList>
+
                         </div>
                         <div class="split">
                             <span class="floor-x-line"></span>
@@ -86,34 +60,12 @@
 </template>
 
 <script>
+import SwiperList from '@/components/SwiperList'
 export default {
     name: "Floor",
     props: ["floor"],
-	data() {
-			return {
-				swiperOption: {
-          slidesPerView: 1, //同时展示几张
-          spaceBetween: 20, //屏与屏之间的距离
-          loop: true, //是否开启循环轮播
-          speed:1000,//切换速度
-          autoplay:{
-            delay: 3000, //延迟时间（每一屏看多久）
-            stopOnLastSlide: true, //最后一张是否停止（当开启循环轮播时会失效）
-            disableOnInteraction: false, //产生交互后是否继续轮播
-          },
-          //小圆点相关配置
-          pagination: {
-            el: '.swiper-pagination', //小圆点所在容器
-            clickable: true //小圆点是否可以点击
-          },
-          // 上一张、下一张
-          navigation: {
-            nextEl: '.swiper-button-next',
-            prevEl: '.swiper-button-prev'
-          }
-        }
-			}
-		},
+    components:{SwiperList}
+	
 };
 </script>
 
