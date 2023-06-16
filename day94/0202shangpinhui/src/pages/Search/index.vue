@@ -7,19 +7,20 @@
         <div class="main">
             <div class="py-container">
                 <!--面包屑导航-->
-                <!-- <div class="bread">
+                <div class="bread">
                     <ul class="fl sui-breadcrumb">
                         <li>
                             <span href="#">全部结果</span>
                         </li>
                     </ul>
                     <ul class="fl sui-tag">
-                        <li class="with-x">手机</li>
-                        <li class="with-x">iphone<i>×</i></li>
-                        <li class="with-x">华为<i>×</i></li>
-                        <li class="with-x">OPPO<i>×</i></li>
+                        <!-- 面包屑_分类名 -->
+                        <li class="with-x"  v-show="searchParams.categoryName">
+                            {{ searchParams.categoryName }}
+                            <i @click="removeCategoryName">×</i>
+                        </li>
                     </ul>
-                </div> -->
+                </div>
 
                 <!-- 搜索器 -->
                 <SearchSelector 
@@ -167,6 +168,11 @@ export default {
             //搜索的结果对象
             searchInfo: {},
         };
+    },
+    methods:{
+        removeCategoryName(){
+            
+        }
     },
     watch: {
         //复习
