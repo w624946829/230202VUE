@@ -1,7 +1,7 @@
 <template>
     <div class="outer">
         <!-- 三级分类导航 -->
-        <div>{{ $route.query }}</div>
+        <!-- <div>{{ $route.query }}</div> -->
 
         <TypeNav />
         <div class="main">
@@ -16,8 +16,14 @@
                     <ul class="fl sui-tag">
                         <!-- 面包屑_分类名 -->
                         <li class="with-x" v-show="searchParams.categoryName">
-							{{searchParams.categoryName}}
+							分类：{{searchParams.categoryName}}
 							<i @click="removeCategoryName">×</i>
+						</li>
+
+						<!-- 面包屑关键词 -->
+						<li class="with-x" v-show="searchParams.keyword">
+							关键词：{{searchParams.keyword}}
+							<i @click="removeKeyword" >×</i>
 						</li>
                     </ul>
                 </div>
@@ -26,6 +32,7 @@
                 <SearchSelector 
                     :attrsList="searchInfo.attrsList"
                     :trademarkList="searchInfo.trademarkList"
+					:sendTrademark = "saveTrademark"
                 />
 
                 <!--商品展示区-->
@@ -170,7 +177,20 @@ export default {
         };
     },
     methods:{
-        removeCategoryName(){
+		// 执行器
+		async executeSearch(){
+			let { code, data, message } = await reqSearchInfo(
+                    this.searchParams
+                );
+                if (code === 200) {
+                    this.searchInfo = data;
+                } else {
+                    alert(`搜索失败：${message}`);
+                }
+		},
+
+        // 移出关键词
+		removeCategoryName(){
             //路径中要去除  categoryName、category?Id
             // 若有关键词，要保留关键词
             // 重新搜索一下
@@ -179,14 +199,37 @@ export default {
                 path:'/search',
                 query:{keyword}
             })
-        }
+        },
+		removeKeyword(){
+			// 尝试获取当前所有的路由参数
+           const {query} = this.$route;
+		   //重新跳转搜索路由
+           this.$router.push({
+                path:'/search',
+                query:{
+					...query,
+					keyword:undefined
+				}
+            })
+			// 通过总线通知header组件清楚关键词
+			this.$bus.$emit('clear-keyword')
+        },
+		// 保存子组件 传递过来的品牌数据
+		saveTrademark(tm){
+			console.log('我是父组件，收到了子组件传递过来的品牌数据',tm.tmId,tm.tmName);
+			// 将子组件传递过来的品牌，拼接成一个符合后端接口要求的字符串
+			this.searchParams.trademark = `${tmId}:${tmName}`
+			// 发请求去搜索
+			this.executeSearch();
+		}
+
     },
     watch: {
         //复习
 
         $route: {
             immediate: true,
-            async handler({ query }) {
+            handler({ query }) {
                 console.log(query);
                 Object.assign(
                     this.searchParams,
@@ -198,14 +241,7 @@ export default {
                     },
                     query
                 );
-                let { code, data, message } = await reqSearchInfo(
-                    this.searchParams
-                );
-                if (code === 200) {
-                    this.searchInfo = data;
-                } else {
-                    alert(`搜索失败：${message}`);
-                }
+                this.executeSearch();;
             },
         },
     },

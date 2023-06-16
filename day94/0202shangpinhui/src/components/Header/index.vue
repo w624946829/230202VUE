@@ -28,7 +28,7 @@
         <div class="bottom">
             <h1 class="logoArea">
                 <router-link class="logo" title="尚品汇" to="/home" >
-                    <img src="./images/logo.png" alt="" />
+                    <img src="./images/logo.png" alt="" @click="keyword=''" />
                 </router-link>
             </h1>
             <div class="searchArea">
@@ -74,10 +74,25 @@ export default {
                     ...this.$route.query,
                     keyword:this.keyword || undefined
                 }
-            }
+            },
+            
+
+
             )
+        },
+        clearKeyword(){
+            this.keyword = ''
         }
+        
+    },
+    mounted(){
+        this.$bus.$on ('clear-keyword',this.clearKeyword)
+    },
+    beforeDestroy(){
+        this.$bus.$off('clear-keyword')
     }
+
+
 };
 </script>
 

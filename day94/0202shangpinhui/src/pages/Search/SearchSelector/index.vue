@@ -6,7 +6,11 @@
 			<div class="value logos">
 				<ul class="logo-list">
 					<!-- 遍历每一个品牌 -->
-					<li v-for=" trademark in trademarkList" :key="trademark.tmId">
+					<li 
+					v-for=" trademark in trademarkList" 
+					:key="trademark.tmId"
+					@click="sendTrademark(trademark)"
+					>
 						{{trademark.tmName}}
 					</li>
 					
@@ -33,7 +37,8 @@
 <script>
 	export default {
 		name: 'SearchSelector',
-		props:['trademarkList','attrsList']
+		props:['trademarkList','attrsList','sendTrademark'],
+		
 	}
 </script>
 
