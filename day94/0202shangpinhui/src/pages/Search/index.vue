@@ -15,10 +15,10 @@
                     </ul>
                     <ul class="fl sui-tag">
                         <!-- 面包屑_分类名 -->
-                        <li class="with-x"  v-show="searchParams.categoryName">
-                            {{ searchParams.categoryName }}
-                            <i @click="removeCategoryName">×</i>
-                        </li>
+                        <li class="with-x" v-show="searchParams.categoryName">
+							{{searchParams.categoryName}}
+							<i @click="removeCategoryName">×</i>
+						</li>
                     </ul>
                 </div>
 
@@ -171,7 +171,14 @@ export default {
     },
     methods:{
         removeCategoryName(){
-            
+            //路径中要去除  categoryName、category?Id
+            // 若有关键词，要保留关键词
+            // 重新搜索一下
+           const {keyword} = this.$route.query;
+            this.$router.push({
+                path:'/search',
+                query:{keyword}
+            })
         }
     },
     watch: {
@@ -187,6 +194,7 @@ export default {
                         category1Id: "", //重置一级分类id
                         category2Id: "", //重置二级分类id
                         category3Id: "", //重置三级分类id
+                        categoryName:'',//重置分类名
                     },
                     query
                 );
