@@ -129,35 +129,9 @@
                         </ul>
                     </div>
                     <!-- 分页器 -->
-                    <!-- <div class="fr page">
-                        <div class="sui-pagination clearfix">
-                            <ul>
-                                <li class="prev disabled">
-                                    <a href="#">«上一页</a>
-                                </li>
-                                <li class="active">
-                                    <a href="#">1</a>
-                                </li>
-                                <li>
-                                    <a href="#">2</a>
-                                </li>
-                                <li>
-                                    <a href="#">3</a>
-                                </li>
-                                <li>
-                                    <a href="#">4</a>
-                                </li>
-                                <li>
-                                    <a href="#">5</a>
-                                </li>
-                                <li class="dotted"><span>...</span></li>
-                                <li class="next">
-                                    <a href="#">下一页»</a>
-                                </li>
-                            </ul>
-                            <div><span>共10页&nbsp;</span></div>
-                        </div>
-                    </div> -->
+
+					<Pagination :total="103" :pageSize="5" :pageNo="16" :continues="5"></Pagination>
+
                 </div>
             </div>
         </div>
@@ -184,7 +158,7 @@ export default {
                 trademark: "", //品牌
                 order: "", //排序方式
                 pageNo: 1, //页码（当前页）
-                pageSize: 100, //页大小（每页展示多少条）
+                pageSize: 5, //页大小（每页展示多少条）
             },
             //搜索的结果对象
             searchInfo: {},
