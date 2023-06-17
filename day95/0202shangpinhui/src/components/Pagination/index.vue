@@ -15,17 +15,45 @@
         <button>下一页</button>
 
         <span>共 {{total}} 条</span>
+        <hr>
+        <br>
+        <span>开始 {{startEnd.start}}</span>
+        <span>结束 {{startEnd.end}}</span>
     </div>
 </template>
 
 <script>    
   export default {      
     name: "Pagination",   
-    props:['total,pageSize,pageNo,continues' ],
+    props:['total','pageSize','pageNo','continues'],
     computed:{
         totalPage(){
-            return Math.ceil(total/pageSize)
+            return Math.ceil(this.total/this.pageSize)
         },
+        startEnd(){
+         
+            let start = 0 //连续也的起始位置
+            let end = 0 //连续也得结束位置
+            const {totalPage,pageNo,continues} = this
+           
+            if(continues > totalPage){
+                console.log('过分了');
+                start = 1 
+                end = totalPage
+            }else{
+                start = pageNo - (continues-1)/2  //起始位置
+            end = pageNo + (continues-1)/2  //结束为止
+            // 第二种情况判断一下左边是否超出
+            if(start<1){
+                console.log(1);
+                start = 1
+                end = continues
+            }
+            }
+
+           
+            return {start,end}
+        }
     }
   };
 </script>

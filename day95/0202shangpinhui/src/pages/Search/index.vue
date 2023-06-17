@@ -52,7 +52,7 @@
                 <!--商品展示区-->
                 <div class="details clearfix">
                     <!-- 列表操作区 -->
-                    <!-- <div class="sui-navbar">
+                    <!-- <div cl ass="sui-navbar">
                         <div class="navbar-inner filter">
                             <ul class="sui-nav">
                                 <li class="active">
@@ -130,8 +130,7 @@
                     </div>
                     <!-- 分页器 -->
 
-					<Pagination :total="103" :pageSize="5" :pageNo="16" :continues="5"></Pagination>
-
+					<Pagination :total="103" :pageSize="5" :pageNo="16" :continues="5" /> 
                 </div>
             </div>
         </div>
