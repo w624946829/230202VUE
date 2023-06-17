@@ -7,22 +7,37 @@
         <div class="main">
             <div class="py-container">
                 <!--面包屑导航-->
-                <!-- <div class="bread">
+                <div class="bread">
                     <ul class="fl sui-breadcrumb">
                         <li>
                             <span href="#">全部结果</span>
                         </li>
                     </ul>
-                    <ul class="fl sui-tag">
-                        <li class="with-x">手机</li>
-                        <li class="with-x">iphone<i>×</i></li>
-                        <li class="with-x">华为<i>×</i></li>
-                        <li class="with-x">OPPO<i>×</i></li>
+                    <ul 
+                    class="fl sui-tag"
+                    v-show="searchParams.categoryName"
+                    >
+                        <!-- 面包屑_分类名 -->
+                        <li class="with-x">
+                            分类：{{searchParams.categoryName}}
+                            <i @click="removeCategoryName" >×</i>
+                        </li>
+
+
+                         <!-- 面包屑_关键词 -->
+                         <li class="with-x" v-show="searchParams.keyword">
+                            关键词：{{searchParams.keyword}}
+                            <i @click="removeKeyword" >×</i>
+                        </li>
+                      
                     </ul>
-                </div> -->
+                </div>
 
                 <!-- 搜索器 -->
-                <!-- <SearchSelector /> -->
+                <SearchSelector 
+                :attrsList="searchInfo.attrsList" 
+                :trademarkList="searchInfo.trademarkList" 
+                />
 
                 <!--商品展示区-->
                 <div class="details clearfix">
@@ -165,6 +180,32 @@ export default {
             searchInfo: {},
         };
     },
+    methods:{
+        //移除分类名
+        removeCategoryName(){
+            // 1、路径中去除 categoryName
+            const {keyword} = this.$route.query
+            // 有关键词，要保留关键词
+            this.$router.push({
+                path:'/search',
+                query:{keyword}
+            })
+            // 2、重新搜索一下
+        },
+        // 移除关键词
+        removeKeywor(){
+            // 尝试获取当前所有的路由参数
+            const {query} = this.$route
+            //重新跳转路由
+            this.$router.push({
+                path:'/search',
+                query:{
+                    ...query,
+                    keyword:undefined,
+                }
+            })
+        }
+    },
     watch: {
         //复习
 
@@ -178,6 +219,7 @@ export default {
                         category1Id: "", //重置一级分类id
                         category2Id: "", //重置二级分类id
                         category3Id: "", //重置三级分类id
+                        categoryName: "", //重置分类名
                     },
                     query
                 );

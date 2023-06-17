@@ -5,159 +5,40 @@
 			<div class="fl key brand">品牌</div>
 			<div class="value logos">
 				<ul class="logo-list">
-					<li>索尼（SONY）</li>
-					<li>TCL</li>
-					<li>长虹（CHANGHONG）</li>
-					<li>飞利浦（PHILIPS）</li>
-					<li>风行电视</li>
-					<li><img src="./images/phone06.png" /></li>
-					<li><img src="./images/phone07.png" /></li>
-					<li><img src="./images/phone08.png" /></li>
-					<li><img src="./images/phone09.png" /></li>
-					<li><img src="./images/phone10.png" /></li>
-					<li><img src="./images/phone11.png" /></li>
-					<li><img src="./images/phone12.png" /></li>
-					<li><img src="./images/phone12.png" /></li>
-					<li><img src="./images/phone14.png" /></li>
-					<li><img src="./images/phone01.png" /></li>
-					<li><img src="./images/phone06.png" /></li>
-					<li><img src="./images/phone07.png" /></li>
-					<li><img src="./images/phone02.png" /></li>
+					<!-- 遍历每一个品品牌 -->
+					<li v-for="trademark in trademarkList " :key="trademark.tmId">{{trademark.tmName}}</li>
+					
 				</ul>
 			</div>
 		</div>
-		<div class="type-wrap">
-			<div class="fl key">网络制式</div>
+		<!-- 遍历每一行属性 -->
+		<div 
+		class="type-wrap"
+		v-for="attr in attrsList " 
+		:key="attr.attrId"
+		>
+			<div class="fl key">{{attr.attrName}}</div>
 			<div class="fl value">
 				<ul class="type-list">
-					<li>
-						<a>GSM（移动/联通2G）</a>
+					<!-- 每一个属性的可选值 -->
+					<li 
+					v-for="attrValue,index in attr.attrValueList" 
+				:key="index">
+						<a>{{ attrValue }}</a>
 					</li>
-					<li>
-						<a>电信2G</a>
-					</li>
-					<li>
-						<a>电信3G</a>
-					</li>
-					<li>
-						<a>移动3G</a>
-					</li>
-					<li>
-						<a>联通3G</a>
-					</li>
-					<li>
-						<a>联通4G</a>
-					</li>
-					<li>
-						<a>电信3G</a>
-					</li>
-					<li>
-						<a>移动3G</a>
-					</li>
-					<li>
-						<a>联通3G</a>
-					</li>
-					<li>
-						<a>联通4G</a>
-					</li>
+					
 				</ul>
 			</div>
 			<div class="fl ext"></div>
 		</div>
-		<div class="type-wrap">
-			<div class="fl key">显示屏尺寸</div>
-			<div class="fl value">
-				<ul class="type-list">
-					<li>
-						<a>4.0-4.9英寸</a>
-					</li>
-					<li>
-						<a>4.0-4.9英寸</a>
-					</li>
-				</ul>
-			</div>
-			<div class="fl ext"></div>
-		</div>
-		<div class="type-wrap">
-			<div class="fl key">摄像头像素</div>
-			<div class="fl value">
-				<ul class="type-list">
-					<li>
-						<a>1200万以上</a>
-					</li>
-					<li>
-						<a>800-1199万</a>
-					</li>
-					<li>
-						<a>1200-1599万</a>
-					</li>
-					<li>
-						<a>1600万以上</a>
-					</li>
-					<li>
-						<a>无摄像头</a>
-					</li>
-				</ul>
-			</div>
-			<div class="fl ext"></div>
-		</div>
-		<div class="type-wrap">
-			<div class="fl key">价格</div>
-			<div class="fl value">
-				<ul class="type-list">
-					<li>
-						<a>0-500元</a>
-					</li>
-					<li>
-						<a>500-1000元</a>
-					</li>
-					<li>
-						<a>1000-1500元</a>
-					</li>
-					<li>
-						<a>1500-2000元</a>
-					</li>
-					<li>
-						<a>2000-3000元 </a>
-					</li>
-					<li>
-						<a>3000元以上</a>
-					</li>
-				</ul>
-			</div>
-			<div class="fl ext">
-			</div>
-		</div>
-		<div class="type-wrap">
-			<div class="fl key">更多筛选项</div>
-			<div class="fl value">
-				<ul class="type-list">
-					<li>
-						<a>特点</a>
-					</li>
-					<li>
-						<a>系统</a>
-					</li>
-					<li>
-						<a>手机内存 </a>
-					</li>
-					<li>
-						<a>单卡双卡</a>
-					</li>
-					<li>
-						<a>其他</a>
-					</li>
-				</ul>
-			</div>
-			<div class="fl ext">
-			</div>
-		</div>
+		
 	</div>
 </template>
 
 <script>
 	export default {
-		name: 'SearchSelector'
+		name: 'SearchSelector',
+		props:['attrsList','trademarkList']
 	}
 </script>
 
@@ -204,18 +85,24 @@
 					li {
 						float: left;
 						border: 1px solid #e4e4e4;
-						margin: -1px -1px 0 0;
+						// margin: -1px -1px 0 0;
 						width: 105px;
-						height: 52px;
+						height: 35px;
 						text-align: center;
-						line-height: 52px;
+						line-height: 35px;
 						overflow: hidden;
 						text-overflow: ellipsis;
+						background: #e1251b;;
 						white-space: nowrap;
 						font-weight: 700;
-						color: #e1251b;
-						font-style: italic;
+						color: white;
+						// font-style: italic;
 						font-size: 14px;
+						cursor: pointer;
+						border-radius: 10px; 
+						&:hover {
+							box-shadow:0 0 5px black;
+						}
 
 						img {
 							max-width: 100%;
@@ -234,6 +121,10 @@
 						a {
 							text-decoration: none;
 							color: #666;
+							cursor:pointer;
+							&:hover{
+								color:#e1251b;
+							}
 						}
 					}
 				}

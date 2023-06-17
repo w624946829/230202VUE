@@ -2,7 +2,7 @@
  * @Author: 王泽昌 624946829@qq.com
  * @Date: 2023-06-12 11:29:54
  * @LastEditors: 王泽昌 624946829@qq.com
- * @LastEditTime: 2023-06-14 11:21:31
+ * @LastEditTime: 2023-06-16 20:05:04
  * @FilePath: \0202shangpinhui\src\pages\Home\ListContainer\index.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -11,20 +11,7 @@
         <div class="sortList clearfix">
             <div class="center" >
                 <!--banner轮播-->
-                <swiper class="swiper" :options="swiperOption" v-if="slideList.length">
-                    <!-- 每一屏 -->
-
-                    <swiper-slide v-for="slide in slideList" :key="slide.id">
-                    <img :src="slide.imgUrl " >
-                    </swiper-slide>
-
-                    <!-- 小圆点 -->
-                    <div class="swiper-pagination" slot="pagination"></div>
-                    <!-- 上一张 -->
-                    <div class="swiper-button-prev" slot="button-prev"></div>
-                    <!-- 下一张 -->
-                    <div class="swiper-button-next" slot="button-next"></div>
-                </swiper>
+                <SwiperList :list="slideList" :options="options" ></SwiperList>
             </div>
             <div class="right">
                 <div class="news">
@@ -121,40 +108,23 @@
 </template>
 
 <script>
-import { Swiper, SwiperSlide } from "vue-awesome-swiper";
-import "swiper/css/swiper.css";
+
 import { mapState } from "vuex";
+import SwiperList from '@/components/SwiperList'
+
 export default {
     name: "ListContainer",
     components: {
-        Swiper,
-        SwiperSlide,
+        SwiperList
     },
-    data() {
-        return {
-            swiperOption: {
-                slidesPerView: 1, //同时展示 几张
-                spaceBetween: 30, //屏与屏的距离
-                loop: true, //是否开启循环轮播
-                speed: 1000, //切换速度
-                autoplay: {
-                    //自动轮播
-                    delay: 1500, //延迟时间
-                    // stopOnLastSlide: false, //在最后一屏处是否停止;;与loop冲突
-                    disableOnInteraction: false, //产生交互后是否轮播
-                },
-                pagination: {
-                    //(分页器）小圆点相关
-                    el: ".swiper-pagination", //小圆点所在容器
-                    clickable: true, //小圆点是否可以点击
-                },
-                //上一张、下一章
-                navigation: {
-                    nextEl: ".swiper-button-next",
-                    prevEl: ".swiper-button-prev",
-                },
-            },
-        };
+    data(){
+        return{
+            options:{
+                autoplay:{
+                    delay:5000
+                }
+            }
+        }
     },
     computed: {
         ...mapState("home", ["slideList"]),

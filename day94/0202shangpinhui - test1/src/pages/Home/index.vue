@@ -1,3 +1,11 @@
+<!--
+ * @Author: 王泽昌 624946829@qq.com
+ * @Date: 2023-06-16 19:13:46
+ * @LastEditors: 王泽昌 624946829@qq.com
+ * @LastEditTime: 2023-06-16 20:25:25
+ * @FilePath: \0202shangpinhui - test1\src\pages\Home\index.vue
+ * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
+-->
 <template>
     <div>
       
@@ -12,7 +20,7 @@
 		<!-- 喜欢 -->
 		<!-- <Like/> -->
 		<!-- 楼层 -->
-		<Floor v-for = "floor in floorList" :key="floor.id" :floor = "floor"/>
+		<Floor v-for = "(floor,index) in floorList" :key="floor.id" :floor = "floor" />
 		
 		<!-- 商标 -->
 		<Brand/>
