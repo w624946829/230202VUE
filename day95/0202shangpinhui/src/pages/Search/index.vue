@@ -272,7 +272,7 @@ export default {
         
     },
     watch: {
-        //复习
+  
 
         $route: {
             immediate: true,
@@ -291,6 +291,14 @@ export default {
                 this.executeSearch();
             },
         },
+		searchParams:{
+			deep:true,
+			handler(){
+				this.executeSearch;
+			}
+		
+		}
+
     },
 };
 </script>
