@@ -59,44 +59,56 @@
 
                     <div class="sui-navbar">
                         <div class="navbar-inner filter">
-
                             <ul class="sui-nav">
-                             <!-- 综合排序 -->
-                                <li :class="{active:orderType === 1} " @click="changeOrder(1)">
-                                    <a >
+                                <!-- 综合排序 -->
+                                <li
+                                    :class="{ active: orderType === 1 }"
+                                    @click="changeOrder(1)"
+                                >
+                                    <a>
                                         <span>综合</span>
-                                        <i v-show = "orderType === 1" class="iconfont" :class = " iconText"  ></i>
+                                        <i
+                                            v-show="orderType === 1"
+                                            class="iconfont"
+                                            :class="iconText"
+                                        ></i>
                                     </a>
                                 </li>
 
-                                 <!-- 价格排序 -->
-                                 <li :class="{active:orderType === 2}" @click="changeOrder(2)">
-                                    <a >
+                                <!-- 价格排序 -->
+                                <li
+                                    :class="{ active: orderType === 2 }"
+                                    @click="changeOrder(2)"
+                                >
+                                    <a>
                                         <span>价格</span>
-                                        <i v-show = "orderType === 2" class="iconfont" :class = " iconText" ></i>
+                                        <i
+                                            v-show="orderType === 2"
+                                            class="iconfont"
+                                            :class="iconText"
+                                        ></i>
                                     </a>
                                 </li>
                             </ul>
                         </div>
                     </div>
 
-
-              
                     <!-- 商品列表 -->
                     <div class="goods-list">
                         <ul class="yui3-g">
                             <!-- 每一个商品 -->
                             <li
+                         
                                 class="yui3-u-1-5"
                                 v-for="goods in searchInfo.goodsList"
                                 :key="goods.id"
                             >
                                 <div class="list-wrap">
                                     <div class="p-img">
-                                        <a href="item.html" target="_blank">
+                                        <a>
                                             <!-- 商品图片  -->
-                                            <img :src="goods.defaultImg"
-                                        /></a>
+                                            <img :src="goods.defaultImg" @click="toDetail(goods.id)"/>
+                                    </a>
                                     </div>
                                     <div class="price">
                                         <strong>
@@ -104,14 +116,9 @@
                                             <i>{{ goods.price }}</i>
                                         </strong>
                                     </div>
-                                    <div class="attr">
-                                        <a
-                                            target="_blank"
-                                            href="item.html"
-                                            title=""
-                                            v-html="goods.title"
-                                        ></a>
-                                    </div>
+                                    <div class="attr" @click="toDetail(goods.id)">
+									<a v-html="goods.title"></a>
+								</div>
                                     <div class="commit">
                                         <i class="command"
                                             >已有<span>2000</span>人评价</i
@@ -187,14 +194,15 @@ export default {
     },
     computed: {
         //根据order参数的第一位，决定着谁高亮，谁有箭头
-        orderType(){
-            return this.searchParams.order.split(':')[0]*1
+        orderType() {
+            return this.searchParams.order.split(":")[0] * 1;
         },
         // 根据order参数的第二位，计算出具体要呈现的图标（上还是下）
-        iconText(){
-            return this.searchParams.order.split(':')[1] === 'asc' ? 'icon-up':'icon-down'
-        }
-
+        iconText() {
+            return this.searchParams.order.split(":")[1] === "asc"
+                ? "icon-up"
+                : "icon-down";
+        },
     },
     methods: {
         // 执行器
@@ -276,20 +284,25 @@ export default {
         savePageNo(val) {
             this.searchParams.pageNo = val;
         },
-        changeOrder(newType){
-            const [type,flag] = this.searchParams.order.split(':')
+        changeOrder(newType) {
+            const [type, flag] = this.searchParams.order.split(":");
             // 判断点击的排序类型是否和 当前的类型相同、
-            if(newType === type*1){
+            if (newType === type * 1) {
                 // 如果点的是旧的排序方式
-                const str = type + ':' +(flag === 'asc' ? 'desc' : 'asc')
-                this.searchParams.order = str
-            }else{
+                const str = type + ":" + (flag === "asc" ? "desc" : "asc");
+                this.searchParams.order = str;
+            } else {
                 // 如果点的是新的排序方式
-                const str = newType + ':desc'
-                this.searchParams.order = str
-
+                const str = newType + ":desc";
+                this.searchParams.order = str;
             }
-        }
+        },
+        toDetail(id){
+				this.$router.push({
+					name:'detail',
+					params:{id}
+				})
+			},
     },
     watch: {
         $route: {

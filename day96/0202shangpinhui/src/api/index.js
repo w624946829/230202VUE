@@ -2,7 +2,7 @@
  * @Author: 王泽昌 624946829@qq.com
  * @Date: 2023-06-13 08:28:37
  * @LastEditors: 王泽昌 624946829@qq.com
- * @LastEditTime: 2023-06-14 20:30:46
+ * @LastEditTime: 2023-06-19 18:19:21
  * @FilePath: \day92\0202shangpinhui\src\api\index.js
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -23,6 +23,10 @@ export const reqSlideList =  ()=>mockAjax.get('/slide')
 // 首页楼层数据
 export const reqFloorList =  ()=>mockAjax.get('/floor')
 
-
-
+//搜索
 export const reqSearchInfo =  (params)=>ajax.post('/list',params)
+
+
+// 用于请求商品详情
+export const reqGoodsInfo =  (id)=>ajax.get(`/item/${id}`)
+  
