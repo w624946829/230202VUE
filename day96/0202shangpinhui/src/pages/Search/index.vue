@@ -33,16 +33,20 @@
                         </li>
 
                         <!-- 面包屑属性 -->
-                        <li class="with-x" v-for="(p,index) in searchParams.props" :key="index">
-							{{attrText(p)}}
-							<i @click="removeProps(index)">×</i>
-				
+                        <li
+                            class="with-x"
+                            v-for="(p, index) in searchParams.props"
+                            :key="index"
+                        >
+                            {{ attrText(p) }}
+                            <i @click="removeProps(index)">×</i>
                         </li>
                     </ul>
                 </div>
-			
+
                 <!-- 搜索器 -->
                 <SearchSelector
+                    v-if="searchInfo.total"
                     :attrsList="searchInfo.attrsList"
                     :trademarkList="searchInfo.trademarkList"
                     :sendTrademark="saveTrademark"
@@ -52,30 +56,32 @@
                 <!--商品展示区-->
                 <div class="details clearfix">
                     <!-- 列表操作区 -->
-                    <!-- <div cl ass="sui-navbar">
+
+                    <div class="sui-navbar">
                         <div class="navbar-inner filter">
+
                             <ul class="sui-nav">
-                                <li class="active">
-                                    <a href="#">综合</a>
+                             <!-- 综合排序 -->
+                                <li :class="{active:orderType === 1} " @click="changeOrder(1)">
+                                    <a >
+                                        <span>综合</span>
+                                        <i v-show = "orderType === 1" class="iconfont" :class = " iconText"  ></i>
+                                    </a>
                                 </li>
-                                <li>
-                                    <a href="#">销量</a>
-                                </li>
-                                <li>
-                                    <a href="#">新品</a>
-                                </li>
-                                <li>
-                                    <a href="#">评价</a>
-                                </li>
-                                <li>
-                                    <a href="#">价格⬆</a>
-                                </li>
-                                <li>
-                                    <a href="#">价格⬇</a>
+
+                                 <!-- 价格排序 -->
+                                 <li :class="{active:orderType === 2}" @click="changeOrder(2)">
+                                    <a >
+                                        <span>价格</span>
+                                        <i v-show = "orderType === 2" class="iconfont" :class = " iconText" ></i>
+                                    </a>
                                 </li>
                             </ul>
                         </div>
-                    </div> -->
+                    </div>
+
+
+              
                     <!-- 商品列表 -->
                     <div class="goods-list">
                         <ul class="yui3-g">
@@ -130,12 +136,23 @@
                     </div>
                     <!-- 分页器 -->
 
-					<Pagination 
-                    :total="searchInfo.total" 
-						:pageSize="searchParams.pageSize" 
-						:pageNo="searchParams.pageNo" 
-						:continues="5"
-						:sendPageNo="savePageNo" /> 
+                    <Pagination
+                        :total="searchInfo.total"
+                        :pageSize="searchParams.pageSize"
+                        :pageNo="searchParams.pageNo"
+                        :continues="5"
+                        :sendPageNo="savePageNo"
+                        v-if="searchInfo.total"
+                    />
+                </div>
+
+                <!-- 数据为空展示区 -->
+                <div class="empty" v-if="!searchInfo.total">
+                    <img
+                        src="https://static.360buyimg.com/devfe/error-new/1.0.0/css/i/error_06.png"
+                        alt=""
+                    />
+                    <h2>抱歉，搜索结果为空</h2>
                 </div>
             </div>
         </div>
@@ -143,7 +160,7 @@
 </template>
 
 <script>
-import SearchSelector from './SearchSelector'
+import SearchSelector from "./SearchSelector";
 import { reqSearchInfo } from "@/api";
 export default {
     name: "Search",
@@ -160,7 +177,7 @@ export default {
                 keyword: "", //关键词
                 props: [], //商品属性
                 trademark: "", //品牌
-                order: "", //排序方式
+                order: "1:anc", //排序方式
                 pageNo: 1, //页码（当前页）
                 pageSize: 5, //页大小（每页展示多少条）
             },
@@ -168,7 +185,17 @@ export default {
             searchInfo: {},
         };
     },
+    computed: {
+        //根据order参数的第一位，决定着谁高亮，谁有箭头
+        orderType(){
+            return this.searchParams.order.split(':')[0]*1
+        },
+        // 根据order参数的第二位，计算出具体要呈现的图标（上还是下）
+        iconText(){
+            return this.searchParams.order.split(':')[1] === 'asc' ? 'icon-up':'icon-down'
+        }
 
+    },
     methods: {
         // 执行器
         async executeSearch() {
@@ -217,46 +244,54 @@ export default {
             // 将子组件传递过来的品牌，拼接成一个符合后端接口要求的字符串
             this.searchParams.trademark = `${tm.tmId}:${tm.tmName}`;
             // 发请求去搜索
-            this.executeSearch();
+            this.searchParams.pageNo = 1;
         },
         // 移除品牌的回调
         removeTrademark() {
-            this.searchParams.trademark = "";
-            this.executeSearch();
+            Object.assign(this.searchParams, { trademark: "", pageNo: 1 });
         },
         // 保存子组件（searchSelector） 传递过来的属性数据
         saveAttrValue(attr, attrValue) {
             console.log("传送", attr.attrName, attrValue);
             // 根据从传递过来的属性信息，拼接一个符合服务器接口要求的字符串
             const str = `${attr.attrId}:${attrValue}:${attr.attrName}`;
-              // 判断属性是否重复
-			const result = this.searchParams.props.includes(str);
-			if (!result) {
+            // 判断属性是否重复
+            const result = this.searchParams.props.includes(str);
+            if (!result) {
                 // 将字符串推入props
                 this.searchParams.props.push(str);
-                // 重新搜索一下
-                this.executeSearch();
+                this.searchParams.pageNo = 1;
             }
         },
-		// 格式化写法
-		attrText(p){
-			return p.split(':')[2] +':'+ p.split(':')[1]
-		},
-		// 移除属性
-		removeProps(index){
-			this.searchParams.props.splice(index,1)
-			this.executeSearch();
-		},
-        // 
-        savePageNo(val){
-            console.log('在分页器组件那边点击了',val);
-            this.searchParams.pageNo = val
+        // 格式化写法
+        attrText(p) {
+            return p.split(":")[2] + ":" + p.split(":")[1];
+        },
+        // 移除属性
+        removeProps(index) {
+            this.searchParams.props.splice(index, 1);
+            this.searchParams.pageNo = 1;
+        },
+        //
+        savePageNo(val) {
+            this.searchParams.pageNo = val;
+        },
+        changeOrder(newType){
+            const [type,flag] = this.searchParams.order.split(':')
+            // 判断点击的排序类型是否和 当前的类型相同、
+            if(newType === type*1){
+                // 如果点的是旧的排序方式
+                const str = type + ':' +(flag === 'asc' ? 'desc' : 'asc')
+                this.searchParams.order = str
+            }else{
+                // 如果点的是新的排序方式
+                const str = newType + ':desc'
+                this.searchParams.order = str
+
+            }
         }
-        
     },
     watch: {
-  
-
         $route: {
             immediate: true,
             handler({ query }) {
@@ -271,17 +306,16 @@ export default {
                     },
                     query
                 );
+                this.searchParams.pageNo = 1;
                 this.executeSearch();
             },
         },
-		searchParams:{
-			deep:true,
-			handler(){
-				this.executeSearch();
-			}
-		
-		}
-
+        searchParams: {
+            deep: true,
+            handler() {
+                this.executeSearch();
+            },
+        },
     },
 };
 </script>
@@ -326,12 +360,12 @@ export default {
                 font-size: 0;
                 line-height: 0;
                 padding: 5px 0 0;
-                margin-bottom: 18px;
+                // margin-bottom: 18px;
                 float: left;
 
                 .with-x {
                     font-size: 12px;
-                    margin: 0 5px 5px 0;
+                    margin: 0 5px 0px 0;
                     display: inline-block;
                     overflow: hidden;
                     color: #000;
@@ -444,9 +478,9 @@ export default {
                                 strong {
                                     font-weight: 700;
 
-                                    i {
-                                        margin-left: -5px;
-                                    }
+                                    // i {
+                                    //     // margin-left: -5px;
+                                    // }
                                 }
                             }
 
@@ -616,6 +650,17 @@ export default {
                 }
             }
         }
+    }
+
+    .empty {
+        text-align: center;
+        h2 {
+            color: gray;
+        }
+    }
+
+    .iconfont {
+        vertical-align: middle;
     }
 }
 </style>

@@ -1,5 +1,6 @@
 <template>
-    <div class="pagination">
+    <div class="pagination" v-if="total">
+
         <button :disabled="pageNo" @click = "sendPageNo(pageNo-1)">上一页</button>
         <button v-show="startEnd.start !== 1" @click="sendPageNo(1)"> 1 </button>
         <span v-show="startEnd.start > 2">···</span>
@@ -38,6 +39,7 @@
 export default {
     name: "Pagination",
     props: ["total", "pageSize", "pageNo", "continues","sendPageNo" ] ,
+    // ----------------------------------------------------------------
     computed: {
         totalPage() {
             return Math.ceil(this.total / this.pageSize);
