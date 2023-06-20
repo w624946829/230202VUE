@@ -1,11 +1,11 @@
 <template>
   <div class="spec-preview">
-    <img src="../images/s1.png" />
-    <div class="event"></div>
+    <img src="imgUrl" />
+    <div class="event" @mousemove = "move"></div>
     <div class="big">
-      <img src="../images/s1.png" />
+      <img src="imgUrl" ref="bigImg"/>
     </div>
-    <div class="mask"></div>
+    <div class="mask" ref="mask"></div>
   </div>
 </template>
 
@@ -13,6 +13,37 @@
 
   export default {
     name: "Zoom",
+    props:['imgUrl'],
+    methods:{
+      move(event){
+        //获取鼠标位置
+        let mouseX = event.offsetX
+        let mouseY = event.offsetY
+        //获取遮罩DOM元素、大图DOM元素
+        let {mask,bigImg} = this.$refs
+        //计算遮罩的坐标
+        let maskX = mouseX - (mask.offsetWidth/2)
+        let maskY = mouseY -(mask.offsetHeight /2)
+        //重置遮罩的位置
+        if(maskX < 0 ){
+          maskX = 0 
+        }else if(maskX >mask.offsetWidth){
+          maskX = mask.offsetWidth
+        }
+        if(maskY < 0 ){
+          maskY = 0 
+        }else if(maskY >mask.offsetHeight){
+          maskY = mask.offsetHeight
+        }
+        //让遮罩动起来
+        mask.style.left = maskX + 'px'
+        mask.style.top = maskY + 'px'
+
+        //让大图动起来
+        bigImg.style.left = -2*maskX + 'px'
+        bigImg.style.top = -2*maskY + 'px'
+      }
+    }
 
   }
 </script>

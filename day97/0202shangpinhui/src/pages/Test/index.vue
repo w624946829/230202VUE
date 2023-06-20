@@ -1,64 +1,125 @@
+html
 <template>
-    <swiper class="swiper" :options="swiperOption">
-        <!-- 每一屏 -->
-        <swiper-slide class="item">Slide 1</swiper-slide>
-        <swiper-slide class="item">Slide 2</swiper-slide>
-        <swiper-slide class="item">Slide 3</swiper-slide>
-        <swiper-slide class="item">Slide 4</swiper-slide>
-        <!-- 小圆点 -->
-        <div class="swiper-pagination" slot="pagination"></div>
-        <!-- 上一张 -->
-        <div class="swiper-button-prev" slot="button-prev"></div>
-        <!-- 下一张 -->
-        <div class="swiper-button-next" slot="button-next"></div>
-    </swiper>
+  <div class="carousel">
+    <div class="carousel-slide" :style="{ transform: `translateX(-${currentIndex * 100}%)` }">
+<div v-for="(item, index) in items" :key="index" class="carousel-item">
+  <img :src="item.image" alt="">
+  <h2>{{ item.title }}</h2>
+  <p>{{ item.description }}</p>
+</div>
+    </div>
+    <div class="carousel-dots">
+      <span v-for="(item, index) in items" :key="index" class="carousel-dot" :class="{ active: currentIndex === index }" @click="goTo(index)"></span>
+    </div>
+    <button class="carousel-prev" @click="prev">&lt;</button>
+    <button class="carousel-next" @click="next">&gt;</button>
+  </div>
 </template>
-  
-  <script>
-import { Swiper, SwiperSlide } from "vue-awesome-swiper";
-import "swiper/css/swiper.css";
-
+ <script>
 export default {
-    name: "Test",
-    components: {
-        Swiper,
-        SwiperSlide,
+  props: {
+    items: {
+      type: Array,
+      required: true,
     },
-    data() {
-        return {
-            swiperOption: {
-                slidesPerView: 1, //同时展示 几张
-                spaceBetween: 30, //屏与屏的距离
-                loop: true, //是否开启循环轮播
-                speed:1000,//切换速度
-                autoplay: {
-                    //自动轮播
-                    delay: 1500, //延迟时间
-                    // stopOnLastSlide: false, //在最后一屏处是否停止;;与loop冲突
-                    disableOnInteraction: false,//产生交互后是否轮播
-                },
-                pagination: {
-                    //(分页器）小圆点相关
-                    el: ".swiper-pagination", //小圆点所在容器
-                    clickable: true, //小圆点是否可以点击
-                },
-                //上一张、下一章
-                navigation: {
-                    nextEl: ".swiper-button-next",
-                    prevEl: ".swiper-button-prev",
-                },
-            },
-        };
+  },
+  data() {
+    return {
+        items: [
+  {
+    image: 'https://example.com/image1.jpg',
+    title: 'Title 1',
+    description: 'Description 1'
+  },
+  {
+    image: 'https://example.com/image2.jpg',
+    title: 'Title 2',
+    description: 'Description 2'
+  },
+  // ...
+]
+    };
+  },
+  methods: {
+    goTo(index) {
+      this.currentIndex = index;
     },
+    prev() {
+      this.currentIndex = (this.currentIndex - 1 + this.items.length) % this.items.length;
+    },
+    next() {
+      this.currentIndex = (this.currentIndex + 1) % this.items.length;
+    },
+  },
 };
 </script>
-  
-  <style lang="less" scoped>
-.item {
-    height: 300px;
-    font-size: 40px;
-    background-image: linear-gradient(45deg, red, yellow, green);
-    text-align: center;
-    line-height: 200px;
+ <style>
+.carousel {
+  position: relative;
+  width: 100%;
+  height: 300px;
+  overflow: hidden;
+}
+.carousel-slide {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.3s ease-in-out;
+}
+.carousel-item {
+  flex: 1;
+  padding: 20px;
+}
+.carousel-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.carousel-dots {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.carousel-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: #ccc;
+  margin: 0 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease-in-out;
+}
+.carousel-dot.active {
+  background-color: #333;
+}
+.carousel-prev,
+.carousel-next {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background-color: rgba(0, 0, 0, 0.5);
+  color: #fff;
+  font-size: 30px;
+  text-align: center;
+  line-height: 50px;
+  cursor: pointer;
+  transition: background-color 0.3s ease-in-out;
+}
+.carousel-prev:hover,
+.carousel-next:hover {
+  background-color: rgba(0, 0, 0, 0.8);
+}
+.carousel-prev {
+  left: 20px;
+}
+.carousel-next {
+  right: 20px;
 }
 </style>

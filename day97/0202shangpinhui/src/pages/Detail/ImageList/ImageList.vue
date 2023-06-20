@@ -1,8 +1,8 @@
 <template>
   <div class="swiper-container">
     <div class="swiper-wrapper">
-      <div class="swiper-slide">
-        <img src="../images/s1.png">
+      <div class="swiper-slide" v-for = "item in list" :key="item.id" >
+        <img :src="item.imgUrl">
       </div>
     </div>
     <div class="swiper-button-next"></div>
@@ -13,8 +13,20 @@
 <script>
 
   import Swiper from 'swiper'
+
   export default {
     name: "ImageList",
+    props:['list'],
+    mounted(){
+      new Swiper('.swiper-container',{
+        slidesPerView:5,//同时展示几张
+        // 上一张，下一张
+        navigation:{
+          nextEl:'.swiper-button-next',
+          prevEl:'.swiper-button-prev',
+        },
+      })
+    }
   }
 </script>
 
