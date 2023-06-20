@@ -1,0 +1,38 @@
+<!--
+ * @Author: 王泽昌 624946829@qq.com
+ * @Date: 2023-06-20 19:06:06
+ * @LastEditors: 王泽昌 624946829@qq.com
+ * @LastEditTime: 2023-06-20 19:26:00
+ * @FilePath: \day97\axios\1.test.html
+ * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE 
+-->
+<!DOCTYPE html>
+<html lang="en">
+ <head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+   <script src="./js/cdn.bootcdn.net_ajax_libs_axios_1.3.6_axios.js"></script>
+ </head>
+<body>
+    <button onclick="test1()">获取所有人（get请求 -不传参数）</button>
+
+    <script >
+
+        async function test1(){
+            // 用axios发送get请求
+            // 简单写法
+        //    let result = await axios.get('http://localhost:5000/persons')
+         
+        // 完整写法
+        let result = await axios({
+            url:'http://localhost:5000/persons',
+            method:'GET',
+
+        })
+
+        console.log(result.data.data);
+
+        }
+    </script>
+</body>
+</html>
