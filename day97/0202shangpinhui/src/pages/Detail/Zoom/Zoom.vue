@@ -1,9 +1,9 @@
 <template>
   <div class="spec-preview">
-    <img src="imgUrl" />
-    <div class="event" @mousemove = "move"></div>
+    <img :src="url || imgUrl" />
+    <div class="event" @mousemove="move"></div>
     <div class="big">
-      <img src="imgUrl" ref="bigImg"/>
+      <img :src="url || imgUrl" ref="bigImg"/>
     </div>
     <div class="mask" ref="mask"></div>
   </div>
@@ -13,6 +13,11 @@
 
   export default {
     name: "Zoom",
+    data(){
+      return {
+        url:''
+      }
+    },
     props:['imgUrl'],
     methods:{
       move(event){
@@ -42,8 +47,19 @@
         //让大图动起来
         bigImg.style.left = -2*maskX + 'px'
         bigImg.style.top = -2*maskY + 'px'
+      },
+      saveUrl(value){
+        this.url = value
       }
-    }
+    },
+    mounted() {
+          //给总线绑定事件，用于接收新的图片地址
+          this.$bus.$on('send-imgurl',this.saveUrl)
+        },
+    beforeDestroy(){
+        this.$bus.$off('send-imgurl')
+      }
+
 
   }
 </script>

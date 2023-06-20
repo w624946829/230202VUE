@@ -17,9 +17,15 @@
                 <!-- 左侧放大镜区域 -->
                 <div class="previewWrap">
                     <!--放大镜效果-->
-                    <Zoom />
+                    <Zoom
+                        v-if="info.skuInfo.skuDefaultImg"
+                        :imgUrl="info.skuInfo.skuDefaultImg"
+                    />
                     <!-- 小图列表 -->
-                    <ImageList :list="info.skuInfo.skuImageList"/>
+                    <ImageList
+                        v-if="info.skuInfo.skuImageList"
+                        :list="info.skuInfo.skuImageList"
+                    />
                 </div>
                 <!-- 右侧选择区域布局 -->
                 <div class="InfoWrap" v-if="info.skuInfo">
@@ -54,6 +60,12 @@
                                     :class="{ active: value.isChecked * 1 }"
                                     v-for="value in attr.spuSaleAttrValueList"
                                     :key="value.id"
+                                    @click="
+                                        changeAttr(
+                                            attr.spuSaleAttrValueList,
+                                            value.id
+                                        )
+                                    "
                                 >
                                     {{ value.saleAttrValueName }}
                                 </dd>
@@ -61,12 +73,17 @@
                         </div>
                         <div class="cartWrap">
                             <div class="controls">
-                                <input autocomplete="off" class="itxt" />
-                                <a href="javascript:" class="plus">+</a>
-                                <a href="javascript:" class="mins">-</a>
+                                <input
+                                    autocomplete="off"
+                                    class="itxt"
+                                    :value="goodsNum"
+                                    @change="changeGoodsNum('input',$event)"
+                                />
+                                <a href="javascript:" class="plus" @click="changeGoodsNum('increment')">+</a>
+                                <a href="javascript:" class="mins" @click="changeGoodsNum('decrement')">-</a>
                             </div>
                             <div class="add">
-                                <a href="javascript:">加入购物车</a>
+                                <a href="javascript:" @click = "addCart">加入购物车</a>
                             </div>
                         </div>
                     </div>
@@ -77,15 +94,19 @@
 </template>
 
 <script>
-import { reqGoodsInfo } from "@/api";
+import { reqGoodsInfo,reqAddToCart } from "@/api";
 import ImageList from "./ImageList/ImageList";
 import Zoom from "./Zoom/Zoom";
+import { goodsNumReg } from "@/utils/reg";
 
 export default {
     name: "Detail",
     data() {
         return {
-            info: {}, //商品详情信息
+            info: {
+                skuInfo: {},
+            }, //商品详情信息
+            goodsNum: 1,
         };
     },
     components: {
@@ -106,6 +127,62 @@ export default {
                 alert(`获取商品详情数据失败:${message}`);
             }
         },
+        // 切换商品属性
+        changeAttr(list, id) {
+            list.forEach((item) => {
+                if (item.id === id) {
+                    item.isChecked = "1";
+                } else {
+                    item.isChecked = "0";
+                }
+            });
+        },
+        changeGoodsNum(type, event) {
+            switch (type) {
+                case "input":
+                    // 获取用户的输入
+                    let { value } = event.target;
+                    // 使用正则表达式进行校验
+                    let result = goodsNumReg.test(value);
+                    // 判断校验的结果
+                    if (result) {
+                        console.log("你输入的数量是合法的，我可以给你存入");
+                        this.goodsNum = value * 1;
+                    } else if (value > 200) {
+                        console.log(
+                            "你输入的数量超过了200，可以接受，我帮你重置为200"
+                        );
+                        this.goodsNum = event.target.value = 200;
+                    } else {
+                        console.log(
+                            "你输入的非常不合理，不可以原谅，我帮你重置为1"
+                        );
+                        this.goodsNum = event.target.value = 1;
+                    }
+                    break;
+                    case "increment":
+                        this.goodsNum === 200 ? alert ('最大的购买数量为200') : this.goodsNum += 1 
+                        break;
+
+                    case 'decrement':
+                        this.goodsNum === 1 ? alert ('最小购买数量为1 ！') : this.goodsNum -= 1 
+                        break;
+            }
+
+        },
+        async addCart(){
+            const {id} = this.$route.params
+            let {code,message} = await reqAddToCart(id,this.goodsNum)
+            if(code === 200 ){
+                //跳转到添加购物车路由’
+                this.$router.push({
+                    path:'/addcart_success'
+
+                })
+            }else{
+                alert(`商品添加购物车失败：${message}`)
+            }
+        }
     },
     mounted() {
         // 组件一挂载就发请求获取详情数据
@@ -267,6 +344,7 @@ export default {
                                 border-right: 1px solid #bbb;
                                 border-bottom: 1px solid #bbb;
                                 border-left: 1px solid #eee;
+                                cursor: pointer;
 
                                 &.active {
                                     color: green;
@@ -285,7 +363,7 @@ export default {
 
                             .itxt {
                                 width: 38px;
-                                height: 37px;
+                                height: 35px;
                                 border: 1px solid #ddd;
                                 color: #555;
                                 float: left;
