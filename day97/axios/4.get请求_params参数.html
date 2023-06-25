@@ -2,7 +2,7 @@
  * @Author: 王泽昌 624946829@qq.com
  * @Date: 2023-06-20 19:06:06
  * @LastEditors: 王泽昌 624946829@qq.com
- * @LastEditTime: 2023-06-20 20:04:34
+ * @LastEditTime: 2023-06-25 23:08:45
  * @FilePath: \day97\axios\1.test.html
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE 
 -->
@@ -14,7 +14,9 @@
     <script src="./js/cdn.bootcdn.net_ajax_libs_axios_1.3.6_axios.js"></script>
   </head>
   <body>
-    <button onclick="test1()">获取所有人（get请求 -不传参数）</button>
+    <button onclick="test1()">获取所有人（get请求 -不传参数）</button><br><br><br>
+    <button onclick="test2()">通过id 获取一个人（get请求-query参数）</button><br><br><br>
+    <button onclick="test3()">通过age 获取一堆人（get请求-params参数）</button><br><br><br>
 
     <script type="text/javascript">
       // 请求拦截器
@@ -31,8 +33,10 @@
         return res.data  
     },
         // 响应失败的回调
-        err=> {console.log("响应失败了", err)
-        return new Promise
+        err=> {
+          // console.log("响应失败了", err)
+        alert(err)
+          return new Promise
     }
       );
 
@@ -49,6 +53,33 @@
 
         console.log('成功了',result);
       }
-    </script>
+
+      async function test2(){
+        // 简写一方式，query直接拼接在路径中
+        // let result = await axios.get('/person?id=1618480594484')
+
+        // 简写二方式，靠配置项，指定query参数,携带query参数是，配置项叫做params
+        let result = await axios.get('/person',{
+          params:{
+          id:'1618480594484'
+        }})
+
+        console.log(result);
+      }
+   
+      async function test3 (){
+        //简单写法，只能自己拼
+        // let result = await axios.get('/filter/19')
+
+        // 完整写法，靠配置项
+        let result = await axios({
+          url:'/filter/19',
+          method:'GET'
+        })
+
+        console.log(result);
+      }
+    
+   </script>
   </body>
 </html>

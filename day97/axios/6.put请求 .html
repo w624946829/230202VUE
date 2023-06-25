@@ -1,0 +1,122 @@
+<!--
+ * @Author: 王泽昌 624946829@qq.com
+ * @Date: 2023-06-20 19:06:06
+ * @LastEditors: 王泽昌 624946829@qq.com
+ * @LastEditTime: 2023-06-26 00:08:28
+ * @FilePath: \day97\axios\1.test.html
+ * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE 
+-->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Document</title>
+    <script src="./js/cdn.bootcdn.net_ajax_libs_axios_1.3.6_axios.js"></script>
+  </head>
+  <body>
+    <button onclick="test1()">获取所有人（get请求 -不传参数）</button><br><br><br>
+    <button onclick="test2()">通过id 获取一个人（get请求-query参数）</button><br><br><br>
+    <button onclick="test3()">通过age 获取一堆人（get请求-params参数）</button><br><br><br>
+    <button onclick="test4()">添加一个人（post请求-请求体参数）</button><br><br><br>
+    <button onclick="test5()">更新一个人（put请求）</button><br><br><br>
+
+    <script type="text/javascript">
+      // 请求拦截器
+      axios.interceptors.request.use((config) => {
+        config.baseURL = "http://localhost:5000";
+        return config;
+      });
+
+      // 响应拦截器
+      axios.interceptors.response.use(
+        // 响应成功的回调
+        res=> {
+            console.log("响应成功了")
+        return res.data  
+    },
+        // 响应失败的回调
+        err=> {
+          // console.log("响应失败了", err)
+        alert(err)
+          return new Promise
+    }
+      );
+
+      async function test1() {
+        // 用axios发送get请求
+        // 简单写法
+        //    let result = await axios.get('http://localhost:5000/persons')
+
+        // 完整写法
+        let result = await axios({
+          url: "/persons",
+          method: "GET",
+        });
+
+        console.log('成功了',result);
+      }
+
+      async function test2(){
+        // 简写一方式，query直接拼接在路径中
+        // let result = await axios.get('/person?id=1618480594484')
+
+        // 简写二方式，靠配置项，指定query参数,携带query参数是，配置项叫做params
+        let result = await axios.get('/person',{
+          params:{
+          id:'1618480594484'
+        }})
+
+        console.log(result);
+      }
+   
+      async function test3 (){
+        //简单写法，只能自己拼
+        // let result = await axios.get('/filter/19')
+
+        // 完整写法，靠配置项
+        let result = await axios({
+          url:'/filter/19',
+          method:'GET'
+        })
+
+        console.log(result);
+      }
+      
+      async function test4(){
+        // 简单写法1 json编码
+        // let result = await axios.post ('/person',{name:'硕硕',age:18})
+
+        // 简单写法2
+        // let result = await axios.post ('/person','name=老八 & age=32')
+
+        // 完整写法
+        let result = await axios ({
+          url:'/person',
+          method:'POST',
+          data:{name:'啾啾',age:19}
+
+        })
+
+        console.log(result);
+      }
+
+      async function test5(){
+        // 简单写法1
+        // let result = await axios.put('/person',{id: '1687706125316', name: '叮叮', age: 13})
+        
+        // 简单写法2
+        // let result = await axios.put('/person','id=1687706125316&name=砰砰&age=13')
+
+        let result = await axios({
+          url:'/person',
+          method:'PUT',
+          data:{id:'1687706125316',name:'拉拉',age:25}
+
+        })
+        console.log(result);
+      }
+
+
+   </script>
+  </body>
+</html>
