@@ -18,7 +18,7 @@
                                 type="checkbox"
                                 name="chk_list"
                                 :checked="c.isChecked"
-                                @click.prevent="checkOne(c, $event)"
+                                @click.prevent="changeSkuNum(c, $event)"
                             />
                         </li>
                         <li class="cart-list-con2">
@@ -33,9 +33,9 @@
                             <input
                                 autocomplete="off"
                                 type="text"
-                                minnum="1"
                                 class="itxt"
                                 :value="c.skuNum"
+                                @change="changeSkuNum(c, $event)"
                             />
                             <a href="javascript:void(0)" class="plus">+</a>
                         </li>
@@ -94,7 +94,8 @@
 </template>
 
 <script>
-import { reqCartList, reqCheckOne, reqCheckAll, reqDeleteOne,reqBatchDelete } from "@/api";
+import { reqCartList, reqCheckOne, reqCheckAll, reqDeleteOne,reqBatchDelete,reqAddToCart } from "@/api";
+import { goodsNumReg } from "@/utils/reg";
 export default {
     name: "ShopCart",
     data() {
@@ -188,6 +189,15 @@ export default {
                 alert(`删除商品失败：${message}`);
             }
         },
+        async changeSkuNum(info,event){
+            const {value} = event.target
+            const {skuId,skuNum} = info
+            if(goodsNumReg.test(value)){
+                const disNum = value - skuNum
+                let result = await reqAddToCart(skuId,disNum)
+                console.log(result);
+            }
+        }
     },
     mounted() {
         this.getCartList();
