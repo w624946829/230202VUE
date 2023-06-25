@@ -17,8 +17,8 @@
                             <input
                                 type="checkbox"
                                 name="chk_list"
-                                :checked="c.isChecked" @click.prevent="checkOne(c,$event)"
-                            
+                                :checked="c.isChecked"
+                                @click.prevent="checkOne(c, $event)"
                             />
                         </li>
                         <li class="cart-list-con2">
@@ -45,23 +45,36 @@
                             >
                         </li>
                         <li class="cart-list-con7">
-                            <a href="#none" class="sindelet">删除</a>
+                            <a
+                                href="#none"
+                                class="sindelet"
+                                @click="deleteOne(c.skuId)"
+                                >删除</a
+                            >
                             <br />
                         </li>
                     </ul>
                 </div>
             </div>
             <!-- 全选框 -->
-            <div class="cart-tool" >
+            <div class="cart-tool">
                 <div class="select-all">
-                    <input class="chooseAll" type="checkbox" :checked="isAll" @click.prevent="checkAll"/>
+                    <input
+                        class="chooseAll"
+                        type="checkbox"
+                        :checked="isAll"
+                        @click.prevent="checkAll"
+                    />
                     <span>全选</span>
                 </div>
                 <div class="option">
-                    <a href="#none">删除选中的商品</a>
+                    <a href="#none" @click="batchDelete">删除选中的商品</a>
                 </div>
                 <div class="money-box">
-                    <div class="chosed">已选择 <span>{{ total }}</span>件商品</div>
+                    <div class="chosed">
+                        已选择 <span>{{ total }}</span
+                        >件商品
+                    </div>
                     <div class="sumprice">
                         <em>总价（不含运费） ：</em>
                         <i class="summoney">{{ totalPrice }}</i>
@@ -81,7 +94,7 @@
 </template>
 
 <script>
-import { reqCartList, reqCheckOne ,reqCheckAll} from "@/api";
+import { reqCartList, reqCheckOne, reqCheckAll, reqDeleteOne,reqBatchDelete } from "@/api";
 export default {
     name: "ShopCart",
     data() {
@@ -89,17 +102,27 @@ export default {
             cartInfoList: [],
         };
     },
-    computed:{
+    computed: {
         // 计算是否全选
-      isAll(){
-        return this.cartInfoList.every((c)=>c.isChecked)&&this.cartInfoList.length
-      },
-      total(){
-        return this.cartInfoList.reduce((pre,item)=>pre + (item.isChecked ? item.skuNum :0),0)
-      },
-      totalPrice(){
-        return this.cartInfoList.reduce((pre,item)=>pre + (item.isChecked ? item.skuNum * item.skuPrice : 0),0)
-      }
+        isAll() {
+            return (
+                this.cartInfoList.every((c) => c.isChecked) &&
+                this.cartInfoList.length
+            );
+        },
+        total() {
+            return this.cartInfoList.reduce(
+                (pre, item) => pre + (item.isChecked ? item.skuNum : 0),
+                0
+            );
+        },
+        totalPrice() {
+            return this.cartInfoList.reduce(
+                (pre, item) =>
+                    pre + (item.isChecked ? item.skuNum * item.skuPrice : 0),
+                0
+            );
+        },
     },
 
     methods: {
@@ -113,30 +136,58 @@ export default {
             }
         },
         // 勾选单个商品的回调
-        async checkOne(cartInfo,event){
-          let {checked} = event.target
-          checked = checked ? 1 :0
-          let { code,message } =await reqCheckOne(cartInfo.skuId,checked)
-          if(code === 200){
-            cartInfo.isChecked = checked
-          }else{
-            alert('勾选商品失败：'+ message)
-          }
-           
+        async checkOne(cartInfo, event) {
+            let { checked } = event.target;
+            checked = checked ? 1 : 0;
+            let { code, message } = await reqCheckOne(cartInfo.skuId, checked);
+            if (code === 200) {
+                cartInfo.isChecked = checked;
+            } else {
+                alert("勾选商品失败：" + message);
+            }
         },
         // 勾选or取消勾选 所有商品的回调
-        async checkAll(event){
-          let {checked} = event.target
-            checked = checked ? 1 :0
-            const skuIdList = []
-            this.cartInfoList.forEach(c=>skuIdList.push(c.skuId))
-            let {code,message} = await reqCheckAll(skuIdList,checked)
-            if(code === 200 ){
-                this.cartInfoList.forEach(c=>c.isChecked = checked)
-            }else{
-                alert(`全选商品失败：${message}`)
+        async checkAll(event) {
+            let { checked } = event.target;
+            checked = checked ? 1 : 0;
+            const skuIdList = [];
+            this.cartInfoList.forEach((c) => skuIdList.push(c.skuId));
+            let { code, message } = await reqCheckAll(skuIdList, checked);
+            if (code === 200) {
+                this.cartInfoList.forEach((c) => (c.isChecked = checked));
+            } else {
+                alert(`全选商品失败：${message}`);
             }
-        }
+        },
+        async deleteOne(skuId) {
+            if (confirm("确定要删除吗？")) {
+                let { code, message } = await reqDeleteOne(skuId);
+                if (code === 200) {
+                    let index = this.cartInfoList.findIndex(
+                        (item) => item.skuId === skuId
+                    );
+                    this.cartInfoList.splice(index, 1);
+                }
+            } else {
+                alert(`删除商品失败：${message}`);
+            }
+        },
+        async batchDelete() {
+            if (confirm("确定要删除吗？")) {
+                const idList = [];
+                this.cartInfoList.forEach((item) => {
+                    if (item.isChecked) {
+                        idList.push(item.isChecked);
+                    }
+                });
+                let {code,message} = await reqBatchDelete(idList)
+                if(code === 200){
+                    this.cartInfoList = this.cartInfoList.filter(item=>!item.isChecked)
+                }
+            } else {
+                alert(`删除商品失败：${message}`);
+            }
+        },
     },
     mounted() {
         this.getCartList();

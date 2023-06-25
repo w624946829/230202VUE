@@ -2,7 +2,7 @@
  * @Author: 王泽昌 624946829@qq.com
  * @Date: 2023-06-13 08:28:37
  * @LastEditors: 王泽昌 624946829@qq.com
- * @LastEditTime: 2023-06-21 16:33:21
+ * @LastEditTime: 2023-06-25 09:25:50
  * @FilePath: \day92\0202shangpinhui\src\api\index.js
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -42,4 +42,11 @@ export const reqCheckOne =  (id,isChecked)=>ajax.get(`/cart/checkCart/${id}/${is
 
 // 获取购物车列表
 export const reqCheckAll =  (skuIdList ,flag)=>ajax.post(`/cart/batchCheckCart/${flag}`,skuIdList)
+
+
+// 请求删除购物车商品
+export const reqDeleteOne =  (id)=>ajax.delete(`/cart/deleteCart/${id}`)
+
+// 请求删除购物车中多个商品
+export const reqBatchDelete =  (idList)=>ajax.post('/cart/batchDeleteCart',idList)
   
