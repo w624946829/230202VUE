@@ -29,15 +29,25 @@
                             <span class="price">￥{{ c.cartPrice }}</span>
                         </li>
                         <li class="cart-list-con5">
-                            <a href="javascript:void(0)" class="mins">-</a>
+                            <a
+                                href="javascript:void(0)"
+                                class="mins"
+                                @click="changeSkuNum('decrement', c)"
+                                >-</a
+                            >
                             <input
                                 autocomplete="off"
                                 type="text"
                                 class="itxt"
                                 :value="c.skuNum"
-                                @change="changeSkuNum(c, $event)"
+                                @change="changeSkuNum('input', c, $event)"
                             />
-                            <a href="javascript:void(0)" class="plus">+</a>
+                            <a
+                                href="javascript:void(0)"
+                                class="plus"
+                                @click="changeSkuNum('increment', c)"
+                                >+</a
+                            >
                         </li>
                         <li class="cart-list-con6">
                             <span class="sum"
@@ -94,7 +104,14 @@
 </template>
 
 <script>
-import { reqCartList, reqCheckOne, reqCheckAll, reqDeleteOne,reqBatchDelete,reqAddToCart } from "@/api";
+import {
+    reqCartList,
+    reqCheckOne,
+    reqCheckAll,
+    reqDeleteOne,
+    reqBatchDelete,
+    reqAddToCart,
+} from "@/api";
 import { goodsNumReg } from "@/utils/reg";
 export default {
     name: "ShopCart",
@@ -181,30 +198,93 @@ export default {
                         idList.push(item.isChecked);
                     }
                 });
-                let {code,message} = await reqBatchDelete(idList)
-                if(code === 200){
-                    this.cartInfoList = this.cartInfoList.filter(item=>!item.isChecked)
+                let { code, message } = await reqBatchDelete(idList);
+                if (code === 200) {
+                    this.cartInfoList = this.cartInfoList.filter(
+                        (item) => !item.isChecked
+                    );
                 }
             } else {
                 alert(`删除商品失败：${message}`);
             }
         },
-        async changeSkuNum(info,event){
-            const {value} = event.target
-            const {skuId,skuNum} = info
-            if(goodsNumReg.test(value)){
-                const disNum = value - skuNum
-                let {code,message} = await reqAddToCart(skuId,disNum)
-                if(code === 200){
-                    info.skuNum = value*1
-                }else{
-                    //清空页面
-                    event.target.value = skuNum
-                    alert(`修改商品数量失败：${message}`);
-                }
+        async changeSkuNum(type, info, event) {
+            //    获取需要修改的商品id
+            const { skuId, skuNum } = info;
+
+            switch (type) {
+                case "increment":
+                    if (skuNum === 200) {
+                        alert("最大购买数量为200");
+                    } else {
+                        let { code, message } = await reqAddToCart(skuId, 1);
+                        if (code === 200) {
+                            info.skuNum += 1;
+                        } else {
+                            alert(`修改商品数量失败,${message}`);
+                        }
+                    }
+
+                    break;
+                case "decrement":
+                    if (skuNum === 1) {
+                        alert("最小购买数量为1");
+                    } else {
+                        let { code, message } = await reqAddToCart(skuId, -1);
+                        if (code === 200) {
+                            info.skuNum -= 1;
+                        } else {
+                            alert(`修改商品数量失败,${message}`);
+                        }
+                    }
+                    break;
+                case "input":
+                    // 获取用户的输入
+                    const { value } = event.target;
+                    // 校验输入
+                    if (goodsNumReg.test(value)) {
+                        const disNum = value - skuNum;
+                        let { code, message } = await reqAddToCart(
+                            skuId,
+                            disNum
+                        );
+                        if (code === 200) {
+                            info.skuNum = value * 1;
+                        } else {
+                            //清空页面
+                            event.target.value = skuNum;
+                            alert(`修改商品数量失败：${message}`);
+                        }
+                    } else if (value > 200) {
+                        // 输入的不合法，但是可以原谅，原因是输入的太多
+                        const disNum = 200 - skuNum;
+                        // 发请求
+                        let { code, message } = await reqAddToCart(
+                            skuId,
+                            disNum
+                        );
+                        // 判断业务逻辑
+                        if (code === 200) {
+                            // 维护本地数据
+                            // 第一种更新
+                            // info.skuNum = event.target.value =  200;
+                            // 第二种 vue自带强制更新（效率可能存在问题）
+                            info.skuNum = 200;
+                            this.$forceUpdate();
+                        } else {
+                            //清空页面，避免页面残留
+                            event.target.value = skuNum;
+                            alert(`修改商品数量失败：${message}`);
+                        }
+                    } else {
+                        // 输入的不合法，且不可原谅
+                        event.target.value = skuNum;
+                    }
+                    break;
             }
-        }
+        },
     },
+
     mounted() {
         this.getCartList();
     },
