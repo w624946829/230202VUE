@@ -194,8 +194,14 @@ export default {
             const {skuId,skuNum} = info
             if(goodsNumReg.test(value)){
                 const disNum = value - skuNum
-                let result = await reqAddToCart(skuId,disNum)
-                console.log(result);
+                let {code,message} = await reqAddToCart(skuId,disNum)
+                if(code === 200){
+                    info.skuNum = value*1
+                }else{
+                    //清空页面
+                    event.target.value = skuNum
+                    alert(`修改商品数量失败：${message}`);
+                }
             }
         }
     },
