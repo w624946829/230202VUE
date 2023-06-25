@@ -104,6 +104,7 @@
 </template>
 
 <script>
+
 import {
     reqCartList,
     reqCheckOne,
@@ -208,7 +209,15 @@ export default {
                 alert(`删除商品失败：${message}`);
             }
         },
+        // 修改商品数量的回调
         async changeSkuNum(type, info, event) {
+            
+
+            if(this.isLock ){
+                console.log('锁定中。。。。');
+                return
+            }
+            this.isLock = true
             //    获取需要修改的商品id
             const { skuId, skuNum } = info;
 
@@ -220,6 +229,7 @@ export default {
                         let { code, message } = await reqAddToCart(skuId, 1);
                         if (code === 200) {
                             info.skuNum += 1;
+                            info.isChecked = 1 
                         } else {
                             alert(`修改商品数量失败,${message}`);
                         }
@@ -233,6 +243,7 @@ export default {
                         let { code, message } = await reqAddToCart(skuId, -1);
                         if (code === 200) {
                             info.skuNum -= 1;
+                            info.isChecked = 1 
                         } else {
                             alert(`修改商品数量失败,${message}`);
                         }
@@ -250,6 +261,7 @@ export default {
                         );
                         if (code === 200) {
                             info.skuNum = value * 1;
+                            info.isChecked = 1 
                         } else {
                             //清空页面
                             event.target.value = skuNum;
@@ -282,6 +294,7 @@ export default {
                     }
                     break;
             }
+            this.isLock = false
         },
     },
 

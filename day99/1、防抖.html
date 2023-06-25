@@ -1,0 +1,35 @@
+<!--
+ * @Author: 王泽昌 624946829@qq.com
+ * @Date: 2023-06-25 14:38:09
+ * @LastEditors: 王泽昌 624946829@qq.com
+ * @LastEditTime: 2023-06-25 15:17:17
+ * @FilePath: \day99\1.html
+ * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
+-->
+<!DOCTYPE html>
+<html lang="en">
+ <head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <script src="https://cdn.bootcdn.net/ajax/libs/lodash.js/4.17.21/lodash.min.js"></script>
+ </head>
+<body>
+    <input type="text " oninput="sendAjax(event)">
+    <script>
+        // 原生写法
+        let timer ;
+        function sendAjax(event){
+            if(timer){
+                clearInterval(timer)
+            }
+            timer = setTimeout(()=>{
+                console.log(`发送网络请求：${event.target.value}`);
+            },2000)
+        }
+        // 插件解决lodash
+// const sendAjax = _.debounce (function (event){ 
+        //     console.log(`发送网络请求：${event.target.value}`);
+        // },500 )
+    </script>
+</body>
+</html>

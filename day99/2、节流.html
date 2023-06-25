@@ -1,0 +1,39 @@
+<!--
+ * @Author: 王泽昌 624946829@qq.com
+ * @Date: 2023-06-25 15:20:38
+ * @LastEditors: 王泽昌 624946829@qq.com
+ * @LastEditTime: 2023-06-25 15:26:24
+ * @FilePath: \day99\2、节流.html
+ * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
+-->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Document</title>
+    <script src="https://cdn.bootcdn.net/ajax/libs/lodash.js/4.17.21/lodash.min.js"></script>
+  </head>
+  <body>
+    <button onclick="sendAjax()">点我开始秒杀</button>
+    <script>
+        // 原生节流
+      /*  
+      let canExcute = true;
+      function sendAjax() {
+        if (canExcute) {
+          canExcute = false;
+          console.log("发送网络请求~~~00011");
+          setTimeout(() => {
+            canExcute = true;
+          }, 2000);
+        }
+      }
+      */
+
+    //   借助lodash
+    const sendAjax = _.throttle(function(){
+        console.log('发送网络请求~~~00011');
+    },2000,{trailing:false})
+    </script>
+  </body>
+</html>
