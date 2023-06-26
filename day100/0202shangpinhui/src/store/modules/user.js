@@ -9,7 +9,8 @@ const actions = {
     if (code === 200) {
       commit("SAVE_USER_INFO", data);
     } else {
-      Message.error(Message);
+      Message.error(message);
+      return Promise.reject()
     }
   },
 };

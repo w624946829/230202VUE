@@ -68,7 +68,7 @@ import {saveToken} from '@/utils/auth'
           saveToken(data.token)
          
           // 根据token获取用户信息
-          this.$store.dispatch("user/getUserInfo")
+          // this.$store.dispatch("user/getUserInfo")
 
           // 跳转到主页
           this.$router.push('/home')
