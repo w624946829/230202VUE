@@ -99,7 +99,7 @@ export default {
         // 退出登录
         quit(){
             if(confirm('确定要退出吗')){
-                this.$store.dispatch('quit')
+                this.$store.dispatch('user/getLogout')
             }
         }
     },

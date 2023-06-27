@@ -6,26 +6,31 @@ import router from '@/router'
 const actions = {
   async getUserInfo({ commit }) {
     // 发送请求获取用户信息
-    const {code,data,message} = await reqUserInfo();
+    const {code,data} = await reqUserInfo();
     // 判断是否获取成功
     if (code === 200) {
       commit("SAVE_USER_INFO", data);
     } else {
-      Message.error(message);
+      Message.error('身份过期，请重新登录');
       return Promise.reject()
     }
   },
   // 退出登录
   async getLogout({commit}){
-    const {code,data,message} = await reqQuit()
+    // 1、联系服务器删除token
+    const {code,message} = await reqQuit()
     if (code === 200) {
+      // 提示
       Message.success('退出登录成功');
+      // 3、删除vuex中的信息
       commit("CLEAR_USER_INFO");
+      // 4、删除本地的token
       deleteToken()
+      // 5、跳转到登录页面
       router.push('/login')
 
     } else {
-      Message.error(result.message)
+      Message.error(message)
   }
 }
 };
@@ -41,7 +46,6 @@ const mutations = {
 };
 const state = {
     info: {},
-    once:{}
 };
 const getters = {};
 export default {
