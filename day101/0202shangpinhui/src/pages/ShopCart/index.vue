@@ -18,7 +18,7 @@
                                 type="checkbox"
                                 name="chk_list"
                                 :checked="c.isChecked"
-                                @click.prevent="changeSkuNum(c, $event)"
+                                @click.prevent="checkOne(c, $event)"
                             />
                         </li>
                         <li class="cart-list-con2">
@@ -90,7 +90,9 @@
                         <i class="summoney">{{ totalPrice }}</i>
                     </div>
                     <div class="sumbtn">
-                        <router-link class="sum-btn" to="/trade">结算</router-link>
+                        <router-link class="sum-btn" to="/trade"
+                            >结算</router-link
+                        >
                     </div>
                 </div>
             </div>
@@ -104,7 +106,6 @@
 </template>
 
 <script>
-
 import {
     reqCartList,
     reqCheckOne,
@@ -167,18 +168,22 @@ export default {
             }
         },
         // 勾选or取消勾选 所有商品的回调
-        async checkAll(event) {
-            let { checked } = event.target;
-            checked = checked ? 1 : 0;
-            const skuIdList = [];
-            this.cartInfoList.forEach((c) => skuIdList.push(c.skuId));
-            let { code, message } = await reqCheckAll(skuIdList, checked);
-            if (code === 200) {
-                this.cartInfoList.forEach((c) => (c.isChecked = checked));
-            } else {
-                alert(`全选商品失败：${message}`);
-            }
-        },
+        async checkOne(cartInfo,event){
+        // 获取勾选状态（勾选 不勾选）
+        let {checked} = event.target
+        // 根据勾选与不勾选（true 或 false），赋一个符合服务器要求的值（1 或 0）
+        checked = checked ? 1 : 0
+        // 联系服务器勾选
+        let {code,message} = await reqCheckOne(cartInfo.skuId,checked)
+        // 判断业务逻辑
+        if(code === 200){
+          // 维护本地数据
+          cartInfo.isChecked = checked
+        }else {
+          alert(`勾选商品失败：${message}`)
+        }
+      },
+        // 删除单个商品的回调
         async deleteOne(skuId) {
             if (confirm("确定要删除吗？")) {
                 let { code, message } = await reqDeleteOne(skuId);
@@ -192,6 +197,7 @@ export default {
                 alert(`删除商品失败：${message}`);
             }
         },
+        // 删除多个商品的回调
         async batchDelete() {
             if (confirm("确定要删除吗？")) {
                 const idList = [];
@@ -205,20 +211,19 @@ export default {
                     this.cartInfoList = this.cartInfoList.filter(
                         (item) => !item.isChecked
                     );
+                } else {
+                    alert(`删除商品失败：${message}`);
                 }
-            } else {
-                alert(`删除商品失败：${message}`);
             }
         },
+
         // 修改商品数量的回调
         async changeSkuNum(type, info, event) {
-            
-
-            if(this.isLock ){
-                console.log('锁定中。。。。');
-                return
+            if (this.isLock) {
+                console.log("锁定中。。。。");
+                return;
             }
-            this.isLock = true
+            this.isLock = true;
             //    获取需要修改的商品id
             const { skuId, skuNum } = info;
 
@@ -230,7 +235,7 @@ export default {
                         let { code, message } = await reqAddToCart(skuId, 1);
                         if (code === 200) {
                             info.skuNum += 1;
-                            info.isChecked = 1 
+                            info.isChecked = 1;
                         } else {
                             alert(`修改商品数量失败,${message}`);
                         }
@@ -244,7 +249,7 @@ export default {
                         let { code, message } = await reqAddToCart(skuId, -1);
                         if (code === 200) {
                             info.skuNum -= 1;
-                            info.isChecked = 1 
+                            info.isChecked = 1;
                         } else {
                             alert(`修改商品数量失败,${message}`);
                         }
@@ -262,7 +267,7 @@ export default {
                         );
                         if (code === 200) {
                             info.skuNum = value * 1;
-                            info.isChecked = 1 
+                            info.isChecked = 1;
                         } else {
                             //清空页面
                             event.target.value = skuNum;
@@ -295,7 +300,7 @@ export default {
                     }
                     break;
             }
-            this.isLock = false
+            this.isLock = false;
         },
     },
 

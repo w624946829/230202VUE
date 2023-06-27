@@ -7,8 +7,8 @@
           <span class="success-info">订单提交成功，请您及时付款，以便尽快为您发货~~</span>
         </h4>
         <div class="paymark">
-          <span class="fl">请您在提交订单<em class="orange time">4小时</em>之内完成支付，超时订单会自动取消。订单号：<em>145687</em></span>
-          <span class="fr"><em class="lead">应付金额：</em><em class="orange money">￥17,654</em></span>
+           <span class="fl">请您在提交订单<em class="orange time">4小时</em>之内完成支付，超时订单会自动取消。订单号：<em>{{$route.query.id}}</em></span>
+          <span class="fr"><em class="lead">应付金额：</em><em class="orange money">￥{{payInfo.totalFee}}</em></span>
         </div>
       </div>
       <div class="checkout-info">
@@ -36,7 +36,8 @@
         </div>
 
         <div class="submit">
-          <router-link class="btn" to="/paysuccess">立即支付</router-link>
+          <!-- <router-link class="btn" to="/paysuccess">立即支付</router-link> -->
+          <a class="btn" @click="pay">立即支付</a>
         </div>
       </div>
     </div>
@@ -44,9 +45,42 @@
 </template>
 
 <script>
+  import {reqPayInfo} from '@/api'
+
+
   export default {
     name: 'Pay',
+    
+    data(){
+      return {
+        payInfo:{}
+      }
+    },
+    methods:{
+      async getPayInfo(){
+        let {code,data,message} = await reqPayInfo(this.$route.query.id)
+        if(code === 200){
+          this.payInfo = data
+         }else{
+          this.$message.warning(message)
+         }
+      }  ,
+      pay(){
+        this.$alert('<img src="http://49.232.112.44/images/girl.gif" style="width:200px">', '小姐姐', {
+          dangerouslyUseHTMLString: true
+        }).then(
+          value => {console.log('你点了确定按钮')},
+          reason => {console.log('你点了关闭按钮')}
+        )
+      }
+    },
+    mounted(){
+      this.getPayInfo()
+    }
+
+
   }
+
 </script>
 
 <style lang="less" scoped>

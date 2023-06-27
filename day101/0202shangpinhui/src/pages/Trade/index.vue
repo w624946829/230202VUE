@@ -146,7 +146,10 @@ export default {
             let {code,message,data} = await reqSubmitOrder(tradeNo,paramsObj)
         if(code === 200){
           this.$message.success('订单提交成功！')
-          this.$router.push('/pay')
+          this.$router.push({
+            path:'/pay',
+            query:{id:data}
+          })
         }else{
           this.$message.warning(message)
         }
