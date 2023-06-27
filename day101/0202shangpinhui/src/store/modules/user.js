@@ -16,12 +16,13 @@ const actions = {
     }
   },
   // 退出登录
-  async getLogout({commit}){
+  async getLogout({commit},value){
     // 1、联系服务器删除token
     const {code,message} = await reqQuit()
     if (code === 200) {
       // 提示
-      Message.success('退出登录成功');
+      value ? Message.warning(value) : Message.success('退出登录成功')
+      
       // 3、删除vuex中的信息
       commit("CLEAR_USER_INFO");
       // 4、删除本地的token
