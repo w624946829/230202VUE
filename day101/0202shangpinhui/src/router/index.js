@@ -2,7 +2,7 @@
  * @Author: 王泽昌 624946829@qq.com
  * @Date: 2023-06-13 08:28:37
  * @LastEditors: 王泽昌 624946829@qq.com
- * @LastEditTime: 2023-06-26 20:51:48
+ * @LastEditTime: 2023-06-27 10:31:34
  * @FilePath: \day92\0202shangpinhui\src\router\index.js
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -11,6 +11,7 @@ import VueRouter from "vue-router";
 import routes from "./routes";
 import { getToken, deleteToken } from "@/utils/auth";
 import store from "@/store";
+import { Message } from "element-ui";
 
 function enhance(target, name) {
   // 第一步：保存原始的方法
@@ -40,7 +41,8 @@ const router = new VueRouter({
     }
   },
 });
-
+// 敏感路由名单
+const authPath = ['/trade']
 router.beforeEach(async (to, from, next) => {
   // 从localStorage中获取token
   const token = getToken();
@@ -71,9 +73,15 @@ router.beforeEach(async (to, from, next) => {
     }
   } else {
     console.log(
-      "因为你的token不存在，所以有些路由不能看，同时受到部分路由限制，但由于现在还未配置相关敏感路由，暂且全部访问"
+      "因为你的token不存在，所以有些路由不能看，同时受到部分路由限制，进入下方相关判定"
     );
-    next();
+    if(authPath.includes(to.path)){
+      Message.warning('请您先登录！')
+      next('/login')
+    }else{
+      next()
+    }
+   
   }
 });
 
