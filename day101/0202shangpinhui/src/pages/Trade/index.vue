@@ -6,10 +6,10 @@
       <!-- 每一个收货人信息 -->
       <div class="address clearFix" v-for="add in tradeInfo.userAddressList" :key="add.id">
         <span class="username" :class="{selected:add.isDefault == 1 }">{{add.consignee}}</span>
-        <p>
+        <p @click="changeAddress(add.id)">
           <span class="s1">{{add.fullAddress}}</span>
           <span class="s2">{{add.phoneNum}}</span>
-          <span class="s3">默认地址</span>
+          <span class="s3" v-show="add.isDefault == 1">默认地址</span>
         </p>
       </div>
       <div class="line"></div>
@@ -84,6 +84,7 @@
       }
     },
     methods: {
+      // 获取交易的信息
       async getTradeInfo(){
         let {code,message,data} = await reqTradeInfo()
         if(code === 200){
@@ -91,6 +92,12 @@
         }else{
           this.$message.warning(message)
         }
+      },
+      // 点击切换收货地址
+      changeAddress(id){
+        this.tradeInfo.userAddressList.forEach(item=>{
+          item.id === id ?item.isDefault = '1':item.isDefault = '0'
+        })
       }
     },
     mounted() {
