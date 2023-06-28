@@ -167,18 +167,40 @@ export default {
                 alert("勾选商品失败：" + message);
             }
         },
-        // 勾选or取消勾选 所有商品的回调
+        // 勾选or取消勾选 单个商品的回调
         async checkOne(cartInfo,event){
         // 获取勾选状态（勾选 不勾选）
         let {checked} = event.target
         // 根据勾选与不勾选（true 或 false），赋一个符合服务器要求的值（1 或 0）
         checked = checked ? 1 : 0
+
         // 联系服务器勾选
         let {code,message} = await reqCheckOne(cartInfo.skuId,checked)
         // 判断业务逻辑
         if(code === 200){
           // 维护本地数据
           cartInfo.isChecked = checked
+        }else {
+          alert(`勾选商品失败：${message}`)
+        }
+      },
+      // 勾选or取消勾选 所有商品的回调
+      async checkAll(event){
+        // 获取勾选状态（勾选 不勾选）
+        let {checked} = event.target
+        // 根据勾选与不勾选（true 或 false），赋一个符合服务器要求的值（1 或 0）
+        checked = checked ? 1 : 0
+        // 准备一个用于收集商品id的数据
+        const skuIdList = []
+        // 遍历所有商品，将id推入skuIdList
+        this.cartInfoList.forEach(c => skuIdList.push(c.skuId))
+        // 请求
+        let {code,message} = await reqCheckAll(skuIdList,checked)
+       
+        // 判断业务逻辑
+        if(code === 200){
+          // 维护本地数据
+          this.cartInfoList.forEach(c => c.isChecked = checked)
         }else {
           alert(`勾选商品失败：${message}`)
         }
