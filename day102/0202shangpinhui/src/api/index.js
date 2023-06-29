@@ -89,3 +89,6 @@ export const reqSubmitOrder = (tradeNo,params) => ajax.post(`/order/auth/submitO
 
 //请求订单支付信息
 export const reqPayInfo = (orderId) => ajax.get(`/payment/weixin/createNative/${orderId}`)
+
+//请求订单支付信息
+export const reqPayState = (orderId) => ajax.get(`/payment/weixin/queryPayStatus/${orderId}`)

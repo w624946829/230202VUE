@@ -107,7 +107,7 @@
                                     <div class="p-img">
                                         <a>
                                             <!-- 商品图片  -->
-                                            <img :src="goods.defaultImg" @click="toDetail(goods.id)"/>
+                                            <img v-lazy="goods.defaultImg" @click="toDetail(goods.id)"/>
                                     </a>
                                     </div>
                                     <div class="price">

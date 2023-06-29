@@ -12,6 +12,10 @@ import router from './router'
 import store from '@/store'
 import TypeNav from '@/components/TypeNav'
 import Pagination from '@/components/Pagination'
+import VueLazyload from 'vue-lazyload'
+import loadingGif from '@/assets/images/loading.gif'
+
+
 
 // import ElementUI from 'element-ui';
 // import 'element-ui/lib/theme-chalk/index.css';
@@ -31,6 +35,7 @@ Vue.prototype.$message = Message;
 // 引入下方  两种方式引入
 // Vue.component(Button.name, Button);
 Vue.use(Button)
+Vue.use(VueLazyload ,{loading:loadingGif})
 
 // Vue.use(ElementUI);
 
