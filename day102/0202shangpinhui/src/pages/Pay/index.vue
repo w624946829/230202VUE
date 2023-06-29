@@ -87,7 +87,7 @@
             if(action === 'confirm'){
               this.$router.push('/paysuccess')
             }else{
-              this.$router.push('/payfail')
+              this.$router.push('/pay')
             }
           }
         })
