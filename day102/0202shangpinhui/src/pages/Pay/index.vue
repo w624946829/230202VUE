@@ -83,12 +83,16 @@
         }
         this.$alert(htmlStr, {
           ...option,
-          callback(type){
-            console.log(type);
+          callback: action => {
+            if(action === 'confirm'){
+              this.$router.push('/paysuccess')
+            }else{
+              this.$router.push('/payfail')
+            }
           }
         })
         } catch (error) {
-          this.$message.warning('二维码生成失败，请联系克服')
+          this.$message.warning('生成支付二维码失败，请联系客服')
         }
        
        
