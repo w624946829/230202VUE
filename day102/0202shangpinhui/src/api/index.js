@@ -92,3 +92,6 @@ export const reqPayInfo = (orderId) => ajax.get(`/payment/weixin/createNative/${
 
 //请求订单支付信息
 export const reqPayState = (orderId) => ajax.get(`/payment/weixin/queryPayStatus/${orderId}`)
+
+//获取当前用户的订单列表
+export const reqOrderInfo = (page,limit) => ajax.get(`/order/auth/${page}/${limit}`)

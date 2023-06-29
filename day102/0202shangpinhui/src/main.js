@@ -1,11 +1,3 @@
-/*
- * @Author: 王泽昌 624946829@qq.com
- * @Date: 2023-06-12 08:34:27
- * @LastEditors: 王泽昌 624946829@qq.com
- * @LastEditTime: 2023-06-25 17:02:14
- * @FilePath: \0202shangpinhui\src\main.js
- * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
- */
 import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
@@ -15,14 +7,12 @@ import Pagination from '@/components/Pagination'
 import VueLazyload from 'vue-lazyload'
 import loadingGif from '@/assets/images/loading.gif'
 
-
-
-// import ElementUI from 'element-ui';
-// import 'element-ui/lib/theme-chalk/index.css';
-
 import { Button,Loading,MessageBox,Notification,Message} from 'element-ui';
-
 import '@/mock'
+// 验证引入
+import '@/utils/verify'
+import {ValidationProvider} from 'vee-validate'
+
 
 Vue.prototype.$loading = Loading.service;
 Vue.prototype.$msgbox = MessageBox;
@@ -42,6 +32,7 @@ Vue.use(VueLazyload ,{loading:loadingGif})
 Vue.config.productionTip = false
 Vue.component('TypeNav',TypeNav)
 Vue.component('Pagination',Pagination)
+Vue.component('ValidationProvider',ValidationProvider)
 
 new Vue({
     el:'#app',

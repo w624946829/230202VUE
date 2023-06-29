@@ -1,37 +1,32 @@
 <template>
-  <div class="demo">
-    <h1>{{a}}</h1>
-    <button @click="add">点我+1</button>
-  </div>
+    <div>
+      <ValidationProvider name ="女友" v-slot="{errors}" :rules = "`odd|required|eqeq:${number2},男友` ">
+        女友：<input v-model="number"  type="text" placeholder=" 请输入女友的数量 ">
+        <span>{{ errors[0] }}</span>
+      </ValidationProvider>
+      <br>
+      <ValidationProvider name ="男友" v-slot="{errors}" rules = "odd|required">
+        男友：<input v-model="number2"  type="text" placeholder=" 请输入男友的数量 ">
+        <span>{{ errors[0] }}</span>
+      </ValidationProvider>
+    </div>
+  
 </template>
 
 <script>
-import { mapState } from 'vuex';
-
-  export default {
-    name:'Test',
-    computed:{
-      ...mapState(['a'])
-    },
-    methods:{
-      async add(){
-        try{
-        await this.$store.dispatch('jia',1)
-        console.log('@');
-        }catch(error){
-          console.log(error);
-        }
-        
-      }
+export default {
+  name:"Test",
+  data(){
+    return{
+      number:1,
+      number2:1,
     }
+  },
 }
 </script>
 
 <style lang="less" scoped>
-  .demo {
-    h1 {
-      font-size: 50px;
-    }
-    font-size: 40px;
+input {
+    display: block;
   }
 </style>

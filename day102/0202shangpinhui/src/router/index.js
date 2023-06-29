@@ -42,7 +42,7 @@ const router = new VueRouter({
   },
 });
 // 敏感路由名单
-const authPath = ['/trade','/pay']
+const authPath = ['/trade','/pay','/paysuccess','/order']
 router.beforeEach(async (to, from, next) => {
   // 从localStorage中获取token
   const token = getToken();
