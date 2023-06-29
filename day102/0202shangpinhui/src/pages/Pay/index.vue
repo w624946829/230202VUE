@@ -36,7 +36,7 @@
         </div>
 
         <div class="submit">
-          <!-- <router-link class="btn" to="/paysuccess">立即支付</router-link> -->
+      
           <a class="btn" @click="pay">立即支付</a>
         </div>
       </div>
@@ -46,6 +46,7 @@
 
 <script>
   import {reqPayInfo} from '@/api'
+  import QRCode from 'qrcode'
 
 
   export default {
@@ -65,13 +66,33 @@
           this.$message.warning(message)
          }
       }  ,
-      pay(){
-        this.$alert('<img src="http://49.232.112.44/images/girl.gif" style="width:200px">', '小姐姐', {
-          dangerouslyUseHTMLString: true
-        }).then(
-          value => {console.log('你点了确定按钮')},
-          reason => {console.log('你点了关闭按钮')}
-        )
+      async pay(){
+        try {
+          let url = await QRCode.toDataURL(this.payInfo.codeUrl)
+          const htmlStr = `<img src="${url}" style="width:200px">`
+
+          const option = {
+          title:'微信扫码支付',
+          dangerouslyUseHTMLString: true,
+          center: true,
+          showCancelButton: true,
+          cancelButtonClass:'支付遇到问题',
+          confirmButtonClass:'已完成支付',
+          showClose:false,
+
+        }
+        this.$alert(htmlStr, {
+          ...option,
+          callback(type){
+            console.log(type);
+          }
+        })
+        } catch (error) {
+          this.$message.warning('二维码生成失败，请联系克服')
+        }
+       
+       
+        
       }
     },
     mounted(){
