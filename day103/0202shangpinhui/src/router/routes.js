@@ -58,6 +58,13 @@ export default[
        
         path:'/addcart_success',
         component:AddCartSuccess,
+        beforeEnter(to,from,next){
+            if(from.path.slice(0,7)==='/detail'){
+                next()
+            }else{
+                next('/home')
+            }
+        }
     },
     {
        
@@ -68,10 +75,24 @@ export default[
        
         path:'/trade',
         component:Trade,
+        beforeEnter(to,from,next){
+            if(from.path==='/shopcart'){
+                next()
+            }else{
+                next('/home')
+            }
+        }
     },
     {
         path:'/pay',
         component:Pay,
+        beforeEnter(to,from,next){
+            if(from.path==='/trade'){
+                next()
+            }else{
+                next('/home')
+            }
+        }
       },
       
       {
