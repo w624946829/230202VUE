@@ -20,6 +20,12 @@ const ajax = axios.create({
   timeout: 5000, //超时时间
 });
 
+// const ajax = axios.create({
+//   baseURL: "http://localhost:8081/api", //请求基本路径
+//   timeout: 5000, //超时时间
+// });
+
+
 //配置请求拦截器------use 使用的意思
 ajax.interceptors.request.use((config) => {
   nprogress.start();
