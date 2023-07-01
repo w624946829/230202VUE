@@ -1,7 +1,8 @@
 <template>
   <div class="parent">
-    <h3>父组件</h3>
-		<Child/>
+    <h3>父组件 -- 我自己的sum是：{{sum}}</h3>
+	<button @click="sum += 1">点我让sum + 1 </button>
+		<Child :sum ="sum" :add="add"/>
   </div>
 </template>
 
@@ -11,6 +12,17 @@
 	export default {
 		name: 'Index',
 		components: {Child},
+		data(){
+			return {
+				sum : 1
+
+			}
+		},
+		methods:{
+			add(value){
+				this.sum += value 
+			}
+		}
 	}
 </script>
 

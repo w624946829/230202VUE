@@ -1,6 +1,6 @@
 <template>
   <div class="box2">
-    <h3>子组件2</h3>
+    <h3>子组件2- -父组件给我绑定了一个原生DOM事件（click）</h3>
   </div>
 </template>
 
