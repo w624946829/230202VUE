@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        function myProxyData(){
+      
+        var target = {
+            name:'甲铁城的卡巴内瑞',
+            age:20,
+            height:170,
+
+        }
+        var myProxy = new Proxy(target,{
+            get(target,property){
+                console.log('get方法执行到了');
+                return Reflect.get(target,property)
+            },
+            set(target,property,value){
+                console.log('set方法修改到了');
+                Reflect.set(target,property,value)
+            },
+            deleteProperty(target,property){
+                console.log('delete方法删除了');
+                return Reflect.deleteProperty(target,property)
+            }
+        })
+        console.log('delete执行了');
+        myProxy.name="霍元甲";
+        delete myProxy.name;
+        console.log(myProxy.name);
+              
+    }
+    myProxyData()
+    </script>
+</body>
+</html>

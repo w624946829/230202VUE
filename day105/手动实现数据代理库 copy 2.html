@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        function myProxyInformation(){
+            var target = {
+                profile:'极东魔法结社',
+                code:'魔法少女',
+                number:16,
+            }
+
+            var myProxy = new Proxy(target,{
+                get(target,property){
+                    console.log('get查询到了档案');
+                    return Reflect.get(target,property)
+                },
+                set(target,property,value){
+                    console.log('set修改了档案');
+                    Reflect.set(target,property,value)
+                },
+                deleteProperty(target,property){
+                    console.log('delete删除了档案');
+                    return Reflect.deleteProperty(target,property)
+                }
+            })
+            console.log(myProxy.code);
+            myProxy.code='炼金术师'
+            delete myProxy.profile
+            console.log(myProxy.profile);
+        }
+        myProxyInformation()
+            </script>
+</body>
+</html>

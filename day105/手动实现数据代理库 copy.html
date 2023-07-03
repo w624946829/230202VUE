@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        function myProxyData(){
+            var target = {
+                name:'惟名真白',
+                age:'16',
+                height:'155'
+            }
+            var myProxy = new Proxy(target,{
+                get (target,property){
+                    console.log('get的方法执行了');
+                    return Reflect.get(target,property)
+                },
+                set(target,property,value){
+                    console.log('set的方法执行了');
+                    Reflect.set(target,property,value)
+                },
+                deleteProperty(target,property){
+                    console.log('delete执行了');
+                    return Reflect.deletePrototype(target,property)
+                }
+            })
+            delete myProxy.name
+            console.log(myProxy.name);
+        }
+        myProxyData()
+    </script>
+</body>
+</html>

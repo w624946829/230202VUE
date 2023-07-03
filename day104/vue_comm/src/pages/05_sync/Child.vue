@@ -1,12 +1,14 @@
 <template>
   <div class="child1">
-		<h3>子组件</h3>
+		<h3>子组件 -- 我的父组件递给我的he值是：{{ he }}</h3>
+    <button @click="$emit('update:sum',he + 1 )">点我触发a事件</button>
   </div>
 </template>
 
 <script>
   export default {
     name: 'Child',
+    props: ['he'],
   }
 </script>
 

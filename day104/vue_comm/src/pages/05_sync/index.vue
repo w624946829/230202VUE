@@ -1,7 +1,9 @@
 <template>
   <div class="box">
-    <h3>父组件</h3>
-    <Child/>
+    <h3>父组件- 我有一个sum值是：{{ he }}</h3>
+    <button @click="he += 1 ">点我he+1 </button>
+    <Child :sum.sync = "he"/>
+    <Child :sum="he" @update:sum = "he = $event"/>
   </div>
 </template>
 
@@ -11,6 +13,11 @@
   export default {
     name: 'Index',
 		components: {Child},
+    data() {
+      return {
+        he: 0
+      }
+    }
   }
 </script>
 

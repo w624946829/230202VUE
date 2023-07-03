@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        function myProxyRecords (){
+            var target = {
+                action:'典中点',
+                copies:11,
+                times:24,
+            }
+            var myProxy = new Proxy(target,{
+                // 获取
+                get(target,property){
+                    console.log('get方法获取到了');
+                    return Reflect.get(target,property)
+                },
+                set(target,prototype,value){
+                    console.log('set方法修改到了');
+                    Reflect.set(target,prototype,value)
+                },
+                deleteProperty(target,property){
+                    console.log('delete方法删除了');
+                    return Reflect.deleteProperty(target,property)
+                }
+            })
+            console.log(myProxy.copies);
+            myProxy.copies=18;
+            delete myProxy.action;
+            console.log(myProxy.action);
+        }
+        myProxyRecords()
+    </script>
+</body>
+</html>
