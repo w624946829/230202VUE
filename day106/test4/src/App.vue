@@ -1,6 +1,6 @@
 <template>
   <div>
-<router-view></router-view>
+    <router-view></router-view>
   </div>
 </template>
 
@@ -11,6 +11,7 @@ export default defineComponent({
   name: 'App',
   setup () {
     
+
 
     return {}
   }

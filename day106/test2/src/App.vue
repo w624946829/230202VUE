@@ -1,6 +1,6 @@
 <template>
   <div>
-<router-view></router-view>
+    <router-view></router-view>
   </div>
 </template>
 
@@ -8,12 +8,7 @@
 import { defineComponent } from 'vue'
 
 export default defineComponent({
-  name: 'App',
-  setup () {
-    
-
-    return {}
-  }
+  name:'App',
 })
 </script>
 
