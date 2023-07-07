@@ -1,6 +1,9 @@
 import axios, { type AxiosResponse } from 'axios';
+// 消息框组件
 import { ElMessage, ElMessageBox } from 'element-plus';
+// 引入pinia
 import pinia from '@/stores/index';
+
 import { useUserInfoStore } from '../stores/userInfo';
 
 /* 定义response对象的data接口 */
@@ -12,7 +15,7 @@ interface ResponseData<T> {
 
 // 配置新建一个 axios 实例
 const service = axios.create({
-	baseURL: import.meta.env.VITE_API_URL,
+	baseURL: import.meta.env.VITE_API_URL, //根路径
 	timeout: 50000,
 });
 

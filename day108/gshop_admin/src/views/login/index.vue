@@ -35,19 +35,26 @@ import { useUserInfoStore } from '@/stores/userInfo'
 import type { FormInstance } from 'element-plus'
 import { nextTick, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
+// 获取路由器对象
 const userInfoStore = useUserInfoStore()
 const route = useRoute()
 const router = useRouter()
+// 使用ref的方式定义一个影影视的对象数据，用来手机账号和密码
 const loginForm = ref({
   username: 'admin',
   password: '111111'
 })
+// 加载的效果标识
 const loading = ref(false)
+// 用来控制密码框是明文还是密文的标识
 const passwordType = ref('password')
+// 用来存储路由在跳转的时候是否有新的路由地址
 const redirect = ref('')
+// 用来获取密码框DOM对象的
 const passwordRef = ref<HTMLInputElement>()
+// 用来获取el-from组件对象的
 const formRef = ref<FormInstance>()
-
+// 用来验证账号的规则的定义
 const validateUsername = (rule: any, value: any, callback: any) => {
   if (value.length < 4) {
     callback(new Error('用户名长度不能小于4位'))
@@ -55,6 +62,7 @@ const validateUsername = (rule: any, value: any, callback: any) => {
     callback()
   }
 }
+// 用来验证密码的规则的定义
 const validatePassword = (rule: any, value: any, callback: any) => {
   if (value.length < 6) {
     callback(new Error('密码长度不能小于6位'))
@@ -80,11 +88,13 @@ watch(
 切换密码的显示/隐藏
 */
 const showPwd = () => {
+  // 判断当前文本框的类型是不是password，如果是就改成文本框， 密码是明文显示的
   if (passwordType.value === 'password') {
     passwordType.value = 'text'
-  } else {
+  } else {//不是password，也就是说现在的文本框数据普通的文本显示，此时密码是明文显示，就改成秘闻显示
     passwordType.value = 'password'
   }
+  // dom更新后，设置密码框自动更新焦点
   nextTick(() => {
     passwordRef.value?.focus()
   })
@@ -93,14 +103,22 @@ const showPwd = () => {
 /* 
 点击登陆的回调
 */
+
+
 const handleLogin = async () => {
+  // 如果表单验证全都通过，结果就是true，否则为false
   await formRef.value?.validate()
-  loading.value = true
+  // 所有的表单验证都通过了
+  loading.value = true//设置加载的效果要显示出来
+  // 获取账号和密码
   const { username, password } = loginForm.value
   try {
+    // 分发pinia中用户信息模块仓库中的登录的actiuon，内部调用登录的相关接口，传入账号和Miami
     await userInfoStore.login(username, password)
+    // 登陆成功后，进行路由跳转，有可能跳转到首页，也有可能跳转到其他页面
     router.push({ path: redirect.value || '/' })
   } finally {
+    // 登录失败，加载效果消失
     loading.value = false
   }
 }

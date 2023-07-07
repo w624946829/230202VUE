@@ -1,9 +1,15 @@
+// 引入定义仓库的函数
 import { defineStore } from 'pinia';
+// 引入获取/移除/存储的token的函数
 import { getToken, removeToken, setToken } from '../utils/token-utils';
+// 引入用户信息的数据类型
 import type { UserInfoState } from './interface';
+// 引入element-plus的消息提示
 import {ElMessage} from 'element-plus'
+// 引入静态路由
 import {staticRoutes} from '@/router/routes'
-
+// 引入登录和退出和获取用户信息的api接口函数
+import {loginApi,} from '@/api/acl/login'
 
 /**
  * 用户信息
@@ -19,20 +25,13 @@ export const useUserInfoStore = defineStore('userInfo', {
   }),
 
 	actions: {
-    login (username: string, password: string) {
-      return new Promise((resolve, reject) => {
-        setTimeout(() => {
-          if (username==='admin' && password==='111111') {
-            const token = 'token-atguigu'
-            setToken(token)
-            this.token = token
-            resolve(token)
-          } else {
-            reject(new Error('用户名或密码错误!'))
-            ElMessage.error('用户名或密码错误!')
-          }
-        }, 1000)
-      })
+    //登录
+    async login (username: string, password: string) {
+      const result = await loginApi(username, password)
+      //获取token信息并且存储起来
+      this.token = result.token 
+      // 缓存一次token
+      setToken(this.token)
     },
 
     getInfo () {
