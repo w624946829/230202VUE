@@ -44,6 +44,63 @@ import type { RouteRecordRaw } from 'vue-router';
       }
     }]
   },
+  // 商品管理
+  {
+    path: '/product',
+    name:'Product',
+    component: () => import('@/layout/index.vue'),
+    redirect: '/product/category/list',
+    meta:{title:'商品管理',icon:'ele-ShoppingBag'},
+    children: [
+      // 分类管理
+      {
+      path: '/product/category/list',
+      name: 'Category',
+      component: () => import('@/views/product/category/index.vue'),
+      meta: { 
+        title: '分类管理', 
+      }
+    },
+
+    // 品牌管理
+    {
+      path: '/product/trademark/list',
+      name: 'Trademark',
+      component: () => import('@/views/product/trademark/index.vue'),
+      meta: { 
+        title: '品牌管理', 
+      }
+    },
+    // 平台属性管理
+    {
+      path: '/product/attr/list',
+      name: 'Attr',
+      component: () => import('@/views/product/attr/index.vue'),
+      meta: { 
+        title: '平台属性管理', 
+      }
+    },
+    // spu管理
+    {
+      path: '/product/spu/list',
+      name: 'Spu',
+      component: () => import('@/views/product/spu/index.vue'),
+      meta: { 
+        title: 'SPU管理', 
+      }
+    },
+    // sku管理
+    {
+      path: '/product/sku/list',
+      name: 'Sku',
+      component: () => import('@/views/product/sku/index.vue'),
+      meta: { 
+        title: 'SKU管理', 
+      }
+    },
+
+  ]
+  },
 
   /* 匹配任意的路由 必须最后注册 */
   { 
