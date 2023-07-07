@@ -9,7 +9,8 @@ import {ElMessage} from 'element-plus'
 // 引入静态路由
 import {staticRoutes} from '@/router/routes'
 // 引入登录和退出和获取用户信息的api接口函数
-import {loginApi,} from '@/api/acl/login'
+import {loginApi,logoutApi,getUserInfoApi} from '@/api/acl/login'
+import { stat } from 'fs';
 
 /**
  * 用户信息
@@ -27,31 +28,29 @@ export const useUserInfoStore = defineStore('userInfo', {
 	actions: {
     //登录
     async login (username: string, password: string) {
+      // 调用接口
       const result = await loginApi(username, password)
       //获取token信息并且存储起来
       this.token = result.token 
       // 缓存一次token
       setToken(this.token)
     },
-
-    getInfo () {
-      return new Promise((resolve, reject) => {
-        setTimeout(() => {
-          this.name = 'admin'
-          this.avatar = 'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif'
-          this.menuRoutes = staticRoutes
-          resolve({name: this.name, avatar: this.avatar, token: this.token})
-        }, 1000)
-      })
+   
+    async getInfo () {
+      const result = await getUserInfoApi()
+      const {name,avatar,routes} = result
+      // 存储昵称
+      this.name = name
+      // 存储头像
+      this.avatar = avatar
+      // 路由信息
+      this.menuRoutes = staticRoutes
     },
 
-    reset () {
-      // 删除local中保存的token
-      removeToken()
-      // 提交重置用户信息的mutation
-      this.token = ''
-      this.name = ''
-      this.avatar = ''
+    async reset () {
+      if(this.name){
+        await logoutApi()
+      }
     },
 	},
 });

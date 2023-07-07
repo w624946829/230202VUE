@@ -22,7 +22,10 @@ const service = axios.create({
 // 添加请求拦截器
 service.interceptors.request.use(
 	(config) => {
-    
+		const userInfoStore = useUserInfoStore();
+		if(userInfoStore.token){
+			(config.headers as any)['token'] = userInfoStore.token
+		}
 		return config;
 	}
 );

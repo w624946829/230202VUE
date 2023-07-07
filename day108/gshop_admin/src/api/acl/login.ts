@@ -20,7 +20,7 @@ enum Api{
  * @param password 密码
  * @returns 
  */
-export const losinApi = (username:string,password:string) =>{
+export const loginApi = (username:string,password:string) =>{
     return request.post <any,LoginResponseModel>(Api.login,{username,password})
 }
 
