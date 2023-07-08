@@ -52,7 +52,7 @@ export const deleteTrademarkByIdApi = (id: number) =>
 
 // 根据页码和每页的条数获取品牌对象形成的数组数据
 export const getTrademarkListApi = (page: number, limit: number) =>
-  request.get<any, TrademarkListModel>(
+  request.get<any, TrademarkPageModel>(
     Api.getTrademarkList + `/${page}/${limit}`
   );
 

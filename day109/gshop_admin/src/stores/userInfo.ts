@@ -51,6 +51,16 @@ export const useUserInfoStore = defineStore('userInfo', {
       if(this.name){
         await logoutApi()
       }
+
+      removeToken()
+      // 提交重置用户信息的mutations
+      this.token = ''
+      this.name=""
+      this.avatar = ""
+      
+
+
+
     },
 	},
 });
