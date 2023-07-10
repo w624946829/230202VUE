@@ -13,7 +13,7 @@ export type CategoryListModel = CategoryModel[];
 export type Numberable = number | undefined;
 
 // 定义一个用来存储三个分类信息数据的id数据类型
-export interface CategoryIdModel {
+export interface CategoryIdsModel {
     category1Id:Numberable;
     category2Id:Numberable;
     category3Id:Numberable;
