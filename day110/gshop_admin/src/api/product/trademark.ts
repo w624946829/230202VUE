@@ -48,7 +48,7 @@ export const getTrademarkListByIdsApi = (ids: number[]) =>
 
 // 根据id删除某个品牌对象数据
 export const deleteTrademarkByIdApi = (id: number) =>
-  request.delete<any, null>(Api.removeTrademarkById + "/${id}");
+  request.delete<any, null>(Api.removeTrademarkById + `/${id}`);
 
 // 根据页码和每页的条数获取品牌对象形成的数组数据
 export const getTrademarkListApi = (page: number, limit: number) =>
@@ -68,9 +68,9 @@ export const addOrUpdateTrademarkApi = (trademark: TrademarkModel) => {
   // 判断id的值是否存在
   if (trademark.id) {
     //修改
-    return request.put<any, null>(Api.addTrademark, trademark);
+    return request.put<any, null>(Api.updateTrademark, trademark) 
   } else {
     //添加操作
-    return request.post<any, null>(Api.addTrademark, trademark);
+    return request.post<any, null>(Api.addTrademark, trademark)
   }
 };

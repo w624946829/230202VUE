@@ -15,9 +15,9 @@
         </template>
       </el-table-column>
       <el-table-column label="操作">
-        <template #default="scope">
-          <el-button size="small" type="warning" :icon="Edit" @click="showUpdateTrademark"></el-button>
-          <el-button size="small" type="danger" :icon="Delete"></el-button>
+        <template #default="{row,$index}">
+          <el-button size="small" type="warning" :icon="Edit" @click="showUpdateTrademark(row)"></el-button>
+          <el-button size="small" type="danger" :icon="Delete" @click="deleteTrademark(row)"></el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -31,7 +31,7 @@
 
   <!-- 对话框 -->
   <!-- 标题需要修改 -->
-  <el-dialog draggable v-model="dialogFormVisible" title="添加品牌"
+  <el-dialog draggable v-model="dialogFormVisible" :title="`${trademark.id?'修改品牌':'添加品牌'}` "
  
   >
 
@@ -69,7 +69,7 @@
     <template #footer>
       <span class="dialog-footer">
         <el-button @click="dialogFormVisible = false">取消</el-button>
-        <el-button type="primary" @click="dialogFormVisible = false">
+        <el-button type="primary" @click="addOrUpdateTrademark">
           确定
         </el-button>
       </span>
@@ -80,7 +80,7 @@
 //   引入element-plus的组件
 import { Plus, Edit, Delete, Loading } from "@element-plus/icons-vue";
 //
-import { ElMessage } from "element-plus";
+import { ElMessage, formContextKey,ElMessageBox } from "element-plus";
 // 引入ref
 import { ref, onMounted, reactive } from "vue";
 import type { UploadProps,FormRules,FormInstance } from 'element-plus'
@@ -93,6 +93,7 @@ import type {
 // 引入添加品牌，修改品牌，删除品牌，，根据页码和条数获取品牌列表的接口
 import {
   addOrUpdateTrademarkApi,
+  addTrademarkaApi,
   deleteTrademarkByIdApi,
   getTrademarkListApi,
 } from "@/api/product/trademark";
@@ -147,11 +148,20 @@ const trademark = reactive<TrademarkModel>(initTrademark())
 
 // 点击添加按钮对应的回调函数
 const showAddTrademark = () => {
+  // 每次都重置一次品牌相关的数据
+  Object.assign(trademark, initTrademark())
+  // 设置对话框显示
   dialogFormVisible.value = true
+  // 清理上一次的表单验证的提示信息，
+  ruleFormRef.value?.clearValidate()
 };
 // 点击修改按钮对应的回调函数
-const showUpdateTrademark = () => {
+const showUpdateTrademark = (row:TrademarkModel) => {
+  // 应该吧品牌对象
+  Object.assign(trademark, row)
+  // 设置对话框显示
   dialogFormVisible.value = true
+  ruleFormRef.value?.clearValidate()
 }
 
 // 上传组件需要定义的数据
@@ -159,13 +169,14 @@ const showUpdateTrademark = () => {
 const upLoading = ref<boolean>(false)
 // 上传图片的时候地址前面的根路径标识
 const BASE_URL = import.meta.env.VITE_API_URL
+// 图片上传成功的回调函数
 const handleAvatarSuccess: UploadProps['onSuccess'] = (
   res
 ) => {
   // 上传成功后，需要把上传成功的图片地址保存到logoUrl属性中
   trademark.logoUrl = res.data // 图片上传成功后的地址
   upLoading.value = false // 关闭上传的加载效果
-  ElMessage.success("图片上传成功");// 提示用户上传成功
+  ruleFormRef.value?.clearValidate('logoUrl')
 
 }
 // 上传图片之前的回调函数
@@ -214,6 +225,66 @@ const rules = reactive<FormRules>({
   ],
  
 })
+
+
+// 添加或者修改品牌对象数据 --- 操作的回调函数
+ const addOrUpdateTrademark = async ()=>{
+  // 校验所有的表单验证是否都通过
+  await ruleFormRef.value?.validate(async (valid)=>{
+    // 判断表单验证是否通过的依据就是valid是否为true
+    if(!valid) return // 如果表单验证没有通过，直接return
+    try {
+      // 添加或者修改品牌的接口
+      await addOrUpdateTrademarkApi(trademark)
+      // 提示消息
+      ElMessage.success('操作成功')
+      // 刷新
+      getTrademarkList(trademark.id?currentPage.value:1)
+      // 关闭对话框
+      dialogFormVisible.value = false
+    } catch (error) {
+      ElMessage.error('操作失败')
+    }
+   
+    
+  })
+ }
+
+//  删除品牌操作的回调函数
+const deleteTrademark = (row:TrademarkModel)=>{
+  // 弹出对话框
+  // 调用接口
+  // 提示消息
+
+
+  ElMessageBox.confirm(
+    `您确定要删除${row.tmName}吗？`,
+    '提示',
+    {
+      confirmButtonText: '确认',
+      cancelButtonText: '取消',
+      type: 'warning',
+    }
+  )
+    .then(async () => {
+      // 此时点击了确认按钮
+      await deleteTrademarkByIdApi(row.id as number)
+      ElMessage.success('删除成功')
+      // 刷新
+      if(trademarkList.value.length == 1 && currentPage.value > 1){
+        currentPage.value -= 1 
+      }
+
+      getTrademarkList(  )
+    })
+    .catch((error) => {
+      // 点击了取消按钮
+      ElMessage.error(error.message ||'已经取消删除')
+    })
+}
+
+
+
 
 </script>
 
