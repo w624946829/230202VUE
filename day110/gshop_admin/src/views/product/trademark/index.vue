@@ -31,13 +31,16 @@
 
   <!-- 对话框 -->
   <!-- 标题需要修改 -->
-  <el-dialog draggable v-model="dialogFormVisible" title="添加品牌">
-    <el-form :model="trademark" style="width:80%">
+  <el-dialog draggable v-model="dialogFormVisible" title="添加品牌"
+ 
+  >
+
+    <el-form :model="trademark" style="width:80%"  ref="ruleFormRef" :rules="rules">
       <!-- 文本框 -->
-      <el-form-item label="品牌名称" label-width="100px">
+      <el-form-item label="品牌名称" label-width="100px" prop="tmName">
         <el-input v-model="trademark.tmName" autocomplete="off" />
       </el-form-item>
-      <el-form-item label="品牌LOGO" label-width="100px">
+      <el-form-item label="品牌LOGO" label-width="100px" prop="logoUrl">
 
         <!-- 上传 -->
 
@@ -80,7 +83,7 @@ import { Plus, Edit, Delete, Loading } from "@element-plus/icons-vue";
 import { ElMessage } from "element-plus";
 // 引入ref
 import { ref, onMounted, reactive } from "vue";
-import type { UploadProps } from 'element-plus'
+import type { UploadProps,FormRules,FormInstance } from 'element-plus'
 //引入品牌相关的数据类型
 import type {
   TrademarkModel,
@@ -183,6 +186,35 @@ const beforeAvatarUpload: UploadProps['beforeUpload'] = (file) => {
   upLoading.value = true // 打开上传的加载效果
   return true
 }
+
+// 用来获取对话框组件中form组件标签的对象
+const ruleFormRef = ref<FormInstance>()
+
+const validatePass = (rule: any, value: any, callback: any) => {
+  
+  if(value.length < 2 || value.length > 10){
+    callback(new Error('品牌名称在2-10个字之间'))
+  }else{
+    callback()
+  }
+}
+
+const rules = reactive<FormRules>({
+  tmName: [
+    { required: true, message: '必须要输入品牌名称', trigger: 'blur' },
+    // { min: 2, max: 10, message: '品牌名称在2-10个字之间', trigger: 'blur' },
+    { validator: validatePass, trigger: 'blur' },
+  ],
+  logoUrl: [
+    {
+      required: true,
+      message: '必须要上传一个图片',
+      trigger: 'change',
+    },
+  ],
+ 
+})
+
 </script>
 
 
