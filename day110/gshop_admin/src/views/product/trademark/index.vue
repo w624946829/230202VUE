@@ -15,7 +15,7 @@
         </template>
       </el-table-column>
       <el-table-column label="操作">
-        <template #default="{row,$index}">
+        <template #default="{ row, $index }">
           <el-button size="small" type="warning" :icon="Edit" @click="showUpdateTrademark(row)"></el-button>
           <el-button size="small" type="danger" :icon="Delete" @click="deleteTrademark(row)"></el-button>
         </template>
@@ -31,15 +31,13 @@
 
   <!-- 对话框 -->
   <!-- 标题需要修改 -->
-  <el-dialog draggable v-model="dialogFormVisible" :title="`${trademark.id?'修改品牌':'添加品牌'}` "
- 
-  >
+  <el-dialog draggable v-model="dialogFormVisible" :title="`${trademark.id ? '修改品牌' : '添加品牌'}`">
 
-    <el-form :model="trademark" style="width:80%"  ref="ruleFormRef" :rules="rules">
+    <el-form :model="trademark" style="width:80%" ref="ruleFormRef" :rules="rules">
       <!-- 文本框 -->
       <el-form-item label="品牌名称" label-width="100px" prop="tmName">
         <el-input v-model="trademark.tmName" autocomplete="off" />
-      </el-form-item>
+      </el-form-item> 
       <el-form-item label="品牌LOGO" label-width="100px" prop="logoUrl">
 
         <!-- 上传 -->
@@ -80,10 +78,10 @@
 //   引入element-plus的组件
 import { Plus, Edit, Delete, Loading } from "@element-plus/icons-vue";
 //
-import { ElMessage, formContextKey,ElMessageBox } from "element-plus";
+import { ElMessage, formContextKey, ElMessageBox } from "element-plus";
 // 引入ref
 import { ref, onMounted, reactive } from "vue";
-import type { UploadProps,FormRules,FormInstance } from 'element-plus'
+import type { UploadProps, FormRules, FormInstance } from 'element-plus'
 //引入品牌相关的数据类型
 import type {
   TrademarkModel,
@@ -156,7 +154,7 @@ const showAddTrademark = () => {
   ruleFormRef.value?.clearValidate()
 };
 // 点击修改按钮对应的回调函数
-const showUpdateTrademark = (row:TrademarkModel) => {
+const showUpdateTrademark = (row: TrademarkModel) => {
   // 应该吧品牌对象
   Object.assign(trademark, row)
   // 设置对话框显示
@@ -202,10 +200,10 @@ const beforeAvatarUpload: UploadProps['beforeUpload'] = (file) => {
 const ruleFormRef = ref<FormInstance>()
 
 const validatePass = (rule: any, value: any, callback: any) => {
-  
-  if(value.length < 2 || value.length > 10){
+
+  if (value.length < 2 || value.length > 10) {
     callback(new Error('品牌名称在2-10个字之间'))
-  }else{
+  } else {
     callback()
   }
 }
@@ -223,35 +221,35 @@ const rules = reactive<FormRules>({
       trigger: 'change',
     },
   ],
- 
+
 })
 
 
 // 添加或者修改品牌对象数据 --- 操作的回调函数
- const addOrUpdateTrademark = async ()=>{
+const addOrUpdateTrademark = async () => {
   // 校验所有的表单验证是否都通过
-  await ruleFormRef.value?.validate(async (valid)=>{
+  await ruleFormRef.value?.validate(async (valid) => {
     // 判断表单验证是否通过的依据就是valid是否为true
-    if(!valid) return // 如果表单验证没有通过，直接return
+    if (!valid) return // 如果表单验证没有通过，直接return
     try {
       // 添加或者修改品牌的接口
       await addOrUpdateTrademarkApi(trademark)
       // 提示消息
       ElMessage.success('操作成功')
       // 刷新
-      getTrademarkList(trademark.id?currentPage.value:1)
+      getTrademarkList(trademark.id ? currentPage.value : 1)
       // 关闭对话框
       dialogFormVisible.value = false
     } catch (error) {
       ElMessage.error('操作失败')
     }
-   
-    
+
+
   })
- }
+}
 
 //  删除品牌操作的回调函数
-const deleteTrademark = (row:TrademarkModel)=>{
+const deleteTrademark = (row: TrademarkModel) => {
   // 弹出对话框
   // 调用接口
   // 提示消息
@@ -271,15 +269,15 @@ const deleteTrademark = (row:TrademarkModel)=>{
       await deleteTrademarkByIdApi(row.id as number)
       ElMessage.success('删除成功')
       // 刷新
-      if(trademarkList.value.length == 1 && currentPage.value > 1){
-        currentPage.value -= 1 
+      if (trademarkList.value.length == 1 && currentPage.value > 1) {
+        currentPage.value -= 1
       }
 
-      getTrademarkList(  )
+      getTrademarkList()
     })
     .catch((error) => {
       // 点击了取消按钮
-      ElMessage.error(error.message ||'已经取消删除')
+      ElMessage.error(error.message || '已经取消删除')
     })
 }
 
