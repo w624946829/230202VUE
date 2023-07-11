@@ -1,9 +1,9 @@
 // 定义平台属性值对象数据类型
 export interface AttrValueModel{
-    id: number;
+    id?: number;
     valueName: string;
     attrId: number;// 平台属性对象的id
-    // isEnabled: number;// 是否显示或者隐藏的标识--- 标记和查看模式的一个标识
+    isShowEdit?: boolean;// 是否显示或者隐藏的标识--- 标记和查看模式的一个标识
 }
 // 定义平台属性对象数组数据类型
 export type AttrValueListModel = AttrValueModel[];

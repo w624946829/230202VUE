@@ -6,6 +6,7 @@ export interface CategoryModel {
     name: string; //名字
     hasChildren?: boolean; //是否有子级分类信息的标识
     level?:number // 当前分类的级别
+    // isShowEdit?:boolean // 是否显示
 }
 // 需要定义分类信息对象数组的数据类型
 export type CategoryListModel = CategoryModel[];
