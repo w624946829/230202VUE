@@ -35,7 +35,7 @@
                     </el-form-item>
                 </el-form>
                 <!-- 两个按钮 -->
-                <div style="margin-top: 20px;">
+                <div style="margin-bottom: 20px;">
                     <el-button :icon="Plus" type="primary" :disabled="!attr.attrName"
                         @click="addAttrValue">添加属性值</el-button>
 

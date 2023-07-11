@@ -14,7 +14,7 @@
                     <el-table-column prop="attrName" label="属性名称" width="150" />
                     <el-table-column prop="attrValueList" label="属性值列表">
                         <template #default="{ row, $index }">
-                            <el-tag type="success"></el-tag>
+                            <el-tag type="success" v-for="(item,index) in row.attrValueList" :key="index">{{ item.valueName }}</el-tag>
                         </template>
                     </el-table-column>
                     <el-table-column label="操作" width="150">
@@ -29,21 +29,30 @@
                 </el-table>
             </div>
             <div v-else>
-                <!-- 属性名 -->
+                <!-- 添加或者修改平台属性值的界面 -->
                 <el-form inline>
                     <el-form-item label="属性名">
-                        <el-input type="text" placeholder="请输入属性名字" v-model="attr.attrName" />
+                        <el-input type="text" placeholder="请输入属性名字" v-model="attr.attrName"></el-input>
                     </el-form-item>
                 </el-form>
                 <!-- 两个按钮 -->
                 <div style="margin-bottom: 20px;">
-                    <el-button :icon="Plus" type="primary" @click="addAttrValue">添加属性值</el-button>
-                    <el-button >取消</el-button>
+                    <el-button :icon="Plus" type="primary" :disabled="!attr.attrName"
+                        @click="addAttrValue"
+                    >添加属性值</el-button>
+                    <el-button @click="isShowEditAttr=true">取消</el-button>
                 </div>
                 <!-- 表格 -->
-                <el-table :data="attr.attrValueList" string border style="width: 100%">
+                <el-table :data="attr.attrValueList" stripe border style="width: 100%;">
                     <el-table-column type="index" label="序号" width="80" align="center" />
-                    <el-table-column prop="valueName" label="属性值名称" />
+                    <el-table-column prop="valueName" label="属性名称">
+                        <template #default="{ row, $index }">
+                            <el-input :ref="(input:any)=>inputRef[$index] = input" size="small" type="text"
+                                v-if="row.isShowEdit" @blur = "attrSpanShow(row,$index)" v-model="row.valueName"
+                                ></el-input>
+                            <span v-else style="display:inline-block;width: 100px;" @click="attrInputShow(row,$index)">{{ row.valueName }}</span>
+                        </template>
+                    </el-table-column>  
                     <el-table-column label="操作">
                         <template #default="{ row, $index }">
                             <!-- 气泡确认框组件 -->
@@ -53,14 +62,16 @@
                                 </template>
                             </el-popconfirm>
 
-                            <!-- <el-input :ref="(input:any)=>inputRef[$index] = input" size="small" type="text" v-if="row.isShowEdit" @blur="attrSpanShow(row,$index)" v-model="row.valueName"></el-input>
-                            <span v-else style="display: inline-block; width: 100%;"  @click="attrInputShow(row,$index)">{{ row.valueName }}</span> -->
+                           
                         </template>
+                    
                     </el-table-column>
                   </el-table>
                   <!-- 两个按钮 -->
                   <div style="margin-top: 20px;">
-                    <el-button type="primary">保存</el-button>
+                    <el-button type="primary" @click="save"
+                        :disabled="!attr.attrName||!attr.attrValueList.length"
+                    >保存</el-button>
                     <el-button @click="isShowEditAttr=true">取消</el-button>
                   </div>
             </div>
@@ -73,13 +84,15 @@ export default {
 }
 </script>
 <script lang="ts" setup>
-import { reactive, ref, watch } from 'vue'
+import { reactive, ref, watch,nextTick } from 'vue'
 import { Plus, Edit, Delete } from '@element-plus/icons-vue'
 import type { AttrInfoListModel, AttrInfoModel, AttrValueModel } from '@/api/product/model/attrModel'
 import { useCategoryStore } from '@/stores/category'
 import CategorySelector from '@/components/CategorySelector/index.vue'
-import { getAttrInfoListApi } from '@/api/product/attr'
-import { nextTick } from 'process'
+import { getAttrInfoListApi,addOrUpdateAttrInfoApi } from '@/api/product/attr'
+
+import { ElMessage } from 'element-plus'
+import { number } from 'echarts'
 // 获取分类信息的仓库队形
 const categoryStore = useCategoryStore()
 // 定义加载的效果标识
@@ -96,9 +109,9 @@ const getAttrList = async () => {
 }
 
 // 监视
-watch(() => categoryStore.category3Id, (category3Id) => {
+watch(() => categoryStore.category3Id, async (category3Id) => {
     // 判断三级分类的数据是否有意义
-    if (category3Id) {
+    if (!category3Id) {
         // 如果没有数据，取消平台属性对象数组列表数据
         attrList.value = []
         // 后面的代码结束执行
@@ -141,7 +154,7 @@ const updateAttrShow = (row: any) => {
 const inputRef = ref<HTMLInputElement[]>([])
 
 // 文本框失去焦点事件的回调函数--- 查看模式
-const sttrSpanShow = (row:AttrValueModel,index:number)=>{
+const attrSpanShow = (row:AttrValueModel,index:number)=>{
     if(!row.valueName){
         attr.attrValueList.splice(index,1)
     }
@@ -167,5 +180,35 @@ const addAttrValue = ()=>{
         inputRef.value[attr.attrValueList.length - 1].focus()
     })
 }
+
+// 保存按钮的点击事件对应的回调函数
+const save = async ()=>{
+    // 重新的更新一下三级分类的id
+    attr.categoryId = categoryStore.getCategory3Id as number
+    // 判断平台属性名字是否有值
+    if(attr.attrName.length === 0){
+        ElMessage.warning('请输入平台属性名字')
+        return 
+
+    }
+    attr.attrValueList = attr.attrValueList.filter(item=>{
+    if(!item.valueName) return false
+    // 干掉一个属性
+    delete item.isShowEdit //做编辑和查看模式切换的时候的一个标识
+    return true
+})
+
+    try {
+        await addOrUpdateAttrInfoApi(attr)//调用接口
+        ElMessage.success('操作成功')// 提示信息
+        isShowEditAttr.value = true //关闭当前界面
+        getAttrList() //刷新
+    } catch (error:any) {
+        ElMessage.error(error.message||'操作失败')
+    }
+}
+
+
+
 </script>
 <style scoped></style>
