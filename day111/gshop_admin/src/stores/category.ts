@@ -4,7 +4,7 @@ import { defineStore } from "pinia";
 import { CategoryIdsModel,CategoryListModel } from "@/api/product/model/categoryModel";
 // 引入分类相关的接口函数
 import { getCategory1ListApi,getCategory2ListApi,getCategory3ListApi } from '@/api/product/category'
-import { number } from "echarts/core";
+
 
 // 定义仓库的状态数据的返回值的接口类型
 export interface CategoryStateModel extends CategoryIdsModel{
