@@ -2,7 +2,7 @@
     <div>
         <el-card shadow="hover">
 
-            <CategorySelector></CategorySelector>
+            <CategorySelector :isDisabled="!isShowEditAttr"></CategorySelector>
         </el-card>
         <el-card shadow="hover" style="margin-top:10px">
             <div v-if="isShowEditAttr">
@@ -22,14 +22,14 @@
                     <el-table-column label="操作" width="150">
                         <template #default="{ row, $index }">
                             <el-button size="small" type="primary" :icon="Edit" @click="updateAttrShow(row)"></el-button>
-                           
+
                             <!-- 气泡确认框组件 -->
-                            <el-popconfirm :title='`您确认要删除${row.attrName}吗`'  @confirm="deleteAttr(row)">
+                            <el-popconfirm :title='`您确认要删除${row.attrName}吗`' @confirm="deleteAttr(row)">
                                 <template #reference>
-                                 <el-button size="small" type="danger" :icon="Delete"></el-button>
-                                 </template>
+                                    <el-button size="small" type="danger" :icon="Delete"></el-button>
+                                </template>
                             </el-popconfirm>
-                          
+
                         </template>
                     </el-table-column>
                 </el-table>
@@ -109,10 +109,10 @@ import CategorySelector from '@/components/CategorySelector/index.vue'
 import { Plus, Edit, Delete } from '@element-plus/icons-vue'
 
 // 引入接口
-import { getAttrInfoListApi, addOrUpdateAttrInfoApi,deleteAttrInfoByAttrIdApi } from '@/api/product/attr'
+import { getAttrInfoListApi, addOrUpdateAttrInfoApi, deleteAttrInfoByAttrIdApi } from '@/api/product/attr'
 
 // 
-import { ref, reactive, onMounted, watch, nextTick } from 'vue'
+import { ref, reactive, onMounted, watch, nextTick,onBeforeUnmount } from 'vue'
 import type { AttrInfoListModel, AttrInfoModel, AttrValueModel } from '@/api/product/model/attrModel'
 import { useCategoryStore } from '@/stores/category'
 // 引入lodash
@@ -240,17 +240,28 @@ const save = async () => {
 }
 
 // 删除某一行的平台属性对象数据
-const deleteAttr = async (attr:AttrInfoModel)=>{
+const deleteAttr = async (attr: AttrInfoModel) => {
     try {
-         await deleteAttrInfoByAttrIdApi(attr.id as number)
-            ElMessage.success('删除成功')
-            getAttrList()//更新
-        } catch (error:any) {
+        await deleteAttrInfoByAttrIdApi(attr.id as number)
+        ElMessage.success('删除成功')
+        getAttrList()//更新
+    } catch (error: any) {
         ElMessage.error(error.message || '删除失败')
     }
-   
+
 }
 
+// 销毁前重置数据
+onBeforeUnmount(() => {
+   categoryStore.$state={
+         category1Id:undefined,
+         category2Id:undefined,
+         category3Id:undefined,
+        category1List:[],
+        category2List:[],
+        category3List:[],
+        }
+})
 
 </script>
 <style scoped></style>

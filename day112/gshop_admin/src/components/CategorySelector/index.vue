@@ -1,18 +1,22 @@
 <template>
     <el-form inline>
         <el-form-item label="一级分类">
-            <el-select v-model="category1Id">
-                <el-option v-for="(c1,index) in categoryStore.category1List" :key="c1.id" :value="c1.id" :label="c1.name" ></el-option>
+            <el-select v-model="category1Id"  :disabled="isDisabled">
+                <el-option v-for="(c1,index) in categoryStore.category1List" :key="c1.id"
+               
+                :value="c1.id" :label="c1.name" ></el-option>
             </el-select>
         </el-form-item>
         <el-form-item label="二级分类">
-            <el-select v-model="category2Id">
-                <el-option v-for="(c2,index) in categoryStore.category2List" :key="c2.id" :value="c2.id" :label="c2.name" ></el-option>
+            <el-select v-model="category2Id" :disabled="isDisabled">
+                <el-option v-for="(c2,index) in categoryStore.category2List" :key="c2.id" 
+                :value="c2.id" :label="c2.name" ></el-option>
             </el-select>
         </el-form-item>
         <el-form-item label="三级分类">
-            <el-select v-model="category3Id">
-                <el-option v-for="(c3,index) in categoryStore.category3List" :key="c3.id" :value="c3.id" :label="c3.name" ></el-option>
+            <el-select v-model="category3Id" :disabled="isDisabled">
+                <el-option v-for="(c3,index) in categoryStore.category3List" :key="c3.id" 
+                :value="c3.id" :label="c3.name" ></el-option>
             </el-select>
         </el-form-item>
     </el-form>
@@ -54,6 +58,14 @@ const category3Id = computed({
     set(val:number){
         categoryStore.category3Id = val
     },  
+})
+
+// 接收父级组件传递过来的数据
+defineProps({
+    isDisabled:{
+        type:Boolean,
+        default:false
+    }
 })
 
 </script>
