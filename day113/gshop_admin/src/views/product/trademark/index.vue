@@ -3,24 +3,11 @@
   <el-card>
     <!-- 按钮 -->
     <template #header>
-      <el-button type="primary" :icon="Plus" @click="showAddTrademark"
-        >添加</el-button
-      >
+      <el-button type="primary" :icon="Plus" @click="showAddTrademark">添加</el-button>
     </template>
     <!-- 表格 -->
-    <el-table
-      v-loading="loading"
-      :data="trademarkList"
-      border
-      style="width: 100%"
-    >
-      <el-table-column
-        type="index"
-        label="序号"
-        width="100"
-        align="center"
-        stripe
-      />
+    <el-table v-loading="loading" :data="trademarkList" border style="width: 100%">
+      <el-table-column type="index" label="序号" width="100" align="center" stripe />
       <el-table-column prop="tmName" label="品牌名称" />
       <el-table-column label="品牌LOGO">
         <template #default="{ row, $index }">
@@ -29,50 +16,23 @@
       </el-table-column>
       <el-table-column label="操作">
         <template #default="{ row, $index }">
-          <el-button
-            size="small"
-            type="warning"
-            :icon="Edit"
-            @click="showUpdateTrademark(row)"
-          ></el-button>
-          <el-button
-            size="small"
-            type="danger"
-            :icon="Delete"
-            @click="deleteTrademark(row)"
-          ></el-button>
+          <el-button size="small" type="warning" :icon="Edit" @click="showUpdateTrademark(row)"></el-button>
+          <el-button size="small" type="danger" :icon="Delete" @click="deleteTrademark(row)"></el-button>
         </template>
       </el-table-column>
     </el-table>
     <!-- 分页组件 -->
-    
+
     <div class="demo-pagination-block">
-      <el-pagination
-        style="margin-top: 20px"
-        v-model="currentPage"
-        v-model:page-size="pageSize"
-        :page-sizes="[3, 6, 9]"
-        background
-        layout=" prev, pager, next, jumper,->,total,sizes, "
-        :total="total"
-        @size-change="getTrademarkList(1, $event)"
-        @current-change="getTrademarkList($event, pageSize)"
-      />
+      <el-pagination style="margin-top: 20px" v-model="currentPage" v-model:page-size="pageSize" :page-sizes="[3, 6, 9]"
+        background layout=" prev, pager, next, jumper,->,total,sizes, " :total="total"
+        @size-change="getTrademarkList(1, $event)" @current-change="getTrademarkList($event, pageSize)" />
     </div>
   </el-card>
 
   <!-- 对话框 -->
-  <el-dialog
-    draggable
-    v-model="dialogFormVisible"
-    :title="`${trademark.id ? '修改品牌' : '添加品牌'}`"
-  >
-    <el-form
-      :model="trademark"
-      style="width: 80%"
-      ref="ruleFormRef"
-      :rules="rules"
-    >
+  <el-dialog draggable v-model="dialogFormVisible" :title="`${trademark.id ? '修改品牌' : '添加品牌'}`">
+    <el-form :model="trademark" style="width: 80%" ref="ruleFormRef" :rules="rules">
       <!-- 文本框 -->
       <el-form-item label="品牌名称" label-width="100px" prop="tmName">
         <el-input v-model="trademark.tmName" autocomplete="off" />
@@ -80,24 +40,15 @@
       <el-form-item label="品牌LOGO" label-width="100px" prop="logoUrl">
         <!-- 上传 -->
 
-        <el-upload
-          class="avatar-uploader"
-          :action="`${BASE_URL}/admin/product/fileUpload`"
-          :show-file-list="false"
-          :on-success="handleAvatarSuccess"
-          :before-upload="beforeAvatarUpload"
-        >
+        <el-upload class="avatar-uploader" :action="`${BASE_URL}/admin/product/fileUpload`" :show-file-list="false"
+          :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload">
           <!-- 如果图片上传成功,显示图片,如果是上传的过程,要显示加载的效果,默认显示'+ 的效果-->
           <!-- 加载效果 -->
           <el-icon v-if="upLoading" class="avatar-uploader-icon">
             <Loading />
           </el-icon>
           <!-- 图片效果 -->
-          <img
-            v-else-if="trademark.logoUrl"
-            :src="trademark.logoUrl"
-            class="avatar"
-          />
+          <img v-else-if="trademark.logoUrl" :src="trademark.logoUrl" class="avatar" />
           <!-- '+'的效果 -->
           <el-icon v-else class="avatar-uploader-icon">
             <Plus />
@@ -357,7 +308,7 @@ const deleteTrademark = (row: TrademarkModel) => {
   margin-bottom: 18px;
 }
 
-.demo-pagination-block + .demo-pagination-block {
+.demo-pagination-block+.demo-pagination-block {
   margin-top: 10px;
 }
 
