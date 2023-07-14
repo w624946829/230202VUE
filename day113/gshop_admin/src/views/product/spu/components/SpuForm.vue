@@ -42,14 +42,14 @@
                 <!-- 添加销售属性按钮 -->
                 <el-button type="primary" :icon="Plus">添加销售属性值</el-button>
                 <!-- 表格 -->
-                <el-table :data="[{ id: 1, name: '赵四', age: 20 }]" stripe border style="width: 100%;margin-top :20px ">
+                <el-table :data="spuInfo.spuSaleAttrList" stripe border style="width: 100%;margin-top :20px ">
                     <el-table-column type="index" label="序号" width="80" align="center" />
-                    <el-table-column prop="name" label="属性名" width="150" />
-                    <el-table-column prop="age" label="属性值名称列表">
+                    <el-table-column prop="saleAttrName" label="属性名" width="150" />
+                    <el-table-column label="属性值名称列表">
                         <template #default ='{row,$index}'>
 
                             <el-tag v-for="(attr,index) in row.spuSaleAttrValueList" :key="attr.id" closable :disable-transitions="false"
-                                @close="row.apuSaleAttrValueList.splice(index,1)" style="margin-right: 5px;">
+                                @close="row.spuSaleAttrValueList.splice(index,1)" style="margin-right: 5px;">
                                 {{ attr.saleAttrValueName }}
                             </el-tag>
                             <el-input v-if="row.isShowEdit" :ref="(input:any)=>inputRef[$index]=input" v-model="saleAttrValueName" size="small" @keyup.enter="toView(row,$index)" @blur="toView(row,$index)" />
