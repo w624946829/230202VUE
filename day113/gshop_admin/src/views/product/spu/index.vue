@@ -2,11 +2,11 @@
     <div>
        <el-card shadow="always">
         <!-- 分类选择器相关的组件 -->
-        <CategorySelector/>
+        <CategorySelector />
        </el-card> 
        <el-card shadow="always" style="margin-top: 20px;">
         <!--SpuList组件，用来展示spu列表数据的  -->
-        <SpuList v-if="showStatus === ShowStatus.SPU_LIST"/>
+        <SpuList v-if="showStatus === ShowStatus.SPU_LIST" @setCurrentShowStatus = "setCurrentShowStatus"/>
         <!--SpuForm组件，用来展示spu对象数据的  -->
         <SpuForm v-else-if ="showStatus === ShowStatus.SPU_FORM"/>
         <!-- SkuForm组件，用来添加sku对象数据的 -->
@@ -31,6 +31,11 @@ import  {ShowStatus} from './types'
 import {ref} from 'vue'
 // 定义一个枚举类型的标识数据
 const showStatus = ref<ShowStatus>(ShowStatus.SPU_LIST)
+
+// 用来修改枚举类型数据的方法 --- 自定义事件的回调函数
+const setCurrentShowStatus = (val:ShowStatus)=>{
+    showStatus.value = val
+}
 </script>
 <style scoped>
 </style>

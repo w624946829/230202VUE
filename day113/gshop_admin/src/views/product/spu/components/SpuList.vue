@@ -9,10 +9,10 @@
             <el-table-column prop="description" label="SPU描述" />
             <el-table-column label="操作">
                 <template #default="{ row, $index }">
-                    <el-button type="primary" size="small" :icon="Plus"></el-button>
-                    <el-button type="primary" size="small" :icon="Edit"></el-button>
-                    <el-button type="info" size="small" :icon="InfoFilled"></el-button>
-                    <el-button type="danger" size="small" :icon="Delete"></el-button>
+                    <el-button type="primary" size="small" :icon="Plus" title="添加SKU"></el-button>
+                    <el-button type="primary" size="small" :icon="Edit" title="修改SPU" @click="updateShowSpu(row)"></el-button>
+                    <el-button type="info" size="small" :icon="InfoFilled" title="查看SKU"></el-button>
+                    <el-button type="danger" size="small" :icon="Delete" title="删除SPU"></el-button>
                 </template>
             </el-table-column>
         </el-table>
@@ -32,11 +32,12 @@ export default {
 import { Plus, Edit, Delete, Loading, InfoFilled } from "@element-plus/icons-vue";
 import { ref,watch } from 'vue'
 // 引入spu相关的数据类型
-import type { SpuListModel } from "@/api/product/model/spuModel";
+import type { SpuListModel,SpuModel } from "@/api/product/model/spuModel";
 // 引入spu相关的接口函数
 import { getSpuInfoListApi } from "@/api/product/spu";
 // 引入三级的分类的仓库
 import { useCategoryStore } from '@/stores/category' ;
+import { ShowStatus } from "../types";
 // 获取仓库的对象
 const categoryStore = useCategoryStore();
 // 加载的标识效果
@@ -70,11 +71,22 @@ const getSpuInfoList = async (
 watch(()=>categoryStore.category3Id,(category3Id)=>{
     // 判断三级分类id数据是否有意义
     if(!category3Id){
+        currentPage.value = 1
+        pageSize.value = 3
         total.value = 0
         spuInfoList.value = [] //清除spu对象数组数据
         return 
     }
     getSpuInfoList()
 })
+// 接收父级组件传递过来的自定义事件
+const emits = defineEmits(['setCurrentShowStatus'])
+
+
+// 修改spu按钮的点击事件对应的回调函数
+const updateShowSpu = (row:SpuModel)=>{
+    //分发自定义事件
+    emits('setCurrentShowStatus',ShowStatus.SPU_FORM)
+}
 </script>
 <style scoped></style>

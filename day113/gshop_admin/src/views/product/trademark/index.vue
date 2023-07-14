@@ -22,7 +22,6 @@
       </el-table-column>
     </el-table>
     <!-- 分页组件 -->
-
     <div class="demo-pagination-block">
       <el-pagination style="margin-top: 20px" v-model="currentPage" v-model:page-size="pageSize" :page-sizes="[3, 6, 9]"
         background layout=" prev, pager, next, jumper,->,total,sizes, " :total="total"
