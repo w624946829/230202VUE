@@ -1,7 +1,7 @@
 // 引入request
 import request from "@/utils/request";
 // 引入类型相关的数据类型
-import {BaseSaleAttrListModel,SpuListModel,SpuModel,SpuPageListModel,SpuPageParamsModel} from "./model/spuModel";
+import {BaseSaleAttrListModel,SpuImageListModel,SpuListModel,SpuModel,SpuPageListModel,SpuPageParamsModel, SpuSaleAttrListModel} from "./model/spuModel";
 // 枚举定义接口地址
 enum Api {
     GetBaseSaleAttrList = '/admin/product/baseSaleAttrList', // 获取基础的销售属性对象数组的地址
@@ -12,6 +12,8 @@ enum Api {
     AddSpuInfo = '/admin/product/saveSpuInfo', // 添加spu对象
     UpdateSputInfo = '/admin/product/updateSpuInfo', // 更新spu对象
     GetSpuInfoList = '/admin/product', // 根据页码和每页条数的三级分类获取spu对象数组的地址
+    GetSpuImageListBySpuId= '/admin/product/spuImageList',//通过spu的id标识获取spu图片对象数组的接口地址
+    GetSpuSaleAttrListBySpuId = '/admin/product/spuSaleAttrList',//通过spu的id标识获取spu销售属性对象数组的接口地址
 }
 // 获取基础的销售属性对象数组的地址
 export const getBaseSaleAttrListApi = () =>request.get<any,BaseSaleAttrListModel>(Api.GetBaseSaleAttrList);
@@ -31,7 +33,10 @@ export const updateSputInfoApi = (spu:SpuModel) =>request.post<any,null>(Api.Upd
 export const getSpuInfoListApi = ({page,limit,category3Id}:SpuPageParamsModel) =>request.get<any,SpuPageListModel>(Api.GetSpuInfoList+`/${page}/${limit}`,{params:{category3Id}});
 // 添加或者修改spu接口函数
 export const addOrUpdateSpuInfo = (spu:SpuModel) => spu.id ? updateSputInfoApi(spu) : addSpuInfoApi(spu);
-
+// 根据spu的id查找对应的图片对象数组的接口函数
+export const getSpuImageListBySpuIdApi = (spuId:number)=>request.get<any,SpuImageListModel>(Api.GetSpuImageListBySpuId  + `/${spuId}`)
+// 根据spu的id查找对应的销售属性对象数组的接口函数
+    export const getSpuSaleAttrListBySpuIdApi = (spuId:number)=>request.get<any,SpuSaleAttrListModel>(Api.GetSpuSaleAttrListBySpuId  + `/${spuId}`)
 
 
 

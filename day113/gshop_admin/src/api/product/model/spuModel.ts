@@ -30,8 +30,8 @@ export interface SpuImageModel {
     imgName:string,//图片名字
     imgUrl:string,//图片地址
 
-    // name?:string,//图片名字
-    // url?:string,//图片地址
+    name?:string,//图片名字
+    url?:string,//图片地址
     // response?:{ //上传成功后的返回值数据
     //     data:string
     // },

@@ -13,8 +13,7 @@ enum Api {
     GetSkuInfoList = '/admin/product/list',//分页的方式找sku对象数组数据的接口地址
     AddSkuInfo = '/admin/product/saveSkuInfo',//添加sku对象的接口地址
     UpdateSkuInfo = '/admin/product/updateSkuInfo',//更新sku对象的接口地址
-    GetSpuImageListBySpuId= '/admin/product/spuImageList',//通过spu的id标识获取spu图片对象数组的接口地址
-    GetSpuSaleAttrListBySpuId = '/admin/product/spuSaleAttrList',//通过spu的id标识获取spu销售属性对象数组的接口地址
+    
 }
 //下架的接口函数
     export const cancelSaleApi = (skuId:number)=>request.get<any,null>(Api.CancelSale  + `/${skuId}`)
@@ -38,10 +37,7 @@ enum Api {
     export const updateSkuInfoApi = (skuInfo:SkuModel)=>request.post<any,null>(Api.UpdateSkuInfo,skuInfo)
 // 添加或者修改sku的接口函数
     export const addOrUpdateSkuInfoApi = (skuInfo:SkuModel)=>skuInfo.id?updateSkuInfoApi(skuInfo):addSkuInfoApi(skuInfo)
-// 根据spu的id查找对应的图片对象数组的接口函数
-    export const getSpuImageListBySpuIdApi = (spuId:number)=>request.get<any,SkuImageListModel>(Api.GetSpuImageListBySpuId  + `/${spuId}`)
-// 根据spu的id查找对应的销售属性对象数组的接口函数
-    export const getSpuSaleAttrListBySpuIdApi = (spuId:number)=>request.get<any,SkuSaleAttrValueListModel>(Api.GetSpuSaleAttrListBySpuId  + `/${spuId}`)
+
 
 
 
