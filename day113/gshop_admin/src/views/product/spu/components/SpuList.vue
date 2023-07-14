@@ -80,13 +80,21 @@ watch(()=>categoryStore.category3Id,(category3Id)=>{
     getSpuInfoList()
 })
 // 接收父级组件传递过来的自定义事件
-const emits = defineEmits(['setCurrentShowStatus'])
+const emits = defineEmits(['setCurrentShowStatus','setCurrentSpuInfo'])
 
 
 // 修改spu按钮的点击事件对应的回调函数
 const updateShowSpu = (row:SpuModel)=>{
+    // console.log(row),
     //分发自定义事件
     emits('setCurrentShowStatus',ShowStatus.SPU_FORM)
+    emits('setCurrentSpuInfo',{
+        
+        ...row,
+        spuImageList:[],
+        spuSaleAttrList:[],
+        
+    })
 }
 </script>
 <style scoped></style>
