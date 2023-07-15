@@ -5,7 +5,7 @@ spuId?: number,//spu的id标识
 isChecked?: boolean,//是否选中的标识
 baseSaleAttrId: number,//所属销售属性对象的id标识
 saleAttrValueName: string,//销售属性名字
-saleAttrName: string,//属性值名字
+saleAttrName?: string,//属性值名字
 
 }
 // spu的销售属性值对象数组的接口类型
@@ -14,7 +14,7 @@ export type SpuSeleAttrValueListModel = SpuSeleAttrValueModel[]
 export interface SpuSaleAttrModel {
     id?:number,//id标识
     spuId?:number,//spu的id标识
-    saleAttrName:string,//销售属性名字
+    saleAttrName?:string,//销售属性名字
     baseSaleAttrId:number,//所属的基础销售属性的id
     // spuSaleAttrValueList:[],//销售属性值对象数组
     spuSaleAttrValueList:SpuSeleAttrValueListModel,//销售属性值对象数组

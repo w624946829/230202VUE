@@ -28,19 +28,18 @@
                     </el-icon>
                 </el-upload>
                 <el-dialog v-model="dialogVisible">
-                    <!-- 图片的标签需要更换 -->
-                    <img w-full :src="dialogImageUrl" alt="Preview Image" />
+                    <!-- 图片标签 -->
+                    <el-image :src="dialogImageUrl" fit="fill" />
                 </el-dialog>
             </el-form-item>
             <!-- 销售属性 -->
             <el-form-item label="销售属性">
-                <el-select placeholder="请选择" v-model="attrIdName">
-                    <el-option v-for="(attr, index) in baseSaleArrrList" :key="attr.id" :value="attr.id"
-                        :label="attr.name"></el-option>
+                <el-select :placeholder="saleAttrText" v-model="attrIdName">
+                    <el-option v-for="(attr, index) in unSelectSaleAttrList" :key="attr.id" :value="attr.id + '_' + attr.name" :label="attr.name"></el-option>
 
                 </el-select>
                 <!-- 添加销售属性按钮 -->
-                <el-button type="primary" :icon="Plus">添加销售属性值</el-button>
+                <el-button type="primary" :icon="Plus" @click="addAttr" :disabled = "!unSelectSaleAttrList.length">添加销售属性值</el-button>
                 <!-- 表格 -->
                 <el-table :data="spuInfo.spuSaleAttrList" stripe border style="width: 100%;margin-top :20px ">
                     <el-table-column type="index" label="序号" width="80" align="center" />
@@ -49,11 +48,11 @@
                         <template #default ='{row,$index}'>
 
                             <el-tag v-for="(attr,index) in row.spuSaleAttrValueList" :key="attr.id" closable :disable-transitions="false"
-                                @close="row.spuSaleAttrValueList.splice(index,1)" style="margin-right: 5px;">
+                                @close="row.spuSaleAttrValueList.splice(index,1)" style="margin-right: 5px;" type="success">
                                 {{ attr.saleAttrValueName }}
                             </el-tag>
-                            <el-input v-if="row.isShowEdit" :ref="(input:any)=>inputRef[$index]=input" v-model="saleAttrValueName" size="small" @keyup.enter="toView(row,$index)" @blur="toView(row,$index)" />
-                            <el-button v-else size="small" @click="toEdit" :icon="Plus"></el-button>
+                            <el-input v-if="row.isShowEdit" :ref="(input:any)=>inputRef[$index]=input" v-model="saleAttrValueName" size="small" @keyup.enter="$event.target.blur()" @blur="toView(row,$index)" style="width: 100px;"/>
+                            <el-button v-else size="small" @click="toEdit(row,$index)" :icon="Plus"></el-button>
 
 
                         </template>
@@ -61,7 +60,7 @@
                     </el-table-column>
                     <el-table-column label="操作" width="150">
                         <template #default="{ row, $index }">
-                            <el-button type="danger" size="small" :icon="Delete" title="删除SPU"></el-button>
+                            <el-button type="danger" size="small" :icon="Delete" @click="spuInfo.spuSaleAttrList.splice($index,1)" ></el-button>
                         </template>
                     </el-table-column>
                 </el-table>
@@ -85,9 +84,10 @@ export default {
 </script>
 <script lang="ts" setup>
 import { Plus, Edit, Delete, Loading, InfoFilled } from "@element-plus/icons-vue";
-import { ref, reactive } from 'vue'
+import { ref, reactive,nextTick } from 'vue'
 
-import type { UploadProps, UploadUserFile, UploadFile, UploadFiles } from 'element-plus'
+import { type UploadProps, type UploadUserFile, type UploadFile, type UploadFiles } from 'element-plus'
+import { ElMessage } from 'element-plus'
 // 引入spu独享的相关类型 
 import type { BaseSaleAttrListModel, SpuModel,SpuSaleAttrModel } from '@/api/product/model/spuModel';
 // 引入枚举的类型
@@ -99,6 +99,8 @@ import { getBaseSaleAttrListApi, getSpuImageListBySpuIdApi, getSpuSaleAttrListBy
 import { onMounted } from "vue";
 // 引入品牌对象数组的类型
 import { TrademarkListModel, type TrademarkModel } from "@/api/product/model/trademarkModel";
+import { computed } from "vue";
+
 
 // 接收父级组件传递过来的spuInfo对象数据
 const props = defineProps<{ currentSpu: SpuModel }>()
@@ -112,24 +114,23 @@ defineEmits(['setCurrentShowStatus'])
 const BASE_URL = import.meta.env.VITE_API_URL;
 const dialogImageUrl = ref('') // 存储预览的图片的地址
 const dialogVisible = ref(false) //开启预览的效果的标识
-// 移除图片的方法
-const handleRemove: UploadProps['onRemove'] = (uploadFile: UploadFile, uploadFiles: UploadFiles) => {
-    // 如果删除了一个图片，立即更新存储图片的数组的数据
-    console.log(uploadFile, uploadFiles)
-}
+
 // 预览图片的方法
 const handlePictureCardPreview: UploadProps['onPreview'] = (uploadFile: UploadFile) => {
     dialogImageUrl.value = uploadFile.url!
     dialogVisible.value = true
 }
 // 图片上传成功的回调函数
-const handleAvatarSuccess: UploadProps["onSuccess"] = (res) => {
+const handleAvatarSuccess: UploadProps["onSuccess"] = (res: any, uploadFile: UploadFile, uploadFiles: UploadFiles) => {
     // 上传成功后，需要把上传成功的图片地址保存到logoUrl属性中
-    //   trademark.logoUrl = res.data; // 图片上传成功后的地址
-    //   upLoading.value = false; // 关闭上传的加载效果
-    //   ruleFormRef.value?.clearValidate("logoUrl");
+    // 清掉表单验证的提示信息
+    spuInfo.spuImageList= uploadFiles as any
 };
-
+// 移除图片的方法
+const handleRemove: UploadProps['onRemove'] = (uploadFile: UploadFile, uploadFiles: UploadFiles) => {
+    // 如果删除了一个图片，立即更新存储图片的数组的数据
+    spuInfo.spuImageList = uploadFiles as any
+}
 
 // 定义一个数组，用来存储品牌对象数组数据
 const trademarkList = ref<TrademarkListModel>([])
@@ -138,10 +139,10 @@ onMounted(async () => {
     trademarkList.value = await getTrademarkListAllApi()
 })
 // 定义一个数组，用来存储基础的销售属性数组数据
-const baseSaleArrrList = ref<BaseSaleAttrListModel>([])
+const baseSaleAttrList = ref<BaseSaleAttrListModel>([])
 // 获取基础的销售数据数组数据
 onMounted(async () => {
-    baseSaleArrrList.value = await getBaseSaleAttrListApi()
+    baseSaleAttrList.value = await getBaseSaleAttrListApi()
 })
 
 // 获取spu对象所拥有的销售属性数组数据
@@ -166,11 +167,63 @@ const inputRef = ref<HTMLInputElement[]>([])
 const saleAttrValueName = ref<string>('')
 // 定义一个方法，用来实现文本框失去焦点的操作 --- 查看模式
 const toView = (row:SpuSaleAttrModel,index:number)=>{
+    // 判断数据是否有意义
+    if(!saleAttrValueName.value || !saleAttrValueName.value.trim()){
+        // 提示
+        ElMessage.warning('请输入有效数据')
+        // 清空数据
+        saleAttrValueName.value = ''
+        // 查看模式
+        row.isShowEdit = false
+        return 
+    }
+    // 判断数据是否存在重复
+    const isRepeat = row.spuSaleAttrValueList.some((item)=>item.saleAttrValueName === saleAttrValueName.value) 
+    if(isRepeat){
+        ElMessage.warning('请不要输入重复数据')
+        return 
+    }else{
+        // 想销售属性值对象数组中添加一个新的对象数据
+        row.spuSaleAttrValueList.push({
+            baseSaleAttrId:row.id as number,//所属销售属性对象的id标识
+            saleAttrValueName:saleAttrValueName.value // 属性值名字
+        })
 
+    }
+    saleAttrValueName.value = ''
+    row.isShowEdit = false
 }
 // 按钮的点击事件对应的回调函数 --- 编辑模式
-const toEdit=()=>{
-
+const toEdit=(row:SpuSaleAttrModel,index:number)=>{
+    // 设置文本框出现
+    row.isShowEdit = true 
+    // 设置文本框自动的获取焦点
+    nextTick(()=>{
+        inputRef.value[index].focus()
+    })
 }
+// 添加销售属性的按钮的点击事件的回调函数
+const addAttr = ()=>{
+    // 判断是否有选中的内容
+    if(!attrIdName.value) return 
+    const [id,name] = attrIdName.value.split('_')
+    // 获取了选中的销售属性的id
+    // 向表格绑定的数组中添加一个对象
+    spuInfo.spuSaleAttrList.push({
+        saleAttrName:name,// 属性的名字
+        baseSaleAttrId:+id,//属性的id
+        spuSaleAttrValueList:[],//属性值对象空数组
+    })
+    attrIdName.value = '' // 清空选中的内容
+}
+// 计算属性，计算剩余的销售属性数据
+const unSelectSaleAttrList = computed(()=>{
+    return baseSaleAttrList.value.filter(bsa =>!spuInfo.spuSaleAttrList.some(sa=>sa.saleAttrName === bsa.name))
+})
+// 计算属性，计算提示信息内容
+const saleAttrText = computed(()=>{
+    const {length} = unSelectSaleAttrList.value //取出数组的长度
+    return length > 0 ? `还有${length}个销售属性` : '什么都没有了'
+})
 </script>
 <style scoped></style>
