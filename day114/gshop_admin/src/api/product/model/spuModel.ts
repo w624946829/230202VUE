@@ -32,9 +32,9 @@ export interface SpuImageModel {
 
     name?:string,//图片名字
     url?:string,//图片地址
-    // response?:{ //上传成功后的返回值数据
-    //     data:string
-    // },
+    response?:{ //上传成功后的返回值数据
+        data:string
+    },
     // isfaultImage?:string// 默认图片地址
 }
 // spu的图片对象数组接口类型

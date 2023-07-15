@@ -86,7 +86,7 @@ export default {
 </script>
 <script lang="ts" setup>
 import { Plus, Edit, Delete, Loading, InfoFilled } from "@element-plus/icons-vue";
-import { ref, reactive,nextTick } from 'vue'
+import { ref, reactive,nextTick,defineEmits } from 'vue'
 
 import { type UploadProps, type UploadUserFile, type UploadFile, type UploadFiles,type FormRules,type FormInstance  } from 'element-plus'
 import { ElMessage } from 'element-plus'
@@ -97,11 +97,13 @@ import { ShowStatus } from '../types';
 // 获取所有的品牌对象数组数据
 import { getTrademarkListAllApi } from "@/api/product/trademark";
 // 引入获取所有的基础销售属性数组的接口函数和spu对象所拥有的销售属性对象数组的接口api接口函数 和spu对象所拥有的图片数组数据的接口函数
-import { getBaseSaleAttrListApi, getSpuImageListBySpuIdApi, getSpuSaleAttrListBySpuIdApi } from "@/api/product/spu";
+import { getBaseSaleAttrListApi, getSpuImageListBySpuIdApi, getSpuSaleAttrListBySpuIdApi,addOrUpdateSpuInfoApi } from "@/api/product/spu";
 import { onMounted } from "vue";
 // 引入品牌对象数组的类型
 import { TrademarkListModel, type TrademarkModel } from "@/api/product/model/trademarkModel";
 import { computed } from "vue";
+import { SpuImageListModel } from "@/api/product/model/spuModel";
+
 
 
 // 接收父级组件传递过来的spuInfo对象数据
@@ -109,8 +111,8 @@ const props = defineProps<{ currentSpu: SpuModel }>()
 // 定义一个spuInfo的对象
 const spuInfo = reactive<SpuModel>(props.currentSpu)
 // 接收父级组件传递过来的自定义使用，用来修改组件切换的标识数据
-defineEmits(['setCurrentShowStatus'])
 
+const emits = defineEmits(['setCurrentShowStatus'])
 // 图片上传的相关的数据及方法
 // 上传图片的时候地址前面的根路径标识
 const BASE_URL = import.meta.env.VITE_API_URL;
@@ -189,7 +191,7 @@ const toView = (row:SpuSaleAttrModel,index:number)=>{
     }else{
         // 想销售属性值对象数组中添加一个新的对象数据
         row.spuSaleAttrValueList.push({
-            baseSaleAttrId:row.id as number,//所属销售属性对象的id标识
+            baseSaleAttrId:row.baseSaleAttrId,//所属销售属性对象的id标识
             saleAttrValueName:saleAttrValueName.value // 属性值名字
         })
 
@@ -246,10 +248,40 @@ spuSaleAttrList: [{ type:'array', required: true, message: '至少选择一个�
   
 })
 
+
+
+
 // 添加或者修改spu数据
 const saveSpuInfo = async ()=>{
-    await formRef.value?.validate((valid)=>{
-        console.log(valid);
+    await formRef.value?.validate(async (valid)=>{
+        // 表单验证通过后
+        if(!valid) return 
+        // 1.销售属性数据的过滤操作，（属性值对象数组如果没有数据，过滤掉，isShowEdit属性也过滤掉）
+        spuInfo.spuSaleAttrList = spuInfo.spuSaleAttrList.filter(item=>{
+            // 判断销售属性对象中的销售属性值对象数组是否有数据
+            if(!item.spuSaleAttrValueList.length) return false
+            delete item.isShowEdit
+            return true
+        })
+        // 2、图片对象数据中的数组也需要进行过滤
+        spuInfo.spuImageList = spuInfo.spuImageList.map(item=>({
+            spuId:spuInfo.id,
+            imgName:item.imgName||item.name,
+            imgUrl:item.response ?item.response.data:item.url
+        })) as SpuImageListModel
+        
+        // 3、二次销售属性数据的过滤
+        if(!spuInfo.spuSaleAttrList.length) return
+        // 4、调用接口发送请求 --- 添加、修改的操作
+        try{
+            await addOrUpdateSpuInfoApi(spuInfo)
+            ElMessage.success('保存成功')
+            
+            // 分发自定义事件
+            emits('setCurrentShowStatus',ShowStatus.SPU_LIST)
+        }catch(error:any){
+            ElMessage.error(error.message||'保存失败')
+        }
         
     })
 }
