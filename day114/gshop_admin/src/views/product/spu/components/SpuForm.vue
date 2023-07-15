@@ -1,24 +1,24 @@
 <template>
     <div>
 
-        <el-form label-width="120px">
+        <el-form label-width="120px" ref="formRef" :model="spuInfo" :rules="rules">
             <!-- spu 名称 -->
-            <el-form-item label="SPU名称">
+            <el-form-item label="SPU名称" prop="spuName">
                 <el-input type="text" placeholder="请输入SPU名称" v-model="spuInfo.spuName"></el-input>
             </el-form-item>
             <!-- SPU品牌 -->
-            <el-form-item label="SPU品牌">
+            <el-form-item label="SPU品牌" prop="tmId">
                 <el-select placeholder="请选择" v-model="spuInfo.tmId">
                     <el-option v-for="(tm, index) in trademarkList" :key="tm.id" :value="tm.id"
                         :label="tm.tmName"></el-option>
                 </el-select>
             </el-form-item>
             <!-- spu 描述 -->
-            <el-form-item label="SPU描述">
+            <el-form-item label="SPU描述" prop="description">
                 <el-input type="textarea" placeholder="请输入SPU描述" v-model="spuInfo.description"></el-input>
             </el-form-item>
             <!-- SPU图片 -->
-            <el-form-item label="SPU图片">
+            <el-form-item label="SPU图片" prop="spuImageList">
                 <!-- 上传的组件 -->
                 <el-upload multiple v-model:file-list="spuInfo.spuImageList"
                     :action="`${BASE_URL}/admin/product/fileUpload`" list-type="picture-card"
@@ -33,14 +33,16 @@
                 </el-dialog>
             </el-form-item>
             <!-- 销售属性 -->
-            <el-form-item label="销售属性">
+            <el-form-item label="销售属性" prop="spuSaleAttrList">
                 <el-select :placeholder="saleAttrText" v-model="attrIdName">
                     <el-option v-for="(attr, index) in unSelectSaleAttrList" :key="attr.id" :value="attr.id + '_' + attr.name" :label="attr.name"></el-option>
 
                 </el-select>
                 <!-- 添加销售属性按钮 -->
                 <el-button type="primary" :icon="Plus" @click="addAttr" :disabled = "!unSelectSaleAttrList.length">添加销售属性值</el-button>
+            </el-form-item>
                 <!-- 表格 -->
+            <el-form-item>
                 <el-table :data="spuInfo.spuSaleAttrList" stripe border style="width: 100%;margin-top :20px ">
                     <el-table-column type="index" label="序号" width="80" align="center" />
                     <el-table-column prop="saleAttrName" label="属性名" width="150" />
@@ -69,7 +71,7 @@
 
             <!-- 两个按钮 -->
             <el-form-item>
-                <el-button type="primary">保存</el-button>
+                <el-button type="primary" @click="saveSpuInfo">保存</el-button>
                 <el-button @click="$emit('setCurrentShowStatus', ShowStatus.SPU_LIST)">取消</el-button>
             </el-form-item>
         </el-form>
@@ -86,7 +88,7 @@ export default {
 import { Plus, Edit, Delete, Loading, InfoFilled } from "@element-plus/icons-vue";
 import { ref, reactive,nextTick } from 'vue'
 
-import { type UploadProps, type UploadUserFile, type UploadFile, type UploadFiles } from 'element-plus'
+import { type UploadProps, type UploadUserFile, type UploadFile, type UploadFiles,type FormRules,type FormInstance  } from 'element-plus'
 import { ElMessage } from 'element-plus'
 // 引入spu独享的相关类型 
 import type { BaseSaleAttrListModel, SpuModel,SpuSaleAttrModel } from '@/api/product/model/spuModel';
@@ -125,6 +127,8 @@ const handleAvatarSuccess: UploadProps["onSuccess"] = (res: any, uploadFile: Upl
     // 上传成功后，需要把上传成功的图片地址保存到logoUrl属性中
     // 清掉表单验证的提示信息
     spuInfo.spuImageList= uploadFiles as any
+    // 清掉表单验证的提示信息
+    formRef.value?.clearValidate()
 };
 // 移除图片的方法
 const handleRemove: UploadProps['onRemove'] = (uploadFile: UploadFile, uploadFiles: UploadFiles) => {
@@ -225,5 +229,29 @@ const saleAttrText = computed(()=>{
     const {length} = unSelectSaleAttrList.value //取出数组的长度
     return length > 0 ? `还有${length}个销售属性` : '什么都没有了'
 })
+// 定义变量用来存储
+const formRef = ref<FormInstance>()
+// 表单的验证规则
+const rules = reactive<FormRules>({
+    // 品牌的id
+  tmId: [{ required: true, message: '至少选择一个品牌', trigger: 'change' },],
+//   spu的名字
+  spuName: [{ required: true, message: '请输入SPU名称', trigger: 'blur' },],
+//   spu的描述
+  description: [{ required: true, message: '请输入SPU描述信息', trigger: 'blur' },],
+//   spu的销售属性
+spuSaleAttrList: [{ type:'array', required: true, message: '至少选择一个销售属性', trigger: 'change' },],
+//   spu的图片
+  spuImageList: [{ type:'array', required: true, message: '至少上传一张图片', trigger: 'change' },],
+  
+})
+
+// 添加或者修改spu数据
+const saveSpuInfo = async ()=>{
+    await formRef.value?.validate((valid)=>{
+        console.log(valid);
+        
+    })
+}
 </script>
 <style scoped></style>
