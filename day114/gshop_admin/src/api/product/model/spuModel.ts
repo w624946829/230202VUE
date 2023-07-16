@@ -44,7 +44,7 @@ export interface SpuModel {
     id?:number,//id标识
     tmId?:number,//品牌id标识
     category3Id?:number,//三级分类id标识
-    spuName:string,//spu的名字
+    spuName?:string,//spu的名字
     description:string, //描述信息
     spuSaleAttrList:SpuSaleAttrListModel,//销售属性对象数组
     spuImageList:SpuImageListModel,//图片对象数组

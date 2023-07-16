@@ -103,7 +103,10 @@ import { onMounted } from "vue";
 import { TrademarkListModel, type TrademarkModel } from "@/api/product/model/trademarkModel";
 import { computed } from "vue";
 import { SpuImageListModel } from "@/api/product/model/spuModel";
-
+// 引入三级的分类的仓库
+import { useCategoryStore } from '@/stores/category' ;
+// 获取仓库的对象
+const categoryStore = useCategoryStore();
 
 
 // 接收父级组件传递过来的spuInfo对象数据
@@ -153,10 +156,15 @@ onMounted(async () => {
 
 // 获取spu对象所拥有的销售属性数组数据
 onMounted(async () => {
+    const id = spuInfo.id
+    if(!id) return
     spuInfo.spuSaleAttrList = await getSpuSaleAttrListBySpuIdApi(spuInfo.id as number)
+    id
 })
 // 获取spu对象所拥有的图片数组数据
 onMounted(async () => {
+    const id = spuInfo.id
+    if(!id) return
     const spuImageList = await getSpuImageListBySpuIdApi(spuInfo.id as number)
     // 为数组中的每个对象添加一个name和url属性
     spuInfo.spuImageList = spuImageList.map(item => ({
@@ -256,6 +264,8 @@ const saveSpuInfo = async ()=>{
     await formRef.value?.validate(async (valid)=>{
         // 表单验证通过后
         if(!valid) return 
+        // 重新更新三级分类id数据
+        spuInfo.category3Id = categoryStore.getCategory3Id
         // 1.销售属性数据的过滤操作，（属性值对象数组如果没有数据，过滤掉，isShowEdit属性也过滤掉）
         spuInfo.spuSaleAttrList = spuInfo.spuSaleAttrList.filter(item=>{
             // 判断销售属性对象中的销售属性值对象数组是否有数据
