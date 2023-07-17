@@ -14,10 +14,10 @@ export interface SkuImageModel {
     id?: number; //id标识
     skuId?: number; //sku的id标识
     imgName: string; //图片名字
-    imgUrl:string;//图片地址
+    imgUrl: string;//图片地址
     spuImgId?:number;//所属spu的id标识
-    isDefault?:boolean;//默认的标识
-
+    isDefault?:number;//默认的标识
+    spuId?:number
 }
 // sku的图片对象数组的接口类型
 export type SkuImageListModel = SkuImageModel[]
@@ -40,8 +40,8 @@ export interface SkuModel {
     price?: number; //价格
     tmId?: number; //品牌id
     category3Id?: number; //三级分类id
-    skuName?: string; //sku名字
-    skuDesc?: string; //sku描述
+    skuName: string; //sku名字
+    skuDesc: string; //sku描述
     weight: number; //重量
     isSale?: number; //是否上架的标识
     skuDefaultImg:string; // 默认的图片地址

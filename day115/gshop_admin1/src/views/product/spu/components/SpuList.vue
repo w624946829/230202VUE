@@ -9,7 +9,7 @@
       <el-table-column prop="description" label="SPU描述" />
       <el-table-column label="操作">
         <template #default="{ row, $index }">
-          <el-button type="primary" :icon="Plus" size="small" title="添加SKU"></el-button>
+          <el-button type="primary" :icon="Plus" size="small" title="添加SKU" @click="showAddSku(row)" ></el-button>
           <el-button type="primary" :icon="Edit" size="small" title="修改SPU" @click="updateShowSpu(row)"></el-button>
           <el-button type="info" :icon="InfoFilled" size="small" title="查看SKU" @click="showSkuInfoList(row)"></el-button>
           <el-button type="danger" :icon="Delete" size="small" title="删除SPU"></el-button>
@@ -147,5 +147,17 @@ const showSkuInfoList = async (row: SpuModel) => {
 
 // 定义一个标识用来控制对话框显示或隐藏
 const dialogTableVisible = ref<boolean>(false)
+
+// 点击添加sku按钮的点击事件对应的回调函数
+const showAddSku =(row:SpuModel)=>{
+    // 组件界面的切换
+    emits('setCurrentShowStatus',ShowStatus.SKU_FORM)
+    // 分发自定义事件，传递spu对象数据
+    emits('setCurrentSpuInfo',{
+        id:row.id,//spu的id
+        spuName:row.spuName,//spu的名字
+        
+    })
+} 
 </script>
 <style scoped></style>
