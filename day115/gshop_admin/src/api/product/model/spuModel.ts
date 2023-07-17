@@ -35,7 +35,7 @@ export interface SpuImageModel {
     response?:{ //上传成功后的返回值数据
         data:string
     },
-    // isfaultImage?:string// 默认图片地址
+    isDefault?:number// 默认图片地址
 }
 // spu的图片对象数组接口类型
 export type SpuImageListModel = SpuImageModel[]

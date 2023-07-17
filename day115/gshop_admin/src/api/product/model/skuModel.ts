@@ -17,6 +17,7 @@ export interface SkuAttrValueModel {
     imgUrl: string // 图片的地址
     spuImgId?: number // 所属spu的id标识
     isDefault?:number // 默认的标识
+    spuId?:number
   }
   // sku的图片对象数组的接口类型
   export type SkuImageListModel = SkuImageModel[]
@@ -27,7 +28,7 @@ export interface SkuSaleAttrValueModel {
     spuId?: number // spu的id标识
     saleAttrId?: number // 所属销售属性对象的id标识
     saleAttrName?: string // 销售属性名字
-    saleAttrValueId?: number // 销售属性值的id标识
+    saleAttrValueId: number // 销售属性值的id标识
     saleAttrValueName?: string // 销售属性值的名字
 }
 // sku的销售属性对象数组的接口类型
