@@ -11,7 +11,8 @@
         <SpuForm v-else-if ="showStatus === ShowStatus.SPU_FORM" @setCurrentShowStatus = "setCurrentShowStatus"
         :currentSpu="currentSpu"/>
         <!-- SkuForm组件，用来添加sku对象数据的 -->
-        <SkuForm v-else ="showStatus === ShowStatus.SKU_FORM"  @setCurrentShowStatus = "setCurrentShowStatus" :currentSpu="currentSpu"/>
+        <SkuForm v-else ="showStatus === ShowStatus.SKU_FORM"  @setCurrentShowStatus = "setCurrentShowStatus" 
+        :spu="{id:currentSpu.id as number,spuName:currentSpu.spuName as string}"/>
        </el-card> 
 
     </div>
@@ -56,6 +57,9 @@ const setCurrentSpuInfo = (currentSpuInfo:SpuModel = initSpuInfo())=>{
     
     currentSpu.value = currentSpuInfo //存储传递过来的spu对象数据
 }
+
+
+
 </script>
 <style scoped>
 </style>

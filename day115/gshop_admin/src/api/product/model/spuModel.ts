@@ -72,3 +72,4 @@ export interface BaseSaleAttrModel {
 
 // 基础的销售属性对象数组接口类型
 export type BaseSaleAttrListModel = BaseSaleAttrModel[]
+

@@ -49,6 +49,10 @@ skuAttrValueList: SkuAttrValueListModel // 平台属性对象数组
 skuSaleAttrValueList: SkuSaleAttrValueListModel // 销售属性对象数组
 
 }
+
+
+  
+
 // sku对象数组的接口类型
 export type SkuListModel = SkuModel[]
 // sku对象的分页api接口函数返回值的接口数据类型
