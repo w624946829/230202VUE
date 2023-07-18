@@ -101,7 +101,49 @@ import type { RouteRecordRaw } from 'vue-router';
 
   ]
   },
-
+    // 权限管理路由
+    {
+      name: 'Acl',
+      path: '/acl',
+      component: () => import('@/layout/index.vue'),
+      redirect: '/acl/user/list',
+      meta: { title: '权限管理', icon: 'ele-Setting' },
+      children: [
+        {
+          name: 'User',
+          path: '/acl/user/list',
+          component: () => import('@/views/acl/user/index.vue'),
+          meta: { title: '用户管理' }
+        },
+        {
+          name: 'Role',
+          path: '/acl/role/list',
+          component: () => import('@/views/acl/role/index.vue'),
+          meta: {
+            title: '角色管理',
+          },
+        },
+        {
+          name: 'RoleAuth',
+          path: '/acl/role/auth',
+          component: () => import('@/views/acl/role/roleAuth.vue'),
+          meta: {
+            title: '角色管理',
+            hidden: true,
+            activeMenu: '/acl/role/list',
+          },
+        },
+        {
+          name: 'Permission',
+          path: '/acl/permission/list',
+          component: () => import('@/views/acl/permission/index.vue'),
+          meta: {
+            title: '菜单管理',
+          }
+        }
+      ]
+    },
+ 
   /* 匹配任意的路由 必须最后注册 */
   { 
     path: '/:pathMatch(.*)', 
