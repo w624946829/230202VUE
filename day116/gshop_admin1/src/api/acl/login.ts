@@ -1,7 +1,7 @@
 //引入request（axios）
 import request from '@/utils/request'
 // 引入登录相关的用户信息的数据类型
-import { LoginResponseModel,UserInfoResponseModel } from './loginModel/loginModel'
+import { LoginResponseModel,UserInfoResponseModel } from './Model/loginModel'
 // 定义枚举类型的接口地址
 enum Api {
     //登出的接口地址

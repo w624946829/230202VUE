@@ -27,8 +27,9 @@ export interface SkuSaleAttrValueModel{
     skuId?:number //sku的id标识
     spuId?:number //spu的id标识
     saleAttrId?:number //所属销售属性对象的id标识
-    seleAttrValueName?: string//销售属性值名字
-    saleAttrValueId?:number // 属性值的id标识
+    saleAttrName?:string //销售属性名字
+    saleAttrValueName?: string//销售属性值名字
+    saleAttrValueId?:number // 销售属性值的id标识
 }
 // sku的销售属性对象数组的接口类型
 export type SkuSaleAttrValueListModel = SkuSaleAttrValueModel[]
