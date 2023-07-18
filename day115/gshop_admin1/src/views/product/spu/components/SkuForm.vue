@@ -62,7 +62,7 @@
         <!-- 两个按钮 -->
         <el-form-item>
             <el-button type="primary" @click="savaSkuInfo">保存</el-button>
-            <el-button @click="$emit('setCurrentShowStatus',ShowStatus.SPU_LIST)">取消</el-button>
+            <el-button @click="xxx">取消</el-button>
         </el-form-item>
     </el-form>
 </template>
@@ -99,8 +99,11 @@ interface Props {
 }
 
 
-
-const emits = defineEmits(['setCurrentShowStatus', 'setCurrentSpuInfo'])
+const xxx=()=>{
+    console.log('测试')
+    emits('setCurrentShowStatus',ShowStatus.SPU_LIST)
+}
+const emits = defineEmits(['setCurrentShowStatus'])
 const props = defineProps<Props>()
 const initSkuInfo = (): SkuModel => ({
     // spuId?: number; //spu的id标识
@@ -219,7 +222,8 @@ const savaSkuInfo=()=>{
                 // 过滤销售属性数据
                 skuSaleAttrValueList:skuInfo.skuSaleAttrValueList.map(item=>{
                     return {
-                        saleAttrId:+item
+                        saleAttrValueId:+item
+                       // saleAttrId:+item
                     }
                 }),//销售属性对象数组
                 // 过滤图片数组数据
@@ -238,6 +242,8 @@ const savaSkuInfo=()=>{
         }
     })
 }
+
+
 
 </script>
 <style scoped></style>

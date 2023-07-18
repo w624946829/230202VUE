@@ -11,6 +11,7 @@ enum Api {
     GetSkuInfoListByIds = '/admin/product/inner/findSkuInfoBySkuIdList',
     GetSkuInfoList = '/admin/product/list',
     AddSkuInfo = '/admin/product/saveSkuInfo',
+    
     UpdateSkuInfo = '/admin/product/updateSkuInfo',
    
 }

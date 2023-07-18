@@ -1,7 +1,7 @@
 // 引入request（axios)
 import request from '@/utils/request'
 // 引入登录相关的用户信息的数据类型
-import { LoginResponseModel,UserInfoResponseModel } from './loginModel/loginModel'
+import { LoginResponseModel,UserInfoResponseModel } from './Model/loginModel'
 
 // 定义枚举类型的接口地址
 enum Api{
@@ -29,7 +29,7 @@ export const loginApi = (username:string,password:string) =>{
  * @returns 
  */
 export const logoutApi = () =>{
-    return request.get <any,any>(Api.logout)
+    return request.post <any,any>(Api.logout)
 }
 
 /**

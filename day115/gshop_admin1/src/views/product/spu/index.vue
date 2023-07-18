@@ -12,7 +12,7 @@
             <SpuForm v-else-if="showStatus === ShowStatus.SPU_FORM" @setCurrentShowStatus='setCurrentShowStatus'
                 :currentSpu="currentSpu" />
             <!-- SkuForm组件，用来展示spu列表数据的 -->
-            <SkuForm v-else="showStatus === ShowStatus.SKU_FORM"
+            <SkuForm v-else="showStatus === ShowStatus.SKU_FORM" @setCurrentShowStatus='setCurrentShowStatus'
                 :spu="{ id: currentSpu.id as number, spuName: currentSpu.spuName as string }" />
 
 
