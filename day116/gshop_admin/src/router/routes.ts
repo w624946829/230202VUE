@@ -93,7 +93,7 @@ import type { RouteRecordRaw } from 'vue-router';
     {
       path: '/product/sku/list',
       name: 'Sku',
-      component: () => import('@/views/product/sku/index.vue'),
+      component: () => import('@/views/product/sku/index2.vue'),
       meta: { 
         title: 'SKU管理', 
       }

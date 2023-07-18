@@ -30,8 +30,12 @@ import SpuList from './components/SpuList.vue'
 import SkuForm from './components/SkuForm.vue'
 //引入枚举类型的标识类型 
 import  {ShowStatus} from './types'
-import {ref,reactive} from 'vue'
+import {ref,reactive,onBeforeUnmount} from 'vue'
 import { SpuModel } from '@/api/product/model/spuModel'
+// 引入分类的信息仓库
+import { useCategoryStore } from '@/stores/category';
+// 分类的信息仓库
+const categoryStore = useCategoryStore()
 // 定义一个枚举类型的标识数据
 const showStatus = ref<ShowStatus>(ShowStatus.SPU_LIST)
 
@@ -58,7 +62,17 @@ const setCurrentSpuInfo = (currentSpuInfo:SpuModel = initSpuInfo())=>{
     currentSpu.value = currentSpuInfo //存储传递过来的spu对象数据
 }
 
-
+// 销毁前重置数据
+onBeforeUnmount(() => {
+   categoryStore.$state={
+         category1Id:undefined,
+         category2Id:undefined,
+         category3Id:undefined,
+        category1List:[],
+        category2List:[],
+        category3List:[],
+        }
+})
 
 </script>
 <style scoped>

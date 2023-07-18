@@ -12,7 +12,7 @@
                     <el-button type="primary" size="small" :icon="Plus" title="添加SKU" @click="showAddSku(row)"></el-button>
                     <el-button type="primary" size="small" :icon="Edit" title="修改SPU" @click="updateShowSpu(row)"></el-button>
                     <el-button type="info" size="small" :icon="InfoFilled" title="查看SKU" @click="showSkuInfoList(row)"></el-button>
-                    <el-button type="danger" size="small" :icon="Delete" title="删除SPU"></el-button>
+                    <el-button type="danger" size="small" :icon="Delete" title="删除SPU" @click="deleteSpuInfo(row)"></el-button>
                 </template>
             </el-table-column>
         </el-table>
@@ -49,7 +49,7 @@ import { ref,watch } from 'vue'
 // 引入spu相关的数据类型
 import type { SpuListModel,SpuModel } from "@/api/product/model/spuModel";
 // 引入spu相关的接口函数
-import { getSpuInfoListApi } from "@/api/product/spu";
+import { deleteSpuInfoBySpuIdApi, getSpuInfoListApi } from "@/api/product/spu";
 // 引入三级的分类的仓库
 import { useCategoryStore } from '@/stores/category' ;
 import { ShowStatus } from "../types";
@@ -57,6 +57,7 @@ import { ShowStatus } from "../types";
 import { getSpuInfoListByKeywordApi } from "@/api/product/spu";
 import { getSkuInfoListApi, getSkuInfoListBySpuIdApi } from "@/api/product/sku";
 import type { SkuListModel } from "@/api/product/model/skuModel";
+import { ElMessage, ElMessageBox } from "element-plus";
 // 获取仓库的对象
 const categoryStore = useCategoryStore();
 // 加载的标识效果
@@ -150,5 +151,23 @@ const showAddSku =(row:SpuModel)=>{
         
     })
 } 
+// 删除
+const deleteSpuInfo = async (row: SpuModel) => {
+  if (!row || !row.id) {
+    console.error('row or row.id is undefined');
+    return;
+  }
+  const confirmResult = await ElMessageBox.confirm('是否删除当前的SPU对象数据？', '提示');
+  if (confirmResult !== 'confirm') return;
+  try {
+    await deleteSpuInfoBySpuIdApi(row.id.toString());
+    ElMessage.success('删除成功');
+    getSpuInfoList();
+    // 执行其他操作
+  } catch (error) {
+    console.error(error);
+    ElMessage.error('删除失败');
+  }
+};
 </script>
 <style scoped></style>
