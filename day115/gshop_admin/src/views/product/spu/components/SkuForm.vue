@@ -221,14 +221,14 @@ const saveSkuInfo = ()=>{
             ...skuInfo,
             spuId:props.spu.id,// spu的id标识
             category3Id:categoryStore.getCategory3Id,//三级的分类的id
-            skuAttrValueList:skuInfo.skuAttrValueList.map(item=>{
+            skuAttrValueList:skuInfo.skuAttrValueList.filter(item=>item !== null).map(item=>{
                 // 结构出属性值的id和属性对象的id
                 const [valueId,attrId] = (item as any).split('_')
                 return {
                     attrId,
                     valueId
                 }
-            }).split(item=>item !== null),
+            }),
             // 过滤销售属性数据
             skuSaleAttrValueList:skuInfo.skuSaleAttrValueList.map((item)=>{
                 return {

@@ -32,12 +32,27 @@ function filterRoutes(asyncRoutes:RouteRecordRaw[],routeNames:string[]){
     return true
   })
 }
+
 // 注册路由
 function addRoutes(routes:RouteRecordRaw[]){
   // 调用api的方式注册路由
   routes.forEach(route=>{
     router.addRoute(route)
   })
+}
+// 重置路由
+function resetRoutes(){
+  // 获取所有的路由对象
+  const routes = router.getRoutes()
+  // 移除路由器中的路由
+  routes.forEach(route=>{
+    // 判断是否存在name属性
+    if(route.name){
+      router.removeRoute(route.name)
+    }
+  })
+  // 静态路由还要保留
+  staticRoutes.forEach(route=>router.addRoute(route))
 }
 /**
  * 用户信息
@@ -90,22 +105,27 @@ export const useUserInfoStore = defineStore("userInfo", {
     setRoutes(routeNames:string[]){
       // 1.根据routeNames过滤出有权限的路由
       // 进行路由的过滤（内部要遍历每个路由对象，判断路由对象的名字是否在路由名字标识的数组中）
-      const asyncRoutes = filterRoutes(allAsyncRoutes,routeNames)
+      const asyncRoutes = filterRoutes(cloneDeep(allAsyncRoutes) ,routeNames)
       // 2.将有权限的路由添加到路由器中
       addRoutes([...asyncRoutes,anyRoutes])
       // 3.将有权限的路由保存到仓库中
-      this.menuRoutes = asyncRoutes
+      this.menuRoutes = [...asyncRoutes,...staticRoutes]
     },
+    
     // 退出
     async reset() {
       if (this.name) {
         await logoutApi();
       }
+      resetRoutes(); //路由进行重置
       removeToken();
       // 提交重置用户信息的mutations
       this.token = "";
       this.name = "";
       this.avatar = "";
+      this.roles = [];
+      this.authBtnList = [];
+      this.menuRoutes = [];
     },
   },
 });
