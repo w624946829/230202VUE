@@ -1,9 +1,11 @@
 <template>
-    <el-card shadow="always" class="line-view">
-        <div class="title">今日订单</div>
-        <div class="value">256,206,1</div>
-        <div ref="chartRef" style="width:100%;height:100%"></div>
-    </el-card>
+    <el-card shadow="always" class="bar-view">
+    <el-menu :default-active="state.activeIndex" class="el-menu-demo" mode="horizontal" @select="(val:any)=>state.activeIndex=val">
+      <el-menu-item index="1">销售额</el-menu-item>
+      <el-menu-item index="2">访问量</el-menu-item>
+    </el-menu>
+    <v-chart class="content" :option="getOption()" autoresize></v-chart>
+  </el-card>
 </template>
 <script lang="ts">
 export default {
@@ -11,82 +13,49 @@ export default {
 }
 </script>
 <script lang="ts" setup>
-// 引入echarts
-import {$echarts} from '@/plugins/echarts';
-import { EChartsType } from 'echarts'
+import { reactive, computed } from 'vue'
 // 引入数据仓库
-import { useDataStore } from '@/stores/reportData';
+import {useDataStore} from '@/stores/reportData'
+const dataSotre = useDataStore()
+const orderFullYearAxis = computed(()=>dataSotre.reportData.orderFullYearAxis||[]) // 销售额对应的横轴数据
+const orderFullYear = computed(()=>dataSotre.reportData.orderFullYear||[]) // 销售额数组数据
+const userFullYearAxis = computed(()=>dataSotre.reportData.userFullYearAxis||[]) // 访问量对应的横轴数据
+const userFullYear = computed(()=>dataSotre.reportData.userFullYear||[]) // 访问量数组数据
 
-import { ref,onMounted,computed,watch } from 'vue';
-// -----------------------------------------------
-const dataStore = useDataStore()
-// 获取今日订单数据
-const orderData = computed(() => dataStore.reportData.orderToday)
-// 实时交易数据
-const orderTrend = computed(() => dataStore.reportData.orderTrend || [])
-// 横轴数据
-const orderTrendAxis = computed(()=> dataStore.reportData.orderTrendAxis || [])
-// 定义变量用来获取div对象
-const chartRef = ref()
-// 定义函数,返回配置对象
-let chart: EChartsType
-// 定义函数，返回配置对象
-const getOption =()=>{
+
+//select选中的值
+const handleSelect = (val:any) => state.activeIndex = val
+
+// 定义状态数据，用来存储选中的菜单的索引值
+const state = reactive({
+    activeIndex: '1'
+})
+// 
+const getOption = () => {
+    // 配置项
     return {
+        // 标题
+        title: {
+            text: '测试数据'
+        },
         // 横轴
-        xAxis:{
-            show:true,//显示横轴的数据
-            data:orderTrendAxis.value,//横轴的数据
-            boundaryGap:false,//两边不留白
-        },
+        xAxis: {},
         // 纵轴
-        yAxis:{ show:false },//不显示纵轴
+        yAxis: {},//不显示纵轴
         // 系列组件
-        series:[
-            {
-                name:'实时交易量',//名字
-                type:'line',//图形类型
-                data:orderTrend.value,// 数据
-                itemStyle:{opacity:0,},//折线拐点的样式
-                lineStyle:{opacity:0,color:'#02a774'},//折线的样式
-                areaStyle:{color:'#5fbbff'},//区域的填充颜色
-                smooth:true,//是否是平滑显示
-            }
-        ],
+        series: [],
         // 提示框
-        tooltip:{trigger:'axis'},
+        tooltip: {},
         // 四周的位置
-        grid:{
-            grid:{left:0,right:0,bottom:0,top:0},
-        },
+        grid: {},
     }
 }
-// 组件挂载
-onMounted(()=>{
-    // 根据div来进行echart的初始化
-    chart= $echarts.init(chartRef.value)
-    chart.setOption(getOption())
-    // 绑定一个窗口发生变化的事件
-    window.addEventListener('resize',()=>{
-        chart&&chart.resize()
-    })
-})
-// 监视数据
-watch(orderTrend,()=>{
-    chart.setOption(getOption())
-})
-// 设置配置项
 </script>
 <style lang="scss" scoped>
-.line-view {
-  .title{
-    font-size:13px;
-    color:#999;
-  }
-  .value{
-    font-size:24px;
-    margin:5px 0;
-    letter-spacing: 1px;
-  }
-}
-</style>
+.bar-view {
+    margin-top: 20px;
+
+    .content {
+        height: 270px;
+    }
+}</style>

@@ -1,9 +1,9 @@
 <template>
   <div class="home">
     <!-- 线形图 -->
-    <BarView/>
-    <!-- 柱状图 -->
     <LineView/>
+    <!-- 柱状图 -->
+    <BarView/>
     <!-- 饼状图 -->
     <PieView/>
     <!-- 地图 -->
@@ -18,9 +18,9 @@ export default {
 </script>
 <script lang="ts" setup>
 // 引入线形图组件
-import BarView from './components/BarView.vue'
-// 引入柱状图组件
 import LineView from './components/LineView.vue'
+// 引入柱状图组件
+import BarView from './components/BarView.vue'
 // 引入饼图组件
 import PieView from './components/PieView.vue'
 // 引入地图组件
