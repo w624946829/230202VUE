@@ -228,7 +228,7 @@ const saveSkuInfo = ()=>{
                     attrId,
                     valueId
                 }
-            }).split(item=>item !== null),
+            }),
             // 过滤销售属性数据
             skuSaleAttrValueList:skuInfo.skuSaleAttrValueList.map((item)=>{
                 return {
