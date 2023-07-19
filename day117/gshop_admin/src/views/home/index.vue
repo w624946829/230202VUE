@@ -1,7 +1,14 @@
 <template>
   <div class="home">
-    Hello, {{userInfoStore.name}}
-  </div>
+    <!-- 线形图 -->
+    <BarView/>
+    <!-- 柱状图 -->
+    <LineView/>
+    <!-- 饼状图 -->
+    <PieView/>
+    <!-- 地图 -->
+    <MapView/>
+</div>
 </template>
 
 <script lang="ts">
@@ -10,9 +17,23 @@ export default {
 }
 </script>
 <script lang="ts" setup>
-import { useUserInfoStore } from '@/stores/userInfo';
+// 引入线形图组件
+import BarView from './components/BarView.vue'
+// 引入柱状图组件
+import LineView from './components/LineView.vue'
+// 引入饼图组件
+import PieView from './components/PieView.vue'
+// 引入地图组件
+import MapView from './components/MapView.vue'
 
-const userInfoStore = useUserInfoStore()
+
+import { useDataStore } from '@/stores/reportData';
+import { onMounted } from 'vue';
+// -----------------------------------------------
+const dataStore = useDataStore()
+
+// 组件挂在后分发pinia中的action，获取数据可视化的相关数据
+onMounted(() => dataStore.getData())
 
 </script>
 
