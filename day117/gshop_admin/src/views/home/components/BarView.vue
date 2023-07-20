@@ -16,11 +16,11 @@ export default {
 import { reactive, computed } from 'vue'
 // 引入数据仓库
 import {useDataStore} from '@/stores/reportData'
-const dataSotre = useDataStore()
-const orderFullYearAxis = computed(()=>dataSotre.reportData.orderFullYearAxis||[]) // 销售额对应的横轴数据
-const orderFullYear = computed(()=>dataSotre.reportData.orderFullYear||[]) // 销售额数组数据
-const userFullYearAxis = computed(()=>dataSotre.reportData.userFullYearAxis||[]) // 访问量对应的横轴数据
-const userFullYear = computed(()=>dataSotre.reportData.userFullYear||[]) // 访问量数组数据
+const dataStore = useDataStore()
+const orderFullYearAxis = computed(()=>dataStore.reportData.orderFullYearAxis||[]) // 销售额对应的横轴数据
+const orderFullYear = computed(()=>dataStore.reportData.orderFullYear||[]) // 销售额数组数据
+const userFullYearAxis = computed(()=>dataStore.reportData.userFullYearAxis||[]) // 访问量对应的横轴数据
+const userFullYear = computed(()=>dataStore.reportData.userFullYear||[]) // 访问量数组数据
 
 
 //select选中的值

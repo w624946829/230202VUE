@@ -8,6 +8,10 @@ import router from './router'
 import './styles/index.scss'
 import ElSvg from './components/SvgIcon/ElSvg'
 import './permission'
+import has from './directives/has'
+import {vueEcharts} from './plugins/echarts'
+import './mockServer'
+
 const app = createApp(App)
 ElSvg(app)
 app.use(pinia)
@@ -15,4 +19,6 @@ app.use(pinia)
   .use(ElementPlus, {
     locale: zhCn,
   })
+  .use(has)
+  .use(vueEcharts)
   .mount('#app')

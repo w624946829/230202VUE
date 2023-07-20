@@ -144,7 +144,7 @@ export const allAsyncRoutes: Array<RouteRecordRaw> = [
       {
         path: "/product/sku/list",
         name: "Sku",
-        component: () => import("@/views/product/sku/index2.vue"),
+        component: () => import("@/views/product/sku/index.vue"),
         meta: {
           title: "SKU管理",
         },

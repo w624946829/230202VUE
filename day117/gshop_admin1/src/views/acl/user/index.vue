@@ -103,9 +103,9 @@ import type { FormInstance } from 'element-plus'
 import { Search, Edit, UserFilled, Delete } from '@element-plus/icons-vue'
 import { reactive, ref, onMounted, nextTick } from 'vue'
 // 引入用户信息的列表数据类型和用户信息对象的类型
-import type { UserListModel, UserModel } from '@/api/acl/model/userModel'
+import type { UserListModel, UserModel } from '@/api/acl/Model/userModel'
 // 引入角色列表的数据类型
-import type { RoleListModel } from '@/api/acl/model/roleModel'
+import type { RoleListModel } from '@/api/acl/Model/roleModel'
 import {
   assignUserRoleListApi,
   getUserRoleListApi,
@@ -222,7 +222,7 @@ const getRoles = async () => {
   const result = await getUserRoleListApi(userState.user?.id as string)
   const { allRolesList, assignRoles } = result
   roleState.allRoles = allRolesList
-  roleState.userRoleIds = assignRoles.map((item) => item.id as string)
+  roleState.userRoleIds = assignRoles.map((item:any) => item.id as string)
 
   roleState.checkAll = allRolesList.length === assignRoles.length
   roleState.isIndeterminate =
