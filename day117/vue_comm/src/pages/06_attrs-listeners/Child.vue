@@ -1,0 +1,25 @@
+<template>
+	<div class="child">
+		<h3>子组件</h3>
+		<GrandChild/>
+	</div>
+</template>
+
+<script>
+	import GrandChild from './GrandChild.vue'
+
+	export default {
+		name:'Child',
+		components:{GrandChild},
+	}
+</script>
+
+<style lang="less" scoped>
+	.child{
+		margin-top: 20px;
+		background-color: skyblue;
+		padding: 20px;
+		border-radius: 10px;
+		box-shadow: 0 0 10px black;
+	}
+</style>
