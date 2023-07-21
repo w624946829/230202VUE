@@ -36,18 +36,38 @@ const getOption = () => {
     return {
         // 标题
         title: {
-            text: '测试数据'
+            text: `${state.activeIndex === '1' ? '销售额趋势' : '访问量趋势'}`,
+            textStyle:{
+                fontSize: 14,
+                color:'#333'
+            },
+            left:10,
+            top:10,
         },
         // 横轴
-        xAxis: {},
+        xAxis: { 
+            show:true,
+            data: state.activeIndex === '1' ? orderFullYearAxis.value : userFullYearAxis.value,
+            axisTick: {alignWithLabel: true} // 刻度线与标签对齐,
+        },
         // 纵轴
-        yAxis: {},//不显示纵轴
+        yAxis: {
+            splitLine:{ show:true,lineStyle:{
+                type:'dashed ',color:'#02a774' ,//显示虚线
+            } },//显示虚线
+
+        },
         // 系列组件
-        series: [],
+        series: [{
+            type: 'bar',
+            data: state.activeIndex === '1' ? orderFullYear.value : userFullYear.value,
+            barWidth:'35%',
+        }],
         // 提示框
         tooltip: {},
         // 四周的位置
-        grid: {},
+        grid: {left:50,top:50,right:50,bottom:50},
+        color:'#3398DB'
     }
 }
 </script>
