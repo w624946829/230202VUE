@@ -1,13 +1,15 @@
 <template>
   <div class="box1">
-    <h3>子组件1- -父组件给我绑定了一个add-sum自定义事件</h3>
-	<button @click="$emit('add-sum',10)">点我触发身上的add-sum事件</button>
+    <h2>我是孩子组件1---- 父给我绑定了一个add-sum自定义事件</h2>
+	<button @click="$emit('add-sum',6)">点我触发身上的add-sum事件</button>
   </div>
 </template>
 
 <script>
 	export default {
-		name:'Child1'
+		name:'Child1',
+	
+	
 	}
 </script>
 

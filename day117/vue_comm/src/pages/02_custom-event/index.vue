@@ -1,31 +1,31 @@
 <template>
   <div class="box">
-    <h3>父组件 -- 我是一个sum值是：{{ sum }}</h3>
-  
-    <Child1 @add-sum = "sum += $event"/>
-    <Child2 @click.native="show3 "/>
+    <h2>我是父组件----sum为{{ sum }}</h2>
+    <Child1 @add-sum="sum += $event "/>
+    <Child2 @click.native="show3"/>
   </div>
 </template>
 
 <script>
-  import Child1 from './Child1'
-  import Child2 from './Child2'
+import Child1 from './Child1.vue'
+import Child2 from './Child2.vue'
 
   export default {
     name: 'Index',
-    
-    components: {Child1,Child2},
+    components:{Child1,Child2},
     data(){
-      return{
+      return {
         sum:1
       }
     },
-    methods:{
-      show3(){
-        alert('你点了我')
-      }
-
-    }
+   methods:{
+    addSum(value){
+       this.sum += value
+     },
+     show3(){
+       alert('我是父组件的show3方法')
+     }
+   }
   }
 
 </script>

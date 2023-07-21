@@ -1,12 +1,14 @@
 <template>
   <div class="box2">
-    <h3>子组件2- -父组件给我绑定了一个原生DOM事件（click）</h3>
+	<h2>我是孩子组件2 ---- 父给我绑定了一个原生DOM自定义事件（click）</h2>
+	<button>点我触发自定义click事件</button>
   </div>
 </template>
 
 <script>
 	export default {
 		name:'Child2'
+	
 	}
 </script>
 

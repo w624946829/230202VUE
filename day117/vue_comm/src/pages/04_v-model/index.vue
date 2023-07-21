@@ -10,7 +10,7 @@
     【不使用v-model】实现双向数据绑定：<input type="text" :value="address" @input="address = $event.target.value"/>
     <br>
     <AtguiguInput :value="subject" @input="subject = $event"/>
-    <AtguiguInput v-model="address"/>
+  
 
   </div>
 </template>
